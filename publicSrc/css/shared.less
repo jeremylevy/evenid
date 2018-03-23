@@ -1,0 +1,315 @@
+@font-face {
+    font-family: 'Mono Social Icons Font';
+    src: url('../fonts/monosocialicons1.10.eot');
+    src: url('../fonts/monosocialicons1.10.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/monosocialicons1.10.woff') format('woff'),
+         url('../fonts/monosocialicons1.10.ttf') format('truetype'),
+         url('../fonts/monosocialicons1.10.svg#MonoSocialIconsFont') format('svg');
+    src: url('../fonts/monosocialicons1.10.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+// Fix http://stackoverflow.com/questions/7548255/is-there-a-css-workaround-for-firefox-bug-inline-block-first-letter-with-cha?lq=1
+@-moz-keyframes firstletterbugfix { from { padding-right: 1px ; } to { padding-right: 0; } }
+
+// Fix Competing controls in IE10+
+// https://github.com/cloudfour/hideShowPassword
+::-ms-reveal,
+::-ms-clear {
+    display: none !important;
+}
+
+/* Needs to be separated */
+
+input:-moz-placeholder {  
+    color: #aaa!important;
+}
+
+input::-moz-placeholder {  
+    color: #aaa!important;
+}
+
+input::-webkit-input-placeholder {
+    color: #aaa!important;
+}
+
+input:-ms-input-placeholder {
+    color: #aaa!important;
+} 
+
+.placeholder {
+    color: #aaa!important;
+}
+
+/* END */
+
+* {
+    word-wrap: break-word;
+}
+
+html, body {
+    color: #6F7C82;
+    font-family: @default-font;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 10px;
+    -webkit-tap-highlight-color: rgba(66, 66, 66, 0.4);
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+
+    // For Zopim livechat bubble
+    @media(max-width: @screen-tablet) {
+        padding-bottom: 32px;
+    }
+}
+
+a {
+    color: @default-link-color;
+    text-decoration: none;
+    outline: none!important;
+
+    &:hover, &:focus {
+        color: @default-selected-link-color;
+        text-decoration: none;
+    }
+
+    &:hover, &:focus, &:active {
+        outline: none!important;
+        text-decoration: none!important;
+    }
+}
+
+// Same class is used in app
+// because whe share form inputs 
+// between Oauth authorize
+// and app
+.desktop-only-block {
+    display: block!important;
+
+    html.mobile &,
+    html.tablet & {
+        display: none!important;
+    }
+}
+
+
+// Same class is used in app
+// because whe share form inputs 
+// between Oauth authorize
+// and app
+.tablet-only-block {
+    display: none!important;
+
+    html.tablet & {
+        display: block!important;
+    }
+}
+
+// Same class is used in app
+// because whe share form inputs 
+// between Oauth authorize
+// and app
+.mobile-only-block {
+    display: none!important;
+
+    html.mobile & {
+        display: block!important;
+    }
+}
+
+.social-icon-font {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-family: 'Mono Social Icons Font'!important;
+    font-size: 28px;
+    -ms-font-feature-settings:"liga" 1;
+}
+
+.btn {
+    .btn();
+}
+
+.bs-callout(@color, @bgcolor: lighten(@color, 35%)) {
+    display: block;
+    margin: 20px 0;
+    padding: 15px 30px 15px 15px;
+    border-left: 5px solid @color;
+    background-color: @bgcolor;
+    
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 0;
+        color: @color;
+    }
+    
+    p:last-child {
+        margin-bottom: 0;
+    }
+    
+    code, .highlight {
+        background-color: #fff;
+    }
+}
+
+.bs-callout-primary {
+    .bs-callout(@brand-primary, lighten(@brand-primary, 45%));
+}
+
+.bs-callout-danger {
+    .bs-callout(@brand-danger);
+}
+
+.bs-callout-warning {
+    .bs-callout(@brand-warning, lighten(@brand-warning, 30%));
+}
+
+.bs-callout-info {
+    .bs-callout(@brand-info);
+}
+
+.bs-callout-success {
+    .bs-callout(@brand-success);
+}
+
+.alert-container {
+    .col-md-12 {
+        // Avoid main container
+        // to jump when success notification
+        // is closed automatically
+        min-height: 0;
+    }
+}
+
+.alert {
+    border: 0;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.tooltip-inner {
+    padding: 2px 8px;
+}
+
+.popover {
+    border: 1px solid #E2E2E2;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+
+    &.top > .arrow {
+        border-top-color: #C7C7C7;
+    }
+}
+
+/* jQuery.MMenu */
+#mobile-left-menu {
+    background-color: #24282B;
+    display: none;
+    
+    &.mm-opened {
+        display: block;
+    }
+
+    h3 {
+        color: #CACACA;
+        margin: 0;
+        background-color: rgba(255, 255, 255, 0.05);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        font-size: 15px;
+        text-indent: 8px;
+        line-height: 25px;
+        padding: 8px 0;
+        font-weight: normal;
+    }
+
+    ul, ol {
+        padding-top: 0;
+        padding-bottom: 0;
+
+        li {
+            a {
+                font-size: 17px;
+                padding: 5px 20px !important;
+                font-family: Helvetica, Arial;
+                font-weight: 400;
+                color: #FFF !important;
+                line-height: 3em !important;
+                display: block;
+                -webkit-tap-highlight-color: rgba(0,0,0,0);
+                -webkit-font-smoothing: antialiased !important;
+
+                &.selected {
+                    background-color: rgba(0, 0, 0, 0.3);
+                }
+            }
+
+            &.subcat {
+                a {
+                    font-size: 15px;
+                    padding-left: 41px!important;
+                    color: #CECECE!important;
+                }
+            }
+
+            .label {
+                text-align: left;
+                background-color: initial;
+                font-size: 100%;
+                color: #6c6a6a;
+            }
+        }
+    }
+}
+
+.mm-page {
+    overflow: hidden;
+}
+
+/* sweetAlert */
+// Overwrite box-sizing set by bootstrap on all elements
+.sweet-overlay, .sweet-alert, .sweet-alert > * {
+    font-size: 16px;
+    box-sizing: content-box!important;
+    -webkit-box-sizing: content-box!important;
+    -moz-box-sizing: content-box!important;
+}
+
+.sweet-alert  {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    
+    h2 {
+        margin: 0;
+        margin-bottom: 8px;
+        line-height: 33px;
+    }
+
+    p {
+        line-height: 23px;
+    }
+
+    fieldset {
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-top: 5.59999990463257px;
+        padding-bottom: 0;
+    }
+
+    input {
+        font-size: 24px;
+        margin-bottom: 0;
+        line-height: 1.4em;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+        .ie8 & {
+            line-height: 1.6em;
+        }
+    }
+
+    .sa-error-container.show {
+        margin-top: 17px;
+    }
+}

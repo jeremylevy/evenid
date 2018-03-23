@@ -1,0 +1,24 @@
+mixin docLeftMenuList
+    h3 1. Overview
+
+    ol.left-menu-list
+        include ./docLeftMenuOverviewList
+        +docLeftMenuOverviewList()
+
+    h3 2. API
+    
+    ul.left-menu-list
+        include ./docLeftMenuApiList
+        +docLeftMenuApiList()
+
+    h3 3. SDKs
+
+    ul.left-menu-list
+        include ./docLeftMenuSdkList
+        +docLeftMenuSdkList()
+    
+    h3 Guides
+    
+    ul.left-menu-list
+        include ./docLeftMenuGuidesList
+        +docLeftMenuGuidesList()

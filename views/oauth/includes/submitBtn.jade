@@ -1,0 +1,15 @@
+mixin submitBtn (flow, step, scope)
+    button(type="submit").btn.create.file-upload-sibling-form-submit-btn
+        if flow === 'registration'
+            //- If client just ask for email 
+            //- user will be redirected just after login
+            = (step === 'credentials' && (scope.length > 1 || scope[0] !== 'emails')) ? __('Next →') : __('Register')
+        
+        if flow === 'login'
+            = __('Log in')
+
+        if flow === 'recover_password'
+            if !code
+                = __('Reset my password')
+            else
+                = __('Change password')

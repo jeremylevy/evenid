@@ -1,0 +1,34 @@
+mixin docLeftMenuOverviewList
+    li
+        a(href="/docs/flow"
+          class=(['/docs', '/docs/flow'].indexOf(path) !== -1 ? 'selected' : ''))
+            | The flow
+
+    li
+        a(href="/docs/tokens-and-login-status"
+          class=(path === '/docs/tokens-and-login-status' ? 'selected' : ''))
+
+            | Tokens and login status
+
+    li
+        a(href="/docs/test-accounts-and-user-status"
+          class=(path === '/docs/test-accounts-and-user-status' ? 'selected' : ''))
+
+            | Test accounts and user status
+
+    li
+        a(href="/docs/client-notifications"
+          class=(path === '/docs/client-notifications' ? 'selected' : ''))
+
+            | Client notifications
+
+    li
+        a(href="/docs/oauth-token-error-responses"
+          class=(path === '/docs/oauth-token-error-responses' ? 'selected' : ''))
+            | Oauth token error responses
+
+    li
+        a(href="/docs/branding-guidelines"
+          class=(path === '/docs/branding-guidelines' ? 'selected' : ''))
+
+            | Branding guidelines

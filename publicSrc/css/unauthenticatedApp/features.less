@@ -1,0 +1,296 @@
+.unauthenticated-app {
+    .main-features {
+        background-color: white;
+        padding: 40px 0;
+        border-bottom: 0;
+
+        @media(max-width: @screen-tablet) {
+            padding-bottom: 0;
+        }
+
+        .row {
+            &.nav {
+                padding: 0;
+                -webkit-font-smoothing: subpixel-antialiased;
+
+                .feature {
+                    &:before {
+                        content: "";
+                        display: block;
+                        width: 100%;
+                        height: 81px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
+
+                    &.forms:before {
+                        .image-2x('../img/features/forms.png', 60px, 60px);
+                    }
+
+                    &.emails-and-sms:before {
+                        .image-2x('../img/features/emailsSMS.png', 60px, 60px);
+                    }
+
+                    &.test-accounts:before {
+                        .image-2x('../img/features/testAccounts.png', 60px, 60px);
+                    }
+
+                    &.rely-on-each-other:before {
+                        .image-2x('../img/features/relyOnEachOther.png', 60px, 60px);
+                    }
+
+                    display: block;
+                    .min-height(80px);
+                    position: relative;
+                    text-decoration: none;
+                    color: #6F7C82;
+                    -webkit-font-smoothing: antialiased;
+                    font-weight: 500;
+                    padding: 5px 0 0 0px;
+
+                    @media(max-width: @screen-tablet) {
+                        padding-top: 8px;
+                        border-top: 1px solid #f0f0f0;
+                    }
+
+                    h3 {
+                        font-size: 16px;
+                        color: #292E31;
+                        font-weight: 500;
+                        line-height: 22.399999618530273px;
+                        margin-bottom: 3.200000047683716px;
+                        margin-top: 14px;
+
+                        @media(max-width: @screen-tablet) {
+                            margin-bottom: 8px;
+                        }
+                    }
+
+                    p {
+                        font-size: 1.4em;
+                        line-height: 1.5em;
+                        padding: 0;
+                        margin-bottom: 3.200000047683716px;
+
+                        @media(max-width: @screen-tablet) {
+                            font-weight: 400;
+                            line-height: 1.8em;
+                        }
+                    }
+                }
+
+                .col-md-3 {
+                    text-align: center;
+                    padding-top: 0px;
+                    padding-bottom: 10px;
+                    .min-height(245px);
+
+                    &:last-child {
+                        @media(max-width: @screen-tablet) {
+                            border-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        header {
+            text-align: center;
+            padding: 0 0 19px;
+
+            h2 {
+                &:before {
+                    content: '';
+                    width: 61px;
+                    height: 61px;
+                    display: block;
+                    margin: 0 auto 24px;
+                    .image-2x('../img/features/features.png', 60px, 60px);
+                }
+
+                margin: 0;
+                margin-bottom: .3em;
+                padding-bottom: 0;
+                font-size: 24px;
+                font-weight: 300;
+                color: @default-selected-link-color;
+                line-height: 24px;
+            }
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 24px;
+            padding: 0;
+            margin: 0 0 1em;
+        }
+    }
+
+    .feature-mobile {
+        position: relative;
+        border-top: 1px solid #E9EDF1;
+        border-bottom: 1px solid #E9EDF1;
+
+        @media(max-width: @screen-tablet) {
+            height: 538px;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 860px;
+        }
+
+        img {
+            margin-top: 50px;
+            margin-bottom: 38px;
+
+            @media(max-width: (@screen-desktop - 1)) {
+                margin-top: 18px;
+                margin-bottom: 0;
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+        }
+
+        .desc {
+            margin-top: 131px;
+
+            @media(max-width: @screen-tablet) {
+                margin-top: 28px;
+            }
+
+            h3 {
+                .image-2x('../img/features/iosAndroid.png', 104px, 65px);
+                background-repeat: no-repeat;
+                margin-top: 0;
+                padding-top: 70px;
+                font-size: 16px;
+                color: @default-selected-link-color;
+                font-weight: 500;
+                line-height: 22.399999618530273px;
+                margin-bottom: 3.200000047683716px;
+            }
+
+            p {
+                margin-bottom: .2em;
+                font-size: 1.6em;
+                line-height: 1.5em;
+                padding: 0;
+                margin: 0 0 1em;
+
+                a {
+                    .link-arrow();
+                }
+            }
+
+            aside {
+                p {
+                    color: #C2C5C7;
+                    color: rgba(111, 124, 130, 0.5);
+                    border-top: 1px solid #E5E5E5;
+                    border-top: 1px solid rgba(49, 78, 95, 0.06);
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    font-size: 12px;
+                    margin-bottom: 24px;
+                    line-height: 18px;
+                }
+            }
+        }
+    }
+
+    .other-features {
+        background-color: white;
+        padding: 40px 0;
+
+        @media(max-width: @screen-tablet) {
+            padding-bottom: 0;
+            padding-top: 0;
+        }
+
+        .container {
+            max-width: 860px;
+        }
+
+        .row {
+            &.head {
+                header {
+                    border-bottom: 1px solid #EDEDED;
+                    border-bottom: 1px solid rgba(49, 78, 95, 0.06);
+
+                    h2 {
+                        margin-bottom: 7.199999809265137px;
+                        padding-bottom: 0;
+                        font-size: 24px;
+                        font-weight: 300;
+                        color: @default-selected-link-color;
+                    }
+                }
+            }
+
+            &.nav {
+                padding: 30px 0;
+
+                .col-sm-4 {
+                    &.twofa {
+                        .image-2x('../img/features/2fa.png', 60px, 60px);
+                    }
+
+                    &.social-login {
+                        .image-2x('../img/features/socialLogin.png', 60px, 60px);
+                    }
+
+                    &.one-click-registration {
+                        .image-2x('../img/features/oneClickRegistration.png', 60px, 60px);
+                    }
+
+                    &.statistics {
+                        .image-2x('../img/features/statistics.png', 60px, 60px);
+                    }
+                    
+                    background-position: 15px 0;
+                    padding-top: 60px;
+                    background-repeat: no-repeat;
+
+                    @media(max-width: @screen-tablet) {
+                        background-position: center top;
+                        border-bottom: 1px solid rgba(49, 78, 95, 0.06);
+                        margin-top: 30px;
+                        text-align: center;
+                    }
+                }
+
+                @media(max-width: @screen-tablet) {
+                    padding-top: 0;
+                    padding-bottom: 0;
+                }
+            }
+        }
+
+        p {
+            font-size: 1.6em;
+            line-height: 1.5em;
+            padding: 0;
+            margin-bottom: 3.200000047683716px;
+
+            @media(max-width: @screen-tablet) {
+                margin-bottom: 18px;
+            }
+
+            a {
+                .link-arrow();
+            }
+        }
+
+        h3 {
+            font-size: 16px;
+            color: @default-selected-link-color;
+            font-weight: 500;
+            line-height: 22.399999618530273px;
+            margin-bottom: 3.200000047683716px;
+            margin-top: 14px;
+        }
+    }
+}

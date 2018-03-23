@@ -1,0 +1,64 @@
+mixin uploadImgFileForm()
+    - var hasError = flash('errors.logo') || flash('errors.profil_photo')
+
+    form.file-upload-form.file-target-form(method="post"
+                                           action="javascript:;"
+                                           target="upload_target"
+                                           enctype="multipart/form-data"
+                                           data-upload-policy-params= uploadPolicyParams)
+        
+        div
+            .form-file-img-container
+                - var imgFile = imgFileURL || flash('file_url');
+                
+                //- According to W3C, we cannot have an empty target
+                //- so set it to `_self` when we don't have `imgFile`
+                a.form-file-img-link#input-file-img-container(href= imgFile ? imgFile : 'javascript:;'
+                                                              class= (imgFile ? '' : 'disabled ') + (hasError ? 'error' : '')
+                                                              target= imgFile ? imgFile : '_self')
+                    
+                    if imgFile
+                        img(src= imgFile + (imgSize ? '/' + imgSize : '/200'), alt="")
+                
+                .form-input-file-img-container
+                    .upload-policy-container
+                    
+                    input.form-file-input#input-file(type="file"
+                                                     name="file"
+                                                     accept= acceptableContentType
+                                                     data-max-file-size= maxFileSize
+                                                     data-allowed-mime-type= allowedContentType
+                                                     data-field="profil_photo"
+                                                     data-first-value= imgFile || '')
+                    
+                    if URLToSaveFile
+                        input#input-file-url(type="hidden"
+                                             name="file_url"
+                                             value= URLToSaveFile)
+                
+                .form-input-file-img-infos
+                    a.btn#input-file-btn(href="javascript:;")= chooseFileBtnText
+
+                    if (authorizations)
+                        include /users/includes/authorizedClientsForField
+                        +authorizedClientsForField(authorizations, 'profil_photo')
+
+                    p.ajax-loader-container.hidden#input-file-loader
+                        img(src= staticURL('/img/ajaxLoader.gif'), alt="")
+
+                    .error-container
+                        p#file-too-big-error.hidden= fileTooBigError
+
+                        p#file-has-wrong-type-error.hidden= fileHasWrongTypeError
+
+                        if hasError
+                            .error-wrapper= flash('errors.logo') || flash('errors.profil_photo')
+        p
+            include /includes/csrf
+            +csrf(csrfToken)
+
+    iframe#upload-target(name="upload_target"
+                         src="javascript:;"
+                         marginheight="0"
+                         marginwidth="0"
+                         frameborder="0")

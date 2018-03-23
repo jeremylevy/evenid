@@ -1,0 +1,156 @@
+extend ../layouts/baseAuthenticated
+
+block prepend title
+    = client.name
+
+block appContentHeadTitle
+    h2= client.name
+    
+    ul.cat-list.clearfix
+        li
+            a.selected(href="javascript:;")= __('Authorizations')
+
+block appContentHeadBtn
+    form(method="post"
+         action= '/users/' + session.login.user.id + '/authorized-clients/' + client.id)
+        
+        input(type="hidden", name="client_name", value= client.name)
+        input(type="hidden", name="_method", value="DELETE")
+        
+        include /includes/csrf
+        +csrf(csrfToken)
+        
+        button.btn.cancel(type="button"
+                        data-user-id= session.login.user.id
+                        data-ajax-error-title= __('Oops!')
+                        data-ajax-error-message= __('An unknown error has occurred. Please try again.')
+                        data-ajax-success-title= __('Success!')
+                        data-ajax-success-message= __('The password you provided is correct.')
+                        data-empty-password-error-message= __('You must enter your password.')
+                        data-sweetalert="true"
+                        data-sweetalert-title= __('Confirm the unsubscribe?')
+                        data-sweetalert-text= __('Enter your password to unsubscribe from %s.', client.name)
+                        data-sweetalert-type="input"
+                        data-sweetalert-input-type="password"
+                        data-sweetalert-callback-function="checkUserPassword"
+                        data-sweetalert-allow-outside-click="true"
+                        data-sweetalert-show-cancel-button="true"
+                        data-sweetalert-close-on-confirm="false"
+                        data-sweetalert-confirm-button-text= __('OK')
+                        data-sweetalert-cancel-button-text= __('Cancel'))= __('Unsubscribe')
+
+//- Why we use `target="somethingUnique"`? See README
+block appContent
+    - var userValue = null;
+    - var userKeySingular = null;
+    - var user = session.login.user;
+
+    .client-infos.clearfix
+        div.client-infos-logo-container
+            img(src= client.logo + '/200', alt="")
+        
+        ul.client-infos-social-list
+            if client.facebook_username
+                li
+                    a.social-icon-font(href='https://facebook.com/' + client.facebook_username
+                                        target='https://facebook.com/' + client.facebook_username
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title= __('Facebook'))
+                        span.icon &#xe227;
+                        span.text= __('Facebook')
+            
+            if client.twitter_username
+                li
+                    a.social-icon-font(href='https://twitter.com/' + client.twitter_username
+                                        target='https://twitter.com/' + client.twitter_username
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title= __('Twitter'))
+                        span.icon &#xe286;
+                        span.text= __('Twitter')
+            
+            if client.instagram_username
+                li
+                    a.social-icon-font(href='https://instagram.com/' + client.instagram_username
+                                        target='https://instagram.com/' + client.instagram_username
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title= __('Instagram'))
+                        span.icon &#xe300;
+                        span.text= __('Instagram')
+        
+        .client-infos-desc-container
+            h3= client.name
+            
+            p.client-infos-desc= client.description
+            
+            p.client-infos-website 
+                a(href= client.website, target= client.website)= client.website
+            p.client-explain
+                != __('%s is %sallowed%s to access to:', escapeHTML(client.name), '<strong>', '</strong>')
+    
+    div
+        ul.entities-type-list.clearfix
+            li
+                a.selected(href='/users/' + session.login.user.id + '/authorized-clients/' + client.id
+                           data-entity="singular-fields")
+                    = __('Information')
+            li
+                a(href="javascript:;"
+                  class= (authorizedUser.emails || []).length === 0 ? 'disabled' : ''
+                  data-entity="emails")
+                    = __('Emails (%d)', (authorizedUser.emails || []).length)
+            li
+                a(href="javascript:;"
+                  class= (authorizedUser.phone_numbers || []).length === 0 ? 'disabled' : ''
+                  data-entity="phone_numbers")
+                    = __('Phone numbers (%d)', (authorizedUser.phone_numbers || []).length)
+            li
+                a(href="javascript:;"
+                  class= (authorizedUser.addresses || []).length === 0 ? 'disabled' : ''
+                  data-entity="addresses")
+                    = __('Addresses (%d)', (authorizedUser.addresses || []).length)
+        
+        ul.clip-list.clearfix
+            - for (var userKey in authorizedUser)
+                if (userKey === 'emails')
+                    - userKeySingular = 'email'
+                else if (userKey === 'phone_numbers')
+                    - userKeySingular = 'phone_number'
+                else if (userKey === 'addresses')
+                    - userKeySingular = 'address'
+                else
+                    - userKeySingular = userKey
+                - userValue = authorizedUser[userKey];
+                //- User may have many addresses, emails and phone numbers
+                - userValue = Array.isArray(userValue) ? userValue : [userValue];
+                - for (var i = 0, j = userValue.length; i < j; ++i)
+                    li(class= userKey + (userKey !== userKeySingular ? ' hidden' : ' singular-fields'))
+                        .clip-content
+                            .overlay
+                                .content
+                                    if userKey !== 'profil_photo'
+                                        h3.auth-value
+                                            if (userKey === 'emails')
+                                                a(href= '/users/' + user.id + '/emails/' + userValue[i].id)
+                                                    = userValue[i].address
+                                            else if (userKey === 'phone_numbers')
+                                                a(href= '/users/' + user.id + '/phone-numbers/' + userValue[i].id)
+                                                    = userValue[i].number
+                                            else if (userKey === 'addresses')
+                                                a(href= '/users/' + user.id + '/addresses/' + userValue[i].id)
+                                                    = userValue[i].address_line_1
+                                            else if (userKey === 'gender')
+                                                = __(userValue[i])
+                                            else
+                                                = userValue[i]
+                                  
+                                    if userKey === 'profil_photo'
+                                        //- See README for target attribute
+                                        a.profil-photo-link(href= userValue[i], target=userValue[i])
+                                            img(src= userValue[i] + '/200', alt="")
+                                  
+                                    .auth-name= userValue.length > 1 ? __('Your ' + userKeySingular + ' #%d', (i + 1)) : __('Your ' + userKeySingular)
+                        .status 
+                            span= __('Required')

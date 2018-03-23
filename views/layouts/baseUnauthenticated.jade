@@ -1,0 +1,29 @@
+extend base
+
+block content
+    - var isUserForm = !!path.match(config.EVENID_VIEWS.UNLOGGED_USER_FORMS.join('|'));
+
+    include ../includes/header
+
+    //- Display header 
+    //- with left menu logo only on doc pages
+    //- Don't display it on tablet 
+    +header((_displayMobileLeftMenu = (path.indexOf('/doc') === 0)), (_displayMobileLeftMenuOnTablet = false))
+
+    if (path.indexOf('/doc') === 0)
+        nav#mobile-left-menu.mm-offcanvas
+            div
+                include ../includes/docLeftMobileMenuList
+                +docLeftMobileMenuList()
+    
+
+    .unauthenticated-app-container(class=isUserForm ? 'form' : '')
+        .unauthenticated-app
+            if (isUserForm)
+                include ../includes/notifications
+                +notificationBanner()
+            
+            block appContent
+    
+    include ../includes/footer
+    +footer()

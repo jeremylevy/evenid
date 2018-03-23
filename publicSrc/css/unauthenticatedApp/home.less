@@ -1,0 +1,220 @@
+.unauthenticated-app {
+    .cover-content-header {
+        position: relative;
+        overflow: hidden;
+        padding-top: 49px;
+        height: 729px;
+        background-color: #1e8ecf;
+        background: linear-gradient(to top left,#4a95a7,#30a2dc 10%,#347cbd 20%,#2c6290 27%,#2c5e9c 35%,#386b96 50%,#568abf 63%,#328dab 93%,#34a4c5);
+        /*background-repeat: no-repeat;
+        background-image: url("../img/home/cover.jpg");
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/home/cover.jpg', sizingMethod='scale');
+        -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../img/home/cover.jpg', sizingMethod='scale')";
+        background-size: cover;*/
+
+        @media(max-width: (@screen-desktop - 1)) {
+            height: 420px;
+        }
+
+        @media(max-width: @screen-tablet) {
+            height: 390px;
+        }
+
+        .col-md-6 {
+            padding: 0;
+        }
+
+        .text {
+            padding-top: 210px;
+            padding-left: 15px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+
+            h1 {
+                color: #FFF;
+                margin: 0;
+                font-weight: 400;
+                font-size: 32px;
+                line-height: 41.599998474121094px;
+
+                &.fr-fr, &.en-us {
+                    font-size: 29px;
+                }
+            }
+
+            .desc-title {
+                font-size: 2em;
+                line-height: 1.4em;
+                color: #FFF;
+                color: rgba(255, 255, 255, 0.8);
+                margin: .5em 0 1em;
+                width: 96%;
+
+                &.fr-fr, &.en-us {
+                    font-size: 17px;
+                }
+            }
+
+            .button-group {
+                display: inline-block;
+            }
+
+            @media(max-width: (@screen-desktop - 1)) {
+                padding-top: 20px;
+
+                h1 {
+                    font-size: 23px;
+                    line-height: 35px;
+
+                    &.fr-fr, &.en-us {
+                        font-size: 23px;
+                    }
+                }
+
+                .desc-title {
+                    font-size: 1.5em;
+
+                    &.fr-fr, &.en-us {
+                        font-size: 1.5em;
+                    }
+                }
+
+                .button-group .btn {
+                    font-size: 11px;
+                }
+            }
+        }
+
+        .img {
+            margin-top: 102px;
+            margin-left: 53px;
+
+            @media(max-width: (@screen-desktop - 1)) {
+                margin-left: 0;
+                margin-top: 22px;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+
+            @media(max-width: @screen-tablet) {
+                margin-top: -10px;
+                max-width: 100%;
+                background-size: contain;
+            }
+        }
+    }
+
+    .cover-content {
+        .cat-container {
+            .col-md-4 {
+                padding: 0;
+            }
+
+            section {
+                text-align: center;
+                border: 0 solid #E4E4E4;
+                border: 0 solid rgba(49, 78, 95, 0.09);
+
+                h2 {
+                    font-weight: 500;
+                    background-repeat: no-repeat;
+                    background-position: 50% 2px;
+                    text-transform: none;
+                    color: @default-selected-link-color;
+                    margin: 0;
+
+                    &:before {
+                        content: " ";
+                        display: block;
+                        height: 80px;
+                        margin-bottom: 8px;
+                        width: 100%;
+                        background-size: 80px;
+                        background-position: center top;
+                        background-repeat: no-repeat;
+                    }
+                }
+
+                &.middle {
+                    border-left-width: 1px;
+                    border-right-width: 1px;
+                }
+
+                &.features h2:before {
+                    .image-2x('../img/home/features.png', 80px, 80px);
+                }
+
+                &.benefits h2:before {
+                    .image-2x('../img/home/updates.png', 80px, 80px);
+                }
+
+                &.platforms h2:before {
+                    .image-2x('../img/home/platforms.png', 80px, 80px);
+                }
+
+                h2, p {
+                    font-size: 1.5em;
+                    line-height: 1.55em;
+                }
+
+                p {
+                    color: #6F7C82;
+                    margin-bottom: 0;
+                    height: 46px;
+                    overflow: hidden;
+                    padding: 0 8px;
+
+                    @media(max-width: @screen-tablet) {
+                        height: auto;
+                        overflow: auto;
+                        margin: 4px 0;
+                    }
+                }
+
+                a {
+                    padding-top: 30px;
+                    padding-bottom: 0;
+                    display: block;
+                    color: #6F7C82;
+                    height: 235px;
+                    -webkit-transition: background 200ms ease;
+                    -moz-transition: background 200ms ease;
+                    -o-transition: background 200ms ease;
+                    -ms-transition: background 200ms ease;
+                    transition: background 200ms ease;
+
+                    &:hover {
+                        background-color: rgba(14, 60, 86, 0.04);
+                        text-decoration: none;
+
+                        & span.arrow {
+                            color: @default-selected-link-color;
+                        }
+                    }
+
+                    @media(max-width: (@screen-desktop - 1)) {
+                        .min-height(235px);
+                        height: auto;
+                    }
+                }
+
+                span.arrow {
+                    color: #008CDD;
+                    display: inline-block;
+
+                    .link-arrow();
+                }
+
+                @media(max-width: (@screen-desktop - 1)) {
+                    border-bottom-width: 1px;
+
+                    &.middle {
+                        border-left-width: 0;
+                        border-right-width: 0;
+                    }
+                }
+            }
+        }
+    }
+}

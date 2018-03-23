@@ -1,0 +1,9 @@
+mixin detectTimezoneScript
+    script.
+        if (Intl 
+            && Intl.DateTimeFormat 
+            && Intl.DateTimeFormat().resolved
+            && Intl.DateTimeFormat().resolved.timeZone) {
+
+            document.getElementById('timezone').value = Intl.DateTimeFormat().resolved.timeZone;
+        }

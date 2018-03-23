@@ -1,0 +1,191 @@
+.app-footer {
+    position: relative;
+    margin-top: 20px;
+    padding-bottom: 60px;
+    color: #B0BFC7;
+    font-size: 1.2em;
+
+    @media(max-width: @screen-tablet) {
+        padding-bottom: 8px;
+        margin-top: 8px;
+    }
+
+    p {
+        display: inline;
+        float: right;
+        position: relative;
+        top: -1px;
+        padding: 0;
+        margin: 0;
+        font-size: 1em;
+    }
+
+    a {
+        color: #B0BFC7;
+        cursor: pointer;
+
+        &:focus {
+            text-decoration: none;
+        }
+
+        &.selected {
+            color: @default-selected-link-color;
+        }
+    }
+
+    ul {
+        display: inline;
+        padding: 0;
+
+        @media(max-width: @screen-tablet) {
+            display: block;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        li {
+            margin: 0 10px 0 0;
+            display: inline;
+
+            @media(max-width: @screen-tablet) {
+                display: block;
+                margin: 0;
+
+                a {
+                    display: block;
+                    text-align: center;
+                    padding: 8px 0;
+                }
+            }
+        }
+
+        a:hover {
+            color: @default-selected-link-color;
+        }
+    }
+
+    .country-selector {
+        position: relative;
+        display: inline-block;
+        border-right: 1px solid #E7E7E7;
+        border-right: 1px solid rgba(49, 78, 95, 0.15);
+        padding-right: 13px;
+        margin-right: 10px;
+
+        @media(max-width: @screen-tablet) {
+            border-right: 0;
+            position: absolute;
+            bottom: -25px;
+        }
+
+        ul {
+            display: none;
+            left: -15px;
+            text-align: left;
+            border: 0;
+            z-index: 9000;
+            position: absolute;
+            background: #FFF;
+            border-radius: 5px;
+            width: 180px;
+            padding: 7.5px 0;
+            -webkit-transition: all 300ms cubic-bezier(0.34,1.61,0.7,1);
+            -moz-transition: all 300ms cubic-bezier(0.34,1.61,0.7,1);
+            -o-transition: all 300ms cubic-bezier(0.34,1.61,0.7,1);
+            -ms-transition: all 300ms cubic-bezier(0.34,1.61,0.7,1);
+            transition: all 300ms cubic-bezier(0.34,1.61,0.7,1);
+            -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            -webkit-transform: scale(1);
+            -moz-transform: scale(1);
+            -o-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+            opacity: 1;
+            -ms-filter: none;
+            -webkit-filter: none;
+            -moz-filter: none;
+            -ms-filter: none;
+            -o-filter: none;
+            filter: none;
+
+            .ie8 & {
+                border: 1px solid #ddd;
+            }
+
+            &.hidden-animation-state {
+                .opacity(0);
+                -webkit-transform: scale(0);
+                -moz-transform: scale(0);
+                -o-transform: scale(0);
+                -ms-transform: scale(0);
+                transform: scale(0)
+            }
+
+            li {
+                display: block;
+                margin: 0;
+
+                a {
+                    position: relative;
+                    display: block;
+                    line-height: 1em;
+                    padding: 7.5px 15px;
+                    color: #6F7C82;
+                    font-weight: 400;
+                    font-size: 13px;
+
+                    .ie8 & {
+                        padding: 7.5px 15px;
+                    }
+
+                    &:hover {
+                        color: @default-selected-link-color;
+                    }
+
+                    &.selected {
+                        padding-right: 37px;
+                        color: #333;
+                    }
+
+                    @media(max-width: @screen-tablet) {
+                        text-align: left;
+                    }
+                }
+            }
+
+            img {
+                vertical-align: middle;
+                margin-right: 6px;
+                position: relative;
+                top: -1px;
+                width: 23px;
+                height: 17px;
+            }
+        }
+
+        a.select {
+            font-weight: normal;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            &:hover {
+                color: @default-selected-link-color;
+            }
+
+            img {
+                vertical-align: middle;
+                margin-top: -4px;
+                margin-right: 3px;
+                width: 23px;
+                height: 17px;
+            }
+        }
+
+        strong {
+            font-weight: normal;
+        }
+    }
+}

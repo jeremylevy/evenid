@@ -1,0 +1,126 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+include /includes/csrf
+
+block prepend title
+    = __('Notification handlers')
+
+block appContentHeadTitle
+    include ./includes/headerTitle
+
+block appContentHeadBtn
+    include ./includes/headerDeleteForm
+
+mixin notificationHandlerList(notificationHandlers, isUpdate)
+    - var notificationHandler = null
+
+    - for (var i = 0, j = notificationHandlers.length; i < j; ++i)
+        - notificationHandler = notificationHandlers[i];
+        
+        li
+            h3= __('URL')
+            p
+                a(href=notificationHandlers[i].url, target=notificationHandlers[i].url)= notificationHandler.url
+            
+            h3= __('Event')
+            p= notificationHandler.event_type.toLowerCase()
+            
+            if !isUpdate
+                form(method="post", action= '/clients/' + client.id + '/notification-handlers/' + notificationHandler.id)
+                    p
+                        input(type="hidden", name="_method", value="DELETE")
+                        
+                        +csrf(csrfToken)
+                        
+                        a.btn(href= '/clients/' + client.id + '/notification-handlers/' + notificationHandler.id)= __('Edit')
+                        button.btn.cancel(type="submit"
+                                            data-sweetalert="true"
+                                            data-sweetalert-title= __('Confirm the deletion?')
+                                            data-sweetalert-text= __('Click "OK" if you want to delete this notification handler.')
+                                            data-sweetalert-type="warning"
+                                            data-sweetalert-allow-outside-click="true"
+                                            data-sweetalert-show-cancel-button="true"
+                                            data-sweetalert-confirm-button-text= __('OK')
+                                            data-sweetalert-cancel-button-text= __('Cancel'))= __('Delete')
+
+block appContent
+    - var hasFlash = false
+    - var isSelected = false
+    - var isUpdate = !!notificationHandler
+    - var classes = []
+
+    if isUpdate
+        .form-breadcrumb
+            ol.breadcrumb
+                li
+                    a(href= '/clients/' + client.id + '/notification-handlers')
+                        = __('Notification handlers')
+                
+                li.active
+                    = notificationHandler.url
+
+    if notificationHandlers.length
+        ul.form-entity-list
+            +notificationHandlerList(notificationHandlers, isUpdate)
+
+        include /includes/pagination
+        +pagination(nbOfPages, currentPage, previousDisabled, nextDisabled, '/clients/' + client.id + '/notification-handlers')
+
+    form.form(method="post", action= '/clients/' + client.id + '/notification-handlers' + (isUpdate ? '/' + notificationHandler.id : ''))
+        +formSep(isUpdate
+            ? __('Update this notification handler') 
+            : __('Add a notification handler'))
+            
+        div
+            .form-fields-container
+                div
+                    label(for="url")= __('URL')
+
+                    - hasFlash = undefined !== flash('url')
+                    - classes = classes.concat(flash('errors.url') ? ['invalid'] : [])
+                    - classes = classes.concat(isUpdate ? ['input-to-focus-to'] : [])
+
+                    input(type="url"
+                            id="url"
+                            name="url"
+                            class= classes.join(' ')
+                            placeholder= __('http://zilo.com/notification')
+                            required="required"
+                            maxlength= config.EVENID_OAUTH_HOOKS.MAX_LENGTHS.URL
+                            value= notificationHandler && !hasFlash ? notificationHandler.url : flash('url'))
+                    
+                    if flash('errors.url')
+                        .error-wrapper= flash('errors.url')
+            
+            .form-fields-section
+                div
+                    label(for="event_type")= __('Event')
+                    
+                    select(name="event_type" 
+                            id="event_type"
+                            class= flash('errors.event_type') ? 'invalid' : ''
+                            required="required")
+
+                        option(value="")= __('Choose an event')
+                        
+                        - for (var i = 0, j = eventTypes.length; i < j; ++i)
+                            - hasFlash = undefined !== flash('event_type')
+                            
+                            - isSelected = notificationHandler && notificationHandler.event_type === eventTypes[i] && !hasFlash
+                            - isSelected = isSelected || flash('event_type') === eventTypes[i]
+                            
+                            option(value= eventTypes[i]
+                                    selected= isSelected)= eventTypes[i].toLowerCase()
+                    
+                    if flash('errors.event_type')
+                        .error-wrapper.last= flash('errors.event_type')
+            
+            .form-fields-section
+                +csrf(csrfToken)
+                
+                if isUpdate
+                    input(type="hidden", name="_method", value="PUT")
+                
+                button.btn.create(type="submit")
+                    = isUpdate ? __('Update this notification handler') : __('Add this notification handler')

@@ -1,0 +1,62 @@
+mixin phoneNumber (fieldName, fieldPrefix, disabled)
+    - var hasFlash = false
+    - var hasErrorFlash = false
+    - var selected = false
+    - var value = null
+    - var classes = []
+    
+    div
+        div
+            label.user-fields(for= fieldPrefix.replace(/_/g, '-') + 'phone-number')= fieldName
+
+            if (phoneNumber && authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'phone_numbers'), (fieldID = phoneNumber.id))
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'number')
+        - value = phoneNumber && !hasFlash ? phoneNumber.number : flash(fieldPrefix + 'number')
+        - classes = classes.concat(flash('errors.' +  fieldPrefix + 'number') ? ['invalid'] : [])
+        - classes = classes.concat(phoneNumber ? ['input-to-focus-to'] : [])
+
+        input.used-by-field(type="tel"
+                            id= fieldPrefix.replace(/_/g, '-') + 'phone-number'
+                            name= fieldPrefix + 'number'
+                            class= classes.join(' ')
+                            placeholder= __(fieldPrefix ? fieldPrefix.split('_')[0] + '.phone.number' : 'phone.phone.number')
+                            required="required"
+                            value= value
+                            disabled= !!disabled
+                            data-field="phone_numbers"
+                            data-field-id= phoneNumber && phoneNumber.id
+                            data-first-value= value)
+        
+        if flash('errors.' +  fieldPrefix + 'number')
+            .error-wrapper= flash('errors.' +  fieldPrefix + 'number')
+    
+    //- Display phone number country if we have error
+    //- in phone number but not if phone number field
+    //- is empty
+    - hasFlash = flash(fieldPrefix + 'number')
+    - hasErrorFlash = undefined !== flash('errors.' +  fieldPrefix + 'number')
+
+    div(class= hasErrorFlash && hasFlash ? '' : 'hidden')
+        label(for= fieldPrefix.replace(/_/g, '-') + 'country')= __('Country')
+        
+        select(name= fieldPrefix + 'country'
+               id= fieldPrefix.replace(/_/g, '-') + 'country'
+               class= flash('errors.' +  fieldPrefix + 'country') ? 'invalid' : ''
+               required="required")
+
+            option(value="")= __('Select a country')
+            
+            - for (var locale in territories)
+                - hasFlash = undefined !== flash(fieldPrefix + 'country')
+                - selected = phoneNumber && phoneNumber.country === locale && !hasFlash
+                - selected = selected || !phoneNumber && probableCountryForUser === locale && !hasFlash
+                - selected = selected || flash(fieldPrefix + 'country') === locale
+
+                option(value= locale
+                       selected= selected)= territories[locale]
+        
+        if flash('errors.' +  fieldPrefix + 'country')
+            .error-wrapper= flash('errors.' +  fieldPrefix + 'country')

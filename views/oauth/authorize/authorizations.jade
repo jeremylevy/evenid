@@ -1,0 +1,390 @@
+extend /layouts/baseOauthAuthorize
+
+include /includes/formSep
+
+block formContent
+    - var isHidden = false
+    - var hasFieldsToAuthorize = Object.keys(fieldsToAuthorize || {}).length > 0;
+    
+    //- We pass empty string when checkbox is not checked 
+    //- so check when flash() has no value -> GET form
+    //- or non-false value (not empty string) -> Checkbox is checked
+    - var checkUseAsBillingAddress = flash('use_as_billing_address')
+    - checkUseAsBillingAddress = checkUseAsBillingAddress || undefined === flash('use_as_billing_address')
+    - checkUseAsBillingAddress = !!checkUseAsBillingAddress
+    
+    - var hideBillingAddress = false
+    
+    //- field start with `_` when user select `use another`
+    - hasUserFieldsToShow = hasUserFieldsToShow || flash('_email')
+    - hasUserFieldsToShow = hasUserFieldsToShow || flash('_landline_phone_number')
+    - hasUserFieldsToShow = hasUserFieldsToShow || flash('_mobile_phone_number');
+
+    .authorize-container
+        .client-logo-container
+            img(src= client.logo + '/200', alt="")
+            
+        include ../includes/title
+        +title(flow, client)
+
+        include /includes/notifications
+        +notificationBanner()
+
+        include ../includes/useTestAccountBtn
+        +useTestAccountBtn(flow, step, client, userWasLoggedByClient, testAccount, !!installedApp)
+
+        form.file-upload-sibling-form(method="post", action= currentURI)
+            //- During login flow we always needs to display `needs additional information`
+            //- even if we only have fields to fill
+            if hasFieldsToAuthorize || flow === 'login' || userWasLoggedByClient
+                .authorizations-container.allow
+                    if flow === 'registration' && hasFieldsToAuthorize
+                        p!= __('%s %swill be allowed to access to%s:', escapeHTML(client.name), '<strong>', '</strong>')
+                    
+                    if flow === 'login' || (userWasLoggedByClient && !hasFieldsToAuthorize)
+                        //- Client has updated scope, users needs to authorize during login
+                        p!= __('%s %sneeds additional information%s:', escapeHTML(client.name), '<strong>', '</strong>')
+                    
+                    if hasFieldsToAuthorize
+                        .oauth-flow-authorizations-list
+                            - for (var fieldToAuthorize in fieldsToAuthorize)
+                                //- We pass empty string when checkbox is not checked 
+                                //- so hide when flash() has no value (Getting form)
+                                //- or non-false value like empty string (Checkbox is checked)
+                                - hideBillingAddress = fieldToAuthorize === 'billing_address' && checkUseAsBillingAddress
+
+                                .authorizations-row(class= (hideBillingAddress ? 'hidden ' : '') + fieldToAuthorize.replace(/_/g, '-') + '-row')
+                                    if (fieldToAuthorize === 'profil_photo' || Array.isArray(fieldsToAuthorize[fieldToAuthorize]))
+                                        div
+                                            if (fieldToAuthorize !== 'profil_photo')
+                                                label(for=fieldToAuthorize)
+                                                    = __('Your ' + fieldToAuthorize)
+                                            else
+                                                label
+                                                    = __('Your ' + fieldToAuthorize)
+                                                if (authorizations)
+                                                    include /users/includes/authorizedClientsForField
+                                                    +authorizedClientsForField(authorizations, 'profil_photo')
+                                    
+                                    div(class= fieldToAuthorize === 'profil_photo' ? 'profil-photo' : '')
+                                        if Array.isArray(fieldsToAuthorize[fieldToAuthorize])
+                                            div
+                                                //- field start with `_` when 
+                                                //- user select `use another`
+                                                //- Handled in JS
+                                                select.field-to-authorize(name= flash('_' + fieldToAuthorize) ? '_' + fieldToAuthorize : fieldToAuthorize
+                                                                          id= fieldToAuthorize)
+                                                    
+                                                    optgroup(label= __('Your ' + fieldToAuthorize + 's') + ' :')
+                                                        - var fields = fieldsToAuthorize[fieldToAuthorize];
+                                                        
+                                                        - for (var i = 0, j = fields.length; i < j; ++i)
+                                                            
+                                                            option(value= fields[i].id)
+                                                                if (fieldToAuthorize === 'email')
+                                                                    = fields[i].email
+                                                                if (fieldToAuthorize.indexOf('phone_number') !== -1)
+                                                                    = fields[i].number
+                                                                if (fieldToAuthorize.indexOf('address') !== -1)
+                                                                    - var userFullName = (session.login.user.first_name || '')
+                                                                    - var localeCompareOpts = {sensitivity: 'base', ignorePunctuation: true}
+
+                                                                    - userFullName += ' ' + (session.login.user.last_name || '')
+                                                                    //- If no first and last name
+                                                                    //- or if last name only
+                                                                    - userFullName = userFullName.trim()
+                                                                    
+                                                                    //- If full name differs from user name
+                                                                    if (removeDiacritics(fields[i].full_name).localeCompare(removeDiacritics(userFullName), {}, localeCompareOpts) !== 0)
+                                                                        = fields[i].full_name + '. '
+
+                                                                    = fields[i].address_line_1
+                                                                    
+                                                                    if (fields[i].address_line_2)
+                                                                        = '. ' + fields[i].address_line_2
+
+                                                                    if (fields[i].access_code)
+                                                                        = ' (' + fields[i].access_code + ')'
+                                                                    
+                                                                    if (currentLocale === 'fr-fr')
+                                                                        = '. ' + fields[i].postal_code
+                                                                        = ' ' + fields[i].city + '.'
+                                                                    else
+                                                                        = '. ' + fields[i].city
+                                                                        
+                                                                        if (fields[i].state)
+                                                                            = ', ' + fields[i].state
+                                                                       
+                                                                        = ' ' + fields[i].postal_code + '.'
+
+                                                                    if (fields[i].country.toLowerCase() !== probableCountryForUser.toLowerCase())
+                                                                        = ' ' + territories[fields[i].country] + '.'
+                                                    
+                                                    if fieldToAuthorize === 'email'
+                                                        option(value="use_another"
+                                                               selected= !!(flash('_' + fieldToAuthorize))
+                                                               data-section-to-show="hidden-email"
+                                                               data-sep-to-show="user-fields-sep")
+                                                            
+                                                            = __('Use another email')
+                                                    
+                                                    if fieldToAuthorize.indexOf('address') !== -1
+                                                        option(value="use_another"
+                                                               selected= !!(flash('_' + fieldToAuthorize))
+                                                               data-section-to-show= 'hidden-' + fieldToAuthorize.replace(/_/g, '-')
+                                                               data-sep-to-show= fieldToAuthorize.replace(/_/g, '-') + '-fields-sep')
+                                                            
+                                                            = __('Use another address')
+                                                    
+                                                    if fieldToAuthorize.indexOf('phone_number') !== -1
+                                                        option(value="use_another"
+                                                               selected= !!(flash('_' + fieldToAuthorize))
+                                                               data-section-to-show= 'hidden-' + fieldToAuthorize.replace(/_/g, '-')
+                                                               data-sep-to-show="user-fields-sep")
+
+                                                            = __('Use another number')
+
+                                            if fieldToAuthorize === 'shipping_address'
+                                                .shipping-billing-label.checkbox
+                                                    //- Sent when checkbox is not checked
+                                                    //- used in error middleware to set flash('use_as_billing_address')
+                                                    input(type="hidden", name="use_as_billing_address", value="")
+                                                    label
+                                                        input.use_as_auth_billing_address(type="checkbox", 
+                                                                                          name="use_as_billing_address"
+                                                                                          value="1"
+                                                                                          checked= checkUseAsBillingAddress)
+                                                        
+                                                        = __('Use as billing address.')
+                                        else
+                                            div.authorizations-single-fields
+                                                if fieldToAuthorize === 'profil_photo'
+                                                    //- Upload form is displayed in iframe
+                                                    //- because embedding form in form is not allowed in HTML5
+                                                    iframe(src= path + '/profil-photo'
+                                                           marginheight="0"
+                                                           marginwidth="0"
+                                                           frameborder="0"
+                                                           tabindex="-1")
+                                                else
+                                                    if fieldToAuthorize === 'nickname'
+                                                        include /users/includes/inputs/nickname
+                                                        +nickname((_required = true))
+
+                                                    if fieldToAuthorize === 'first_name'
+                                                        include /users/includes/inputs/firstName
+                                                        +firstName((_required = true))
+
+                                                    if fieldToAuthorize === 'last_name'
+                                                        include /users/includes/inputs/lastName
+                                                        +lastName((_required = true))
+
+                                                    if fieldToAuthorize === 'date_of_birth'
+                                                        include /users/includes/inputs/dateOfBirth
+                                                        +dateOfBirth((_required = true))
+
+                                                    if fieldToAuthorize === 'gender'
+                                                        include /users/includes/inputs/gender
+                                                        +gender((_required = true))
+
+                                                    if fieldToAuthorize === 'place_of_birth'
+                                                        include /users/includes/inputs/placeOfBirth
+                                                        +placeOfBirth((_required = true))
+
+                                                    if fieldToAuthorize === 'nationality'
+                                                        include /users/includes/inputs/nationality
+                                                        +nationality((_required = true))
+
+                                                    if fieldToAuthorize === 'timezone'
+                                                        include /users/includes/inputs/timezone
+                                                        +timezone((_required = true))
+
+            if hasFieldsToAuthorize
+                .user-fields-sep(class= hasUserFieldsToShow ? '' : 'hidden')
+                    if flow === 'registration'
+                        +formSep(__('and needs'))
+                    else 
+                        //- During login
+                        +formSep(__('as well as'))
+                    
+            //- We have flash params starting with `_`
+            //- when user chooses `use another`
+            //- in select
+            div.fields-to-show
+                if fieldsToShow.indexOf('email') !== -1 || fieldsToAuthorize.email
+                    - isHidden = !!(fieldsToAuthorize.email && !flash('_email'))
+
+                    div.hidden-email(class= isHidden ? 'hidden' : '')
+                        include /users/includes/inputs/email
+                        
+                        //- Add a prefix to the ID property 
+                        //- because authorize select already uses the `email` ID
+                        +email((_flow = 'oauthAuthorize'), (_disabled = isHidden), (_idPrefix = 'fields-to-show-'))
+                
+                if fieldsToShow.indexOf('nickname') !== -1
+                    include /users/includes/inputs/nickname
+                    +nickname((_required = true))
+
+                if fieldsToShow.indexOf('profil_photo') !== -1
+                    div
+                        div
+                            label.user-fields
+                                = __('Your profil photo (Optional)')
+                        div.profil-photo
+                            //- Upload form is displayed in iframe
+                            //- because embedding form in form is not allowed in HTML5
+                            iframe(src= path + '/profil-photo'
+                                   marginheight="0"
+                                   marginwidth="0"
+                                   frameborder="0"
+                                   tabindex="-1")
+                
+                if fieldsToShow.indexOf('first_name') !== -1
+                    include /users/includes/inputs/firstName
+                    +firstName((_required = true))
+                
+                if fieldsToShow.indexOf('last_name') !== -1
+                    include /users/includes/inputs/lastName
+                    +lastName((_required = true))
+                
+                if fieldsToShow.indexOf('date_of_birth') !== -1
+                    include /users/includes/inputs/dateOfBirth
+                    +dateOfBirth((_required = true))
+                
+                if fieldsToShow.indexOf('gender') !== -1
+                    include /users/includes/inputs/gender
+                    +gender((_required = true))
+                
+                if fieldsToShow.indexOf('place_of_birth') !== -1
+                    include /users/includes/inputs/placeOfBirth
+                    +placeOfBirth((_required = true))
+                
+                if fieldsToShow.indexOf('nationality') !== -1
+                    include /users/includes/inputs/nationality
+                    +nationality((_required = true))
+
+                if fieldsToShow.indexOf('timezone') !== -1
+                    include /users/includes/inputs/timezone
+                    +timezone((_required = true))
+                
+                if fieldsToShow.indexOf('phone_number') !== -1 || fieldsToAuthorize.phone_number
+                    //- field start with `_`
+                    //- when user select `use another`
+                    - isHidden = !!(fieldsToAuthorize.phone_number && !flash('_phone_number'))
+                    
+                    div.hidden-phone-number(class= isHidden ? 'hidden' : '')
+                        include /users/includes/inputs/phoneNumber
+                        
+                        +phoneNumber((_fieldName = hasFieldsToAuthorize || flow === 'login' || userWasLoggedByClient ? __('Your phone number') : __('Phone number')), 
+                                     (_fieldPrefix = 'phone_number_'), 
+                                     (_disabled = isHidden))
+                
+                if fieldsToShow.indexOf('landline_phone_number') !== -1 || fieldsToAuthorize.landline_phone_number
+                    //- field start with `_`
+                    //- when user select `use another`
+                    - isHidden = !!(fieldsToAuthorize.landline_phone_number && !flash('_landline_phone_number'))
+                    
+                    div.hidden-landline-phone-number(class= isHidden ? 'hidden' : '')
+                        include /users/includes/inputs/phoneNumber
+                        
+                        +phoneNumber((_fieldName = hasFieldsToAuthorize || flow === 'login' || userWasLoggedByClient ? __('Your landline number') : __('Landline number')), 
+                                     (_fieldPrefix = 'landline_phone_number_'), 
+                                     (_disabled = isHidden))
+                
+                if fieldsToShow.indexOf('mobile_phone_number') !== -1 || fieldsToAuthorize.mobile_phone_number
+                    //- field start with `_`
+                    //- when user select `use another`
+                    - isHidden = !!(fieldsToAuthorize.mobile_phone_number && !flash('_mobile_phone_number'))
+                    
+                    div.hidden-mobile-phone-number(class= isHidden ? 'hidden' : '')
+                        include /users/includes/inputs/phoneNumber
+                        
+                        +phoneNumber((_fieldName = hasFieldsToAuthorize || flow === 'login' || userWasLoggedByClient ? __('Your mobile number') : __('Mobile number')), 
+                                     (_fieldPrefix = 'mobile_phone_number_'), 
+                                     (_disabled = isHidden))
+
+            if fieldsToShow.indexOf('address') !== -1 || fieldsToAuthorize.address
+                //- field start with `_`
+                //- when user select `use another`
+                - isHidden = !!(fieldsToAuthorize.address && !flash('_address'))
+
+                .address-fields-sep(class= isHidden ? 'hidden' : '')
+
+                    +formSep(hasUserFieldsToShow || fieldsToAuthorize.address || flow === 'login' 
+                                ? __('Your address')
+                                : __('and needs your address'))
+
+                div.fields-to-show.hidden-address(class= isHidden ? 'hidden' : '')
+                    include /users/includes/inputs/address
+                    
+                    +address((_fieldPrefix = 'address_'), (_disabled = isHidden))
+
+            if fieldsToShow.indexOf('shipping_address') !== -1 || fieldsToAuthorize.shipping_address
+                //- field start with `_` 
+                //- when user select `use another`
+                - isHidden = !!(fieldsToAuthorize.shipping_address && !flash('_shipping_address'))
+
+                .shipping-address-fields-sep(class= isHidden ? 'hidden' : '')
+
+                    +formSep(hasUserFieldsToShow || fieldsToAuthorize.shipping_address || flow === 'login' 
+                                ? __('Your shipping address')
+                                : __('and needs your shipping address'))
+
+                //- field start with `_` when
+                //- when user select `use another`
+                - isHidden = !!(fieldsToAuthorize.shipping_address && !flash('_shipping_address'))
+
+                div.fields-to-show.hidden-shipping-address(class= isHidden  ? 'hidden' : '')
+                    include /users/includes/inputs/address
+                    
+                    +address((_fieldPrefix = 'shipping_address_'), 
+                             (_disabled = isHidden))
+                    
+                    if !fieldsToAuthorize.shipping_address
+                        .checkbox
+                            //- Sent when checkbox is not checked
+                            //- used in error middleware to set flash('use_as_billing_address')
+                            input(type="hidden"
+                                  name="use_as_billing_address"
+                                  value="")
+                            label
+                                input.use_as_billing_address(type="checkbox"
+                                                             name="use_as_billing_address"
+                                                             value="1"
+                                                             checked= checkUseAsBillingAddress)
+                                
+                                = __('Use as billing address.')
+            
+            if fieldsToShow.indexOf('billing_address') !== -1 || fieldsToAuthorize.billing_address
+
+                //- Hide when user has checked checkbox
+                //- or has select an address in billing addresses
+                //- select
+                //- Or when user access page for the first time
+                - isHidden = flash('use_as_billing_address')
+                - isHidden = isHidden || (fieldsToAuthorize.billing_address && !flash('_billing_address')) 
+                - isHidden = isHidden || undefined === flash('use_as_billing_address')
+                - isHidden = !!isHidden
+
+                .billing-address-fields-sep(class= isHidden ? 'hidden' : '')
+
+                    +formSep(hasUserFieldsToShow || fieldsToAuthorize.billing_address || flow === 'login'
+                             ? __('Your billing address')
+                             : __('and needs your billing address'))
+
+                div.fields-to-show.fields-to-show.hidden-billing-address(class= isHidden  ? 'hidden' : '')
+                    include /users/includes/inputs/address
+                    
+                    +address((_fieldPrefix = 'billing_address_'), (_disabled = isHidden))
+            
+            
+            //- User can register after testing
+            if flow === 'registration' && testAccount
+                input(type="hidden", name="test_account", value= testAccount)
+            
+            include /includes/csrf
+            +csrf(csrfToken)
+
+            .btn-container
+                include ../includes/submitBtn
+                +submitBtn(flow, step, scope)

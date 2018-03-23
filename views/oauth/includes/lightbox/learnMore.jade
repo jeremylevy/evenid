@@ -1,0 +1,21 @@
+.lightbox-content-container.lightbox-learn-more
+    .main
+        h1= __('Learn more')
+        
+        p!= __('%sEvenID%s\'s mission is to facilitate the management of personal information on the Web.', '<a href="/" target="/">', '</a>')
+
+        p= __('To do this, we keep, in a secure way, all of your personal information in your EvenID account.')
+
+        if (flow === 'registration')
+            p!= __('Your EvenID account will be created %swith the email and password that you will use during the registration on %s%s.', '<strong>', escapeHTML(client.name), '</strong>')
+        else
+            p!= __('Your EvenID account has been created %swith the email and password that you have used during the registration on %s%s.', '<strong>', escapeHTML(client.name), '</strong>')
+
+        p= __('In this way, you will not have to fill form anymore on the websites or applications that use EvenID. (Locate the orange logo !)')
+        
+        p
+            != __('Even better ! You change your email address? Your phone number? Your address? Go to %sEvenID%s, log in, and do the update. All websites and applications that have asked for this information will be notified !', '<a href="/" target="/">', '</a>')
+    
+    .bottom
+        button.btn.close-btn
+            = __('I got it')

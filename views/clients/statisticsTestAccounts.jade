@@ -1,0 +1,60 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+include /includes/csrf
+
+block prepend title
+    = __('Statistics')
+
+block appContentHeadTitle
+    h2= __('Statistics')
+
+    include ./includes/categoriesStats
+    
+block appContent
+    - var successRegistration = stats.todayVsYesterday.test_account_registration >= 0 && stats.today.test_account_registration > 0
+    - var successConverted = stats.todayVsYesterday.test_account_converted >= 0 && stats.today.test_account_converted > 0
+
+    .today-statistics-container
+        .today-statistics-content
+            h3
+                = __('Today')
+            .row
+                .col-md-6.stats-item
+                    .wrapper
+                        p(class='text-' + (successRegistration ? 'success' : 'danger'))= numberWithCommas(stats.today.test_account_registration)
+                        
+                        h4= __('Registration(s)')
+
+                        .progress-description
+                            strong(class='text-' + (successRegistration  ? 'success' : 'danger'))
+                                if (stats.todayVsYesterday.test_account_registration > 0)
+                                    = __('%s more than yesterday', numberWithCommas(stats.todayVsYesterday.test_account_registration))
+                                else if (stats.todayVsYesterday.test_account_registration === 0)
+                                    = __('Same than yesterday')
+                                else
+                                    = __('%s less than yesterday', numberWithCommas(Math.abs(stats.todayVsYesterday.test_account_registration)))
+
+                .col-md-6.stats-item.last
+                    .wrapper
+                        p(class='text-' + (successConverted ? 'success' : 'danger'))= numberWithCommas(stats.today.test_account_converted)
+                        
+                        h4= __('Conversion(s)')
+
+                        .progress-description
+                            strong(class='text-' + (successConverted  ? 'success' : 'danger'))
+                                if (stats.todayVsYesterday.test_account_converted > 0)
+                                    = __('%s more than yesterday', numberWithCommas(stats.todayVsYesterday.test_account_converted))
+                                else if (stats.todayVsYesterday.test_account_converted === 0)
+                                    = __('Same than yesterday')
+                                else
+                                    = __('%s less than yesterday', numberWithCommas(Math.abs(stats.todayVsYesterday.test_account_converted)))
+    
+    form.form
+        include ./includes/statsCharts
+        +statsCharts('/clients/' + client.id + '/statistics/test-accounts/for-period')
+
+block rawJS
+    script.
+        app.clientStats.load();
+        app.clientStats.loadChartFor('11 months');

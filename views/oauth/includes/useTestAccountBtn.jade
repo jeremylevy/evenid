@@ -1,0 +1,25 @@
+mixin useTestAccountBtn(flow, step, client, userWasLoggedByClient, testAccount, installedApp)
+    - var displayTestBtn = flow === 'registration' && ['credentials', 'authorizations'].indexOf(step) !== -1
+    - displayTestBtn = displayTestBtn && client.authorize_test_accounts && !userWasLoggedByClient 
+    - displayTestBtn = displayTestBtn && !flash('maxAttemptsError') && (!flash('notification')) // || flash('redirectToOppositeFlow'))
+    
+    if displayTestBtn
+        .use-test-account-btn-container
+            form(method="post", action= currentURI)
+                p
+                    //- If user is logged we don't need test account ID
+                    if testAccount && step === 'credentials'
+                        input(type="hidden", name="test_account", value= testAccount)
+                    
+                    input(type="hidden", name="use_test_account", value="true")
+                    
+                    include /includes/csrf
+                    +csrf(csrfToken)
+                
+                p
+                    if installedApp
+                        button.btn.file-upload-sibling-form-submit-btn(type="submit")
+                            = __('I just want to test this app')
+                    else
+                        button.btn.file-upload-sibling-form-submit-btn(type="submit")
+                            = __('I just want to test')

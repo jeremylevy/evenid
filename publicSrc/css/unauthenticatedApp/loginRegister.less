@@ -1,0 +1,195 @@
+.unauthenticated-app {
+    // When alert was displayed login and registration
+    // form needs to be pulled up on tablet and higher
+    @media(min-width: @screen-tablet) {
+        .alert-container + .container > .login-register-form-container {
+            margin-top: 30px;
+        }
+    }
+
+    .login-register-form-container {
+        padding-bottom: 2em;
+        .min-height(425px);
+        font-size: 13px;
+        margin: 8em 0 2em 0;
+        color: #333;
+
+        @media(max-width: @screen-tablet) {
+            margin: 0;
+            padding: 0;
+            .min-height(0);
+        }
+
+        .login-register-form-content {
+            text-align: center;
+            background-color: #FAFAFA;
+            padding: 37px 0 40px 0;
+
+            @media(max-width: @screen-tablet) {
+                // Overwrite Bootstrap container margin
+                margin-left: @bootstrap-container-padding * -1;
+                margin-right: @bootstrap-container-padding * -1;
+            }
+
+            .login-register-container {
+                display: inline-block;
+                vertical-align: middle;
+                width: 350px;
+
+                @media(max-width: @screen-tablet) {
+                    width: 100%;
+                    display: block;
+                    padding: 0 15px;
+                }
+
+                .login-register-header-container {
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                    border-bottom: 1px dotted #ddd;
+
+                    .login-register-header {
+                        float: left;
+
+                        h2 {
+                            font-size: 16px;
+                            font-weight: normal;
+                            line-height: 16px;
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+                }
+
+                .login-register-switch {
+                    float: right;
+                }
+
+                .login-form-container {
+                    width: 100%;
+                    position: relative;
+                    text-align: left;
+                    margin-top: -3px;
+
+                    label {
+                        color: #646464;
+                        cursor: pointer;
+                        font-size: 13px;
+                        line-height: 14px;
+                        font-weight: normal;
+                        margin: 0;
+                        margin-top: 8px;
+                        text-align: left;
+                        display: block;
+
+                        &.disabled {
+                            cursor: default;
+                        }
+
+                        a {
+                            display: block;
+                            float: right;
+                            font-size: 12px;
+                        }
+                    }
+
+                    noscript {
+                        .label-separator {
+                            height: 8px;
+                        }
+                    }
+
+                    label + p {
+                        background-color: #FBFBFB;
+                        .unauthenticated-app-input();
+                    }
+
+                    .checkbox {
+                        margin: 0;
+
+                        label {
+                            display: inline-block;
+                            margin-top: 0;
+                            padding-left: 20px;
+                            font-size: 12px;
+                            line-height: 22px;
+
+                            @media(max-width: @screen-tablet) {
+                                line-height: 24px;
+                            }
+                        }
+                    }
+
+                    .toggle-password-visibility-container {
+                        text-align: right;
+                        border: 1px solid #e0e4e7;
+                        background-color: #f7f7f7;
+                        margin-top: -6px;
+                        border-bottom-left-radius: 3px;
+                        border-bottom-right-radius: 3px;
+                        padding: 9px 8px;
+                        font-size: 12px;
+                        margin-bottom: 4px;
+                    }
+
+                    label + input[type=text],
+                    label + input[type=password],
+                    label + input[type=email] {
+                        margin-top: 8px;
+                    }
+
+                    input[type=text], 
+                    input[type=email], 
+                    input[type=password] {
+                        .unauthenticated-app-input();
+
+                        &:focus {
+                            .inputFocus();
+                        }
+                    }
+
+                    // Use ID here not type because 
+                    // password input may be replaced 
+                    // by text if user has clicked on 
+                    // the "see the typed password" link
+                    input#password {
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+
+                    input[type=text].invalid,
+                    input[type=email].invalid,
+                    input[type=password].invalid {
+                        .invalidInput();
+                    }
+
+                    input {
+                        .placeholder(#aaa);
+                    }
+
+                    .error-wrapper {
+                        font-size: 12px;
+                        color: #C06666;
+                        margin-top: 2px;
+                        margin-bottom: 10px;
+                    }
+
+                    .toggle-password-visibility-container + .error-wrapper {
+                        margin-top: 6px;
+                        margin-bottom: 8px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.unauthenticated-app-input() {
+    border: 1px solid #E0E4E7;
+    font-size: 13px;
+    padding: 13px 8px 11px 8px;
+    width: 100%;
+    margin: 8px 0 5px 0;
+    height: 41px;
+    line-height: 13px;
+    border-radius: 3px;
+}

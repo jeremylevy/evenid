@@ -1,0 +1,13 @@
+extend ../layouts/baseUnauthenticated
+
+block prepend title
+    = __('Page not found')
+
+block appContent
+    #error-container
+        .container
+            .row
+                .col-md-12
+                    h1= __('Page not found!')
+                    h2= __('Sorry, but the page you were looking for could not be found.')
+                    p!= __('You can %sreturn to our front page%s, or %scontact us%s if you can\'t find what you\'re looking for.', '<a href="/">', '</a>', '<a href="/contact">', '</a>')

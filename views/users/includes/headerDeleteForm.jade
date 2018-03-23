@@ -1,0 +1,15 @@
+form(method="post", action='/users/' + session.login.user.id)
+    input(type="hidden", name="_method", value="DELETE")
+    
+    include /includes/csrf
+    +csrf(csrfToken)
+    
+    button.btn.cancel(type="submit"
+                        data-sweetalert="true"
+                        data-sweetalert-title= __('Confirm unsubscribe?')
+                        data-sweetalert-text= __('Click "OK" if you want to unsubscribe.')
+                        data-sweetalert-type="warning"
+                        data-sweetalert-allow-outside-click="true"
+                        data-sweetalert-confirm-button-text= __('Confirm')
+                        data-sweetalert-show-cancel-button="true"
+                        data-sweetalert-cancel-button-text= __('Cancel'))= __('Unsubscribe')

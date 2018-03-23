@@ -1,0 +1,23 @@
+#!/bin/sh
+
+docker-machine start default
+
+eval "$(docker-machine env default)"
+
+docker kill evenid-app-test
+docker kill mongodb-app-test
+docker kill evenid-api-test
+
+docker rm -v evenid-app-test
+docker rm -v evenid-api-test
+docker rm -v mongodb-app-test
+
+docker build -t evenid-app .
+docker build -t evenid-api ../EvenIDAPI/
+
+docker run -d --name mongodb-app-test mongo mongod --nojournal
+
+docker run -d --link mongodb-app-test:mongodb --name evenid-api-test evenid-api "foreman start -f Procfile.testFromApp -p 8000 -e .env,.env.test,.env.testFromApp"
+
+# docker run -it --link mongodb-app-test:mongodb --link evenid-api-test:api --name evenid-app-test --entrypoint="/bin/bash" evenid-app
+docker run -i --link mongodb-app-test:mongodb --link evenid-api-test:api --name evenid-app-test evenid-app "$1"

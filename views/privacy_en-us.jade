@@ -1,0 +1,415 @@
+extend layouts/baseUnauthenticated
+
+block prepend title
+    = __('Privacy & Terms')
+
+block appContent
+    .privacy-container
+        .container
+            .row
+                .col-md-12
+                    header.title
+                        h1
+                            = __('Privacy & Terms')
+                        p 
+                            = __('The privacy policy and terms of service.')
+            
+            .row
+                .col-md-6
+                    .privacy-section
+                        h2
+                            = __('Privacy Policy')
+
+                        h3
+                            | General Information
+                        
+                        p
+                            | The information we collect is used for 
+                            | the sole purpose of improving the quality of our service. 
+                            | They are neither shared  or sold to other organizations.
+                        
+                        p
+                            | However, we reserve the right to share information
+                            | about you in the following cases:
+                        
+                        ul
+                            li
+                                | During a judicial proceeding to investigate, prevent or 
+                                | stop illegal activities, suspected fraud, 
+                                | violations of Terms of Use or any other act violating the French law.
+                            
+                            li
+                                | If EvenID is acquired or merged with another company. 
+                                | In this case, we will notify you before information about 
+                                | you is transferred and becomes subject to a different privacy policy.
+                        
+                        h3
+                            | Information Gathering and Usage
+                        
+                        ul
+                            li
+                                | When you register on EvenID you will be asked
+                                | to provide an email and a password.
+                            
+                            li
+                                | EvenID uses this information for 
+                                | the sole purpose of identifying you during your next visit.
+                        
+                        h3
+                            | Cookies
+                        
+                        ul
+                            li
+                                | A cookie is a small file, stored on your hard drive, 
+                                | that is sent to your browser by our web site.
+                            
+                            li
+                                | Cookies are required to use EvenID.
+                            
+                            li
+                                | We use cookies for statistical purposes 
+                                | and to enable log in.
+                        
+                        h3
+                            | Data Storage
+                        
+                        p
+                            | EvenID uses third party vendors for the hardware,
+                            | the software, the networks and the storage necessary 
+                            | to run the service.
+                        
+                        p
+                            | Although EvenID owns the code, databases, and all 
+                            | rights to the EvenID application, you retain full 
+                            | ownership of your data.
+                        
+                        h3
+                            | Disclosure
+                        
+                        p
+                            | EvenID reserves the right to disclose information 
+                            | belonging to you when legal proceedings are opened against
+                            | you or in the case of an acquisition or a merge with another company.
+                        
+                        h3
+                            | Changes
+                        
+                        p
+                            | We will keep you informed of significant changes in the 
+                            | way we treat personal information by contacting you by 
+                            | email or by placing a prominent notice on our site.
+                        
+                        h3
+                            | Questions
+                        
+                        p
+                            | Any questions about this Privacy Policy should be addressed to 
+                            a(href="mailto:support@evenid.com") support@evenid.com
+                            | .
+
+                .col-md-6
+                    .privacy-section.terms
+                        h2#terms 
+                            = __('Terms of Service')
+                        
+                        h3 Object
+                        
+                        p
+                            | These General Terms and Conditions are meant 
+                            | to define the ways in which the services of 
+                            | the website evenid.com, hereafter "The Service," 
+                            | are made available, as well as the conditions of use of 
+                            | the Service by the User.
+                        
+                        p
+                            | Any access and/or use of the site 
+                            | evenid.com constitutes an acknowledgement and unconditional
+                            | acceptance of all of these Terms and Conditions.
+                        
+                        p
+                            | They are, therefore,
+                            | a contract between evenid.com and the User. If the User does not agree
+                            |  to all or part of these general terms and conditions, he or 
+                            | she is requested not to use the Service in any way.          
+                        
+                        h3 Legal Disclaimers
+                        
+                        p
+                            | The website evenid.com is published by:
+
+                        p.text-center
+                            | Jérémy Levy
+                            br
+                            a(href="https://twitter.com/jeremy_levy"
+                              target="https://twitter.com/jeremy_levy")
+                                | https://twitter.com/jeremy_levy
+                        
+                        p
+
+                            | The hosting company is: 
+
+                        p.text-center
+                            | Amazon Web Services LLC
+                            br
+                            | P.O. Box 8122 
+                            br
+                            | Seattle, WA 98108-1226
+                            br
+                            
+                            a(href="https://aws.amazon.com"
+                              target="https://aws.amazon.com") https://aws.amazon.com
+                            
+                        
+                        h3 Definitions
+                        
+                        p
+                            b User
+                            | : The User is any person who uses the Site 
+                            | or one of the services offered by the Site.          
+                        
+                        p
+                            b User Content
+                            | : The term "User Content" designates data 
+                            | sent by the User to various areas of the Site.          
+                        
+                        p
+                            b Member
+                            | : The term "Member" designates a User
+                            | logged into the Site.          
+                        
+                        p
+                            b User Name
+                            | : The term "user name" refers to all information 
+                            | needed for a user to log in to the site to access 
+                            | areas which are reserved for members.          
+                        
+                        p
+                            b Password
+                            | : The "password" is private information which the 
+                            | User must keep secret, and which, in conjunction 
+                            | with his or her User name, is used to verify his or her identity.          
+                        
+                        h3 Accessing the Service
+                        
+                        p
+                            | The Service is accessible at no charge to any User 
+                            | with Internet access. Any costs related to accessing 
+                            | the Service, whether they be costs for hardware, software 
+                            | or Internet access, are solely the responsibility of the User. 
+                        
+                        p
+                            | He or she alone is responsible for the proper functioning of his 
+                            | or her computing equipment as well as for his or her Internet access.          
+                        
+                        p
+                            | Some areas of the Site are reserved for Members who have 
+                            | logged in with their User Name and Password.          
+                        
+                        p
+                            | EvenID reserves the right to refuse access to the Service, 
+                            | at its own discretion and without prior notice, to any User 
+                            | who does not comply with these conditions of use.          
+                        
+                        p
+                            | EvenID takes all reasonable measures at its disposal 
+                            | to ensure quality access to the Service, but is under no
+                            | legal obligation to do so.          
+                        
+                        p
+                            | Additionally, EvenID may not be held responsible for any
+                            | network or server malfunction, or any other event beyond reasonable 
+                            | control, which would block or diminish access to the Service          
+                        
+                        p
+                            | EvenID reserves the right to briefly suspend or interrupt access
+                            | to all or part of the Service without any prior notice, for necessary 
+                            | maintenance or any other reason, without this interruption of service
+                            |  subjecting EvenID to any obligation to compensate for it.          
+
+                        h3 Intellectual Property
+                        
+                        p
+                            | The website evenid.com, and in particular its content, is protected
+                            | by French law. EvenID and Jérémy Levy are the sole owners of all
+                            | intellectual property rights relating to content on the site 
+                            | (including text,photographs, illustrations, images, logos, etc.).          
+                        
+                        p
+                            | The content reproduced on the Site is subject to copyright 
+                            | and its reproduction or distribution, without the express written authorization of 
+                            | EvenID, constitutes copyright infringement and may be subject 
+                            | to criminal penalties.
+
+                        p
+                            | The texts and illustrations which 
+                            | are explicitly licensed under the 
+                            a(href="https://creativecommons.org/licenses/by-nc-sa/2.0"
+                              target="https://creativecommons.org/licenses/by-nc-sa/2.0") Creative Commons licence
+                            |  may under certain conditions be reproduced, distributed 
+                            | or modified without necessarily requiring permission to do so.          
+                        
+                        p
+                            | EvenID is a registered trademark.
+                            | Any unauthorized reproduction of these trademarks,
+                            | logos, and distinctive signs constitutes copyright infringement
+                            | and may be subject to criminal penalties. Violators face civil and criminal penalties.          
+                        
+                        p
+                            | The User alone is responsible for the User Content 
+                            | that he or she puts online via the Service, as well as 
+                            | for any texts or opinions that he or she writes.
+                        p
+                            | The User expressly grants to 
+                            | EvenID, at no charge, all intellectual property rights related to the User Content,
+                            | in particular reproduction, depiction, and adaptation rights, for as long as the 
+                            | term of copyright protection lasts. 
+
+                        p 
+                            | He or she also agrees that this data does not 
+                            | infringe on the protective interests of any third party whatsoever. To that 
+                            | end, he or she absolves EvenID from any claim, based directly or 
+                            | indirectly on this information and/or data, that may cause any legal 
+                            | proceedings whatsoever to be brought against EvenID.
+
+                        p
+                            | He or she also agrees to 
+                            | bear any costs, of any kind whatsoever, resulting from 
+                            | said third-party action against EvenID, 
+                            | including lawyer's fees and legal expenses.          
+                        
+                        p
+                            | EvenID reserves the right to delete any or 
+                            | all User Content, at any time and for any reason, 
+                            | without warning or prior notice. The User is not 
+                            | entitled to any compensation should this occur.          
+                          
+                        h3 Personal Data
+                        
+                        p
+                            | To respect the privacy of its Users, EvenID 
+                            | guarantees the User the right to correct, access, 
+                            | and remove data concerning said User. The User can exercise this right:
+                          
+                        ul
+                            li
+                                | on the site, in the 
+                                a(href="/login") members area
+                                | ;
+
+                            li
+                                | by using the provided 
+                                a(href="/contact") contact form
+                                | ;
+
+                            li
+                                | by contacting EvenID directly at 
+                                | the following address: 
+                                a(href="mailto:contact@evenid.com") contact@evenid.com
+                                | .
+                          
+                        h3 Limitation of Liability
+                        
+                        p
+                            | The User agrees to hold harmless and indemnify 
+                            | EvenID for any damages that may result, 
+                            | directly or indirectly, from using the Service.          
+                        
+                        p
+                            | Access to certain areas of the evenid.com website 
+                            | requires a User Name and Password. The Password, chosen 
+                            | by the User, is personal and private. The User agrees to 
+                            | keep his or her password secret and not to divulge it in any 
+                            | way whatsoever. 
+
+                        p
+                            | The use of his or her User Name and his or her 
+                            | Password on the Internet is done at the User's own risk. 
+                            | It is the User's responsibility to take all measures needed 
+                            | to protect his or her own data from any disclosure.         
+                        
+                        p
+                            | EvenID, however, agrees to implement all means necessary 
+                            | to guarantee the security and privacy of data transmitted. 
+                            | The User is aware that one or several cookies, containing no personal information,
+                            | may be placed on his or her hard drive in order to facilitate 
+                            | the login and identification process.          
+                        
+                        p
+                            | The User is aware of the limitations and restrictions 
+                            | of the Internet, and recognises that it is impossible to 
+                            | guarantee total security when transferring data. EvenID may 
+                            | not be held responsible for any loss or harm arising from the 
+                            | transmission of any information, including User Names and Passwords, via the Service.          
+                        
+                        p
+                            | EvenID may not in any case, as far as the law applies,
+                            | be held responsible for damage and/or harm, direct or indirect,
+                            | material or immaterial, or of any nature whatsoever, arising from any
+                            | unavailability of the Service or its Use. The term "Use" must be
+                            | understood in its broadest sense, to wit, any usage of
+                            | the Site of any kind, whether legal or not.          
+                        
+                        p
+                            | The User agrees to comply with all 
+                            | regulations provided for by French law.
+                        
+                        h3 Hyperlinks
+                        
+                        p
+                            | evenid.com includes hyperlinks to websites
+                            | published and/or managed by third parties.          
+                        
+                        p
+                            | As EvenID cannot control these external resources,
+                            | the User recognises that EvenID takes no responsibility 
+                            | for them, and cannot be held responsible for their content.          
+                        
+                        h3 Force majeure
+                        
+                        p
+                            | EvenID shall not be held liable in the event 
+                            | of force majeure or any events outside its control.          
+                          
+                        h3 Modifications to this Contract
+                        
+                        p
+                            | EvenID reserves the right to 
+                            | modify the terms and conditions of this contract at any time.          
+                          
+                        p
+                            | The User is therefore advised to regularly 
+                            | consult the latest version of the Terms and 
+                            | Conditions of Use available at evenid.com.          
+                        
+                        h3 Duration and Dissolution
+                        
+                        p
+                            | The contract is agreed to for an indefinite duration,
+                            | beginning with Use of the Service by the User.          
+
+                        h3 Legal Jurisdiction
+                        
+                        p
+                            | French law applies to the content and data 
+                            | transmission on and related to this website. 
+                            | The French language version of this Contract shall 
+                            | govern over any translation.          
+                        
+                        p
+                            | Any legal matter that may arise, 
+                            | and which cannot be resolved through mutual agreement,
+                            | will be governed by the jurisdiction of French courts.
+
+                        h3 Licence
+
+                        p
+                            | This document entitled « Terms of Service » was taken from Kioskea 
+                            | (
+                            a(href="en.kioskea.net",
+                              target="en.kioskea.net") en.kioskea.net
+                            | ) and modified. 
+                            | It is made available under the 
+                            a(href="https://creativecommons.org/licenses/by-nc-sa/2.0",
+                              target="https://creativecommons.org/licenses/by-nc-sa/2.0") Creative Commons license
+                            | . You can copy, modify copies of this page,
+                            | under the conditions stipulated by the license, as this note appears clearly.

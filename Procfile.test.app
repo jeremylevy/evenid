@@ -1,0 +1,1 @@
+mocha: ./node_modules/.bin/mocha --recursive --bail --colors --grep '^(?!GET|POST|PUT|DELETE|ALL).+$'

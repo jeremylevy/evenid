@@ -1,0 +1,121 @@
+extend ../layouts/baseDocs
+
+block prepend title
+    | Tokens and login status
+
+block docContent
+    //- MIXINS
+    include ./includes/mixins/sha1SizeInfo
+    include ./includes/mixins/objectIDSizeInfo
+
+    h2 Tokens and login status
+    
+    p
+        | At this point in the flow, you have someone registered and logged in. 
+    
+    p
+        | Your app is ready to make API calls on their behalf using the access token retrieved from previous steps.
+    
+    p
+        | Before doing so, you should store the access token (and eventualy the refresh token) of the person using your app.
+
+    include ./includes/accessTokenResponse
+    
+    h4 Storing access tokens
+
+    +sha1SizeInfo('Access tokens')
+    
+    p
+        | After your app receives an access token, 
+        | it should be stored so it's available to all parts of the app which need it. 
+    
+    p
+        | There is no specific process here, however in general if you're building a web app, 
+        | it is best to add the token as a session variable to identify that browser session with a particular person.
+    
+    p
+        | If you're building a native desktop or mobile app, then you should use the datastore available to your app. 
+    
+    p
+        strong 
+            | You should store the access token along with user ID
+            | to be able to use all API methods.
+    
+    h4 Storing refresh tokens
+
+    +sha1SizeInfo('Refresh tokens')
+
+    p
+        | Access tokens have limited lifetimes as denoted by the 
+        code expires_in
+        |  field. 
+    p
+        | If your application needs access to an EvenID API method beyond 
+        | the lifetime of a single access token 
+        strong.stronger or needs to implement persistent login
+        | , it will be required to use the refresh token sent along with access token. 
+    
+    p
+        | As described in the 
+        a(href="/docs/api/error-responses") "API error responses"
+        |  page, you could use the 
+        code expired_token
+        |  error as an indicator that the access token has expired.
+
+    p
+        | For security concerns, refresh tokens are 
+        strong only
+        |  sent when 
+        code response_type
+        |  is set to 
+        code code
+        |  and 
+        strong must
+        |  be saved in a secure long-term storage.
+
+    p
+        | There is no specific process here, however in general if you're implementing persistent login,
+        | it is best to add the token as a separate cookie or to use the datastore available to your app.
+
+    p
+        | Read 
+        a(href="/docs/guides/how-to-refresh-an-access-token") our guide
+        |  to learn how to use refresh tokens.
+    
+    h4 Tracking login status
+    
+    p
+        | You must create your own indicator when a person has logged in,
+        | and when that indicator is not there, proceed on the assumption that they are logged out. 
+    
+    p
+        | If someone is logged out, then your app should display 
+        a(href="/docs/branding-guidelines") appropriate buttons
+        |  to log in and to register.
+    
+    p
+        | You can use the stored access token as an indicator that the current user is logged in.
+
+    h4 Persistent login
+
+    p
+        | Refresh tokens must be used to manage persistent login in websites and native apps.
+    p
+        | Depending on your use case, you may want to store the refresh token 
+        | in a separate cookie or using the datastore available to your app.
+
+    p
+        | Then, when user access your website using a persistent login cookie 
+        | or open your app, you use the refresh token to ensure 
+        | that this user is registered and to retrieve to the most recent 
+        code user_status
+        |  as described in the 
+        a(href="/docs/test-accounts-and-user-status") "test accounts and user status"
+        |  section.
+    
+    h4 Logging people out
+    
+    p
+        | You can log people out of your app by undoing whatever login status indicator you added, 
+        | for example deleting the session that indicates a person is logged in. 
+        | You should also remove the stored tokens.

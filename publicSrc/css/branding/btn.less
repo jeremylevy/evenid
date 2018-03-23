@@ -1,0 +1,80 @@
+@import "../mixins";
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+.evenid-btn {
+    box-sizing: content-box;
+    display: inline-block;
+    min-width: 76.5px;
+    background-color: #ffffff;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    color: #737373;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1.33333333;
+    margin: 0;
+    padding: 9px 12px 9px 44px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    transition-property: border-color,color;
+    transition-duration: 0.15s;
+    outline: none!important;
+    text-decoration: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.evenid-btn:before {
+    border-style: solid;
+    border-width: 0 1px 0 0;
+    border-color: #ebebeb;
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 32px;
+    transition-property: border-color;
+    transition-duration: 0.15s;
+}
+
+.evenid-btn:after {
+    height: 32px;
+    width: 32px;
+    .image-2x('https://assets.evenid.com/branding/img/btn/logo.png', 20px, 24px, no-repeat);
+    content: " ";
+    left: 6px;
+    margin-top: -12px;
+    position: absolute;
+    top: 50%;
+}
+
+.evenid-btn:hover:before,
+.evenid-btn:hover {
+    border-color: #e3e3e3;
+}
+
+.evenid-btn:hover,
+.evenid-btn:active,
+.evenid-btn:focus {
+    color: #737373;
+}
+
+.evenid-btn:hover:before,
+.evenid-btn:hover {
+    border-color: #e5e5e5;
+}
+
+.evenid-btn:active {
+    box-shadow: inset 0px -3px 1px #FFF, inset 0 0px 3px rgba(232, 231, 231, 0.9);
+}
+
+.evenid-btn-label {
+    display: inline-block;
+    font-family: "Open Sans",Arial,sans-serif;
+    font-weight: bold;
+    line-height: 15px;
+    vertical-align: top;
+}

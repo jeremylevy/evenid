@@ -1,0 +1,15 @@
+ul.cat-list.clearfix
+    li
+        a(href= '/clients/' + client.id + '/statistics/events'
+          class= path === '/clients/' + client.id + '/statistics/events' ? 'selected' : '')
+            = __('Events')
+    
+    li
+        a(href= '/clients/' + client.id + '/statistics/users'
+          class= path === '/clients/' + client.id + '/statistics/users' ? 'selected' : '')
+            = __('Users')
+
+    li
+        a(href= client.authorize_test_accounts && '/clients/' + client.id + '/statistics/test-accounts'
+          class= !client.authorize_test_accounts ? 'disabled' : path === '/clients/' + client.id + '/statistics/test-accounts' ? 'selected' : '')
+            = __('Test accounts')

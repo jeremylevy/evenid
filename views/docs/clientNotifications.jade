@@ -1,0 +1,119 @@
+extend ../layouts/baseDocs
+
+block prepend title
+    | Client notifications
+
+block docContent
+    h2 Client notifications
+    
+    p 
+        | Client notifications allow you to be kept informed when important user events ·occurs.
+    
+    p
+        | Currently, there is only two events that you can susbscribe to: 
+
+    ol
+        li When user has updated information that you have asked for.
+        li When user deauthorize your app.
+
+    p
+        | Whenever an event occurs, the registered URL will be sent an HTTP POST request 
+        strong.stronger containing a signed request
+        | .
+
+
+    p
+        | A signed request is a string composed of the notification and 
+        | a signature which assert that the request has been sent by EvenID.
+    
+    p
+        | You may want to read  
+        a(href="/docs/guides/how-to-parse-client-notifications") our guide
+        |  to learn how to parse it.
+
+    p
+        | To create a notification handler you must be logged in, 
+        | go to your client page and click on the "Notification handlers" category.
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Number of handlers per event type
+        
+        p
+            | You cannot have more than 
+            strong one handler per event type
+            | .
+    
+    p
+        | Each notification handler has the following parameters:
+
+    
+    ul
+        li
+            code url
+            | . The URL that receives the signed request when the specified 
+            code event_type
+            |  occurs.
+        
+        li
+            p
+                code event_type
+                | . The event which trigger the callback. This may be one of the following values:
+            
+            ul
+                li
+                    p 
+                        code  USER_DID_UPDATE_PERSONAL_INFORMATION
+                        | .  Thrown when user has updated one (or more) fields that you have asked for.
+                  
+                    include ./includes/userDidUpdatePersonalInformationNotification
+                  
+                    p
+                        | Read 
+                        a(href="/docs/guides/how-to-handle-personal-information-update#handle-in-notification-handler")
+                            | our guide
+                        |  to learn how to handle personal information update.
+                
+                li
+                    p
+                        code USER_DID_REVOKE_ACCESS
+                        | . Thrown after
+                        |  user has revocked access to your app. 
+                        | You may consider it as an  
+                        | "unregister notification"  
+                        | and remove user account from your datastore. 
+                    
+                    pre
+                        | {
+                        |   "event_type": "user_did_revoke_access",
+                        |   "user_id": "507c7f79bcf86cd7994f6c0e"
+                        | }
+
+    h4.subtitle Retry Policies
+    p
+        | A successful notification delivery to an HTTP/HTTPS endpoint sometimes requires more than one attempt. 
+    
+    p
+        | This can be the case, for example, if the web server that hosts the subscribed endpoint is down for maintenance 
+        | or is experiencing heavy traffic.
+
+    p
+        | If an initial delivery attempt doesn't result in a successful response from the subscriber, 
+        | EvenID attempts to deliver the message again, every quarter hours, 
+        strong.stronger over the subsequent 48 hours
+        | .
+
+    p
+        | EvenID only attempts a retry after a failed delivery attempt. 
+        | EvenID considers the following situations as a failed delivery attempt:
+
+    ul
+        li
+            | An HTTP status code 
+            strong.stronger different from 200
+            | .
+        li
+            | A request timeout (
+            strong.stronger 5 seconds
+            | ).
+        li Any connection error such as connection timeout, endpoint unreachable, bad SSL certificate, etc.

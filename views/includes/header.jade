@@ -1,0 +1,77 @@
+mixin header(displayMobileLeftMenu, displayMobileLeftMenuOnTablet)
+    - var transparentHeader = ['/'].indexOf(path) !== -1;
+    - var headWOBorder = ['/contact', '/pricing', '/features', '/about', '/privacy', '/faq'];
+    - var hasHeaderBorder = !!path.match(config.EVENID_VIEWS.UNLOGGED_USER_FORMS.join('|')) || headWOBorder.indexOf(path) !== -1 || is404Error;
+    - var hasntMobileHeaderBorder = !!path.match(new RegExp('^/docs')) || !!path.match(config.EVENID_VIEWS.UNLOGGED_USER_FORMS.join('|'));
+
+    .app-header-wrapper(class= transparentHeader ? 'transparent' : '')
+        header.navbar.navbar-static-top.app-header(class= transparentHeader ? 'transparent' : ''
+                                                   role="banner")
+            
+            .container(class= hasntMobileHeaderBorder ? 'no-mobile-border' : '')
+                .navbar-header
+                    button.navbar-toggle(type="button"
+                                         data-toggle="collapse"
+                                         data-target=".app-navbar-collapse")
+                        
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    
+                    a.navbar-brand(href="#mobile-left-menu"
+                                   class= (!!displayMobileLeftMenu ? 'visible-xs mobile-left-menu' : 'hidden') + (!!displayMobileLeftMenuOnTablet ? ' visible-sm' : ''))
+                        
+                        = __('EvenID')
+                        
+                        .icon-bar-container
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+
+                    if displayMobileLeftMenu
+                        a.navbar-brand.centered.visible-xs(href="/")= __('EvenID')
+                    
+                    a.navbar-brand(href="/"
+                                   class= (!!displayMobileLeftMenu ? 'hidden-xs' : '') + (!!displayMobileLeftMenuOnTablet ? ' hidden-sm' : ''))
+                        
+                        = __('EvenID')
+                
+                nav.collapse.navbar-collapse.app-navbar-collapse(class= hasHeaderBorder ? 'border' : '' role="navigation")
+                    ul.nav.navbar-nav
+                        li
+                            a(href="/features", class=(path === '/features' ? 'selected' : ''))= __('Features')
+                        
+                        li
+                            a(href="/pricing", class=(path === '/pricing' ? 'selected' : ''))= __('Pricing')
+                        
+                        li.more
+                            a(href="javascript:;", class=(['/faq'].indexOf(path) !== -1 ? 'selected' : ''))= __('More')
+                            ul.popover
+                                li
+                                    a(href="/faq", class=(path === '/faq' ? 'selected' : ''))
+                                        = __('FAQ')
+
+                    ul.nav.navbar-nav.navbar-right
+                        li
+                            a(href="/docs", class=(path.indexOf('/docs') === 0 ? 'selected' : ''))= __('Documentation')
+                        
+                        li
+                            a(href="/contact", class=(path === '/contact' ? 'selected' : ''))= __('Help & Support')
+                        
+                        if userIsLoggedIn()
+                            li
+                                a(href= '/users/' + session.login.user.id
+                                  class= path === '/users/' + session.login.user.id ? 'selected user-email' : 'user-email')
+                                    = session.login.user.email
+                        
+                        if !userIsLoggedIn()
+                            li.button
+                                a(href="/login"
+                                  class=(path === '/login' ? 'selected' : ''))
+                                    = __('Log in')
+                        
+                        else
+                            li.button
+                                include /includes/logoutForm
+                                +logoutForm('/login', __('Log out'))

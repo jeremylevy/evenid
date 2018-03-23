@@ -1,0 +1,8 @@
+doctype html
+html
+    head
+        title
+            | EvenID
+    body
+        script.
+            window.parent.fileUpload.handleEnd('#{escapeJS(publicURL)}');

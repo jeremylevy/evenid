@@ -1,0 +1,29 @@
+doctype html
+//- Classes are used in many JS files and CSS helpers
+html(lang= currentLocale, class= is_phone ? 'mobile' : (is_tablet ? 'tablet' : ''))
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no")
+        title Upload
+        link(rel="shortcut icon", href="/favicon.ico")
+        link(rel="stylesheet", href= staticURL('/css/oauth.css'))
+        block css
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!--[if IE 8]>
+    != '<body class="' + escapeHTML(step) + ' ie ie8 iframe" data-i18n="' + escapeHTML(i18n) + '" onunload="" onbeforeunload="">'
+    <![endif]-->
+    <!--[if IE 9]>
+    != '<body class="' + escapeHTML(step) + ' ie ie9 iframe" data-i18n="' + escapeHTML(i18n) + '" onunload="" onbeforeunload="">'
+    <![endif]-->
+    <!--[if !IE]><!-->
+    != '<body class="' + escapeHTML(step) + ' iframe" data-i18n="' + escapeHTML(i18n) + '" onunload="" onbeforeunload="">'
+    <!--<![endif]-->
+    block body
+    script(src= staticURL('/js/oauthAuthorizeFileUpload.js'))
+    block js
+    block rawJS
+    </body>

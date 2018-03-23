@@ -1,0 +1,92 @@
+doctype html
+html(lang= currentLocale, class= is_phone ? 'mobile' : (is_tablet ? 'tablet' : ''))
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no")
+        
+        title
+            //- Not set when displaying iframe upload
+            if client
+                if flow === 'registration'
+                    = __('Register on %s', client.name)
+                if flow === 'login'
+                    = __('Log in on %s', client.name)
+                if flow === 'recover_password'
+                    if !code
+                        = __('Reset my password - %s', client.name)
+                    else
+                        = __('Change password - %s', client.name)
+        
+        link(rel="shortcut icon", href="/favicon.ico")
+        link(rel="stylesheet", href= staticURL('/css/oauth.css'))
+        
+        block css
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    
+    <!--[if IE 8]>
+    != '<body class="' + escapeHTML(step) + ' ' + escapeHTML(flow) + ' ie ie8" data-i18n="' + escapeHTML(i18n) + '" onunload="" onbeforeunload="">'
+    <![endif]-->
+    <!--[if IE 9]>
+    != '<body class="' + escapeHTML(step) + ' ' + escapeHTML(flow) + ' ie ie9" data-i18n="' + escapeHTML(i18n) + '" onunload="" onbeforeunload="">'
+    <![endif]-->
+    <!--[if !IE]><!-->
+    != '<body class="' + escapeHTML(step) + ' ' + escapeHTML(flow) + '" data-i18n="' + escapeHTML(i18n) + '" onunload="" onbeforeunload="">'
+    <!--<![endif]-->
+    
+    .main-container
+        .learn-more-main-ads-container
+            .close-btn-container
+                a.close-btn(href="javascript:;") &times;
+            
+            .logo-container
+                img(src= staticURL('/img/logoOauthLearnMore.png'), alt="")
+            
+            .content-container
+                p
+                    if (userIsLoggedIn())
+                        if flow === 'registration'
+                            !=  __('%s has chosen EvenID to facilitate the registration of its users. %sMy EvenID account →%s', escapeHTML(client.name), '<a href="/users/' + escapeHTML(session.login.user.id) + '" target="/users/' + escapeHTML(session.login.user.id) + '">', '</a>') 
+                        else
+                            !=  __('%s has chosen EvenID to facilitate the login of its users. %sMy EvenID account →%s', escapeHTML(client.name), '<a href="/users/' + escapeHTML(session.login.user.id) + '" target="/users/' + escapeHTML(session.login.user.id) + '">', '</a>')
+                    else
+                        if flow === 'registration'
+                            !=  __('%s has chosen EvenID to facilitate the registration of its users. %sLearn more →%s', escapeHTML(client.name), '<a href="javascript:;" data-lightbox="true" data-lightbox-content-name="learn-more">', '</a>') 
+                        else
+                            !=  __('%s has chosen EvenID to facilitate the login of its users. %sLearn more →%s', escapeHTML(client.name), '<a href="javascript:;" data-lightbox="true" data-lightbox-content-name="learn-more">', '</a>')
+
+        .user-status-container(style= step !== 'choose_account' ? '' : 'visibility:hidden;')
+            if (userIsLoggedIn())
+                p= session.login.user.email + ' /'
+                        
+                include /includes/logoutForm
+                +logoutForm((_redirectTo = currentURI), (_btnText = __('Log out')))
+            else
+                if (flow !== 'registration')
+                    p 
+                        = __('Don\'t have an account?')
+                        | 
+                        a(href= currentURI.replace(/flow=[^&#]+/, 'flow=registration'))= __('Register')
+                else
+                    p 
+                        = __('Already have an account?')
+                        | 
+                        a(href= currentURI.replace(/flow=[^&#]+/, 'flow=login'))= __('Log in')
+
+        .form-container
+            block formContent
+
+    include ../oauth/includes/lightbox/index
+    
+    script(src= staticURL('/js/oauthAuthorize.js'))
+    
+    block js
+    block rawJS
+    
+    include ../includes/googleAnalytics
+
+    </body>

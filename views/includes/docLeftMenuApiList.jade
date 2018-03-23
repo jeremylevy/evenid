@@ -1,0 +1,28 @@
+mixin docLeftMenuApiList
+    li
+        span.label.label-default
+            | GET 
+    
+    li.api-uri
+        a(href="/docs/api/get/user"
+          class=(path === '/docs/api/get/user' ? 'selected' : ''))
+            | /users/
+            span.placeholder {user_id}
+
+    li
+        span.label.label-default
+            | POST
+    
+    li.api-uri
+        a(href="/docs/api/post/validate-email"
+          class=(path === '/docs/api/post/validate-email' ? 'selected' : ''))
+            | /users/
+            span.placeholder {user_id}
+            | /emails/
+            span.placeholder {email_id}
+            | /validate
+
+    li
+        a(href="/docs/api/error-responses"
+          class=(path === '/docs/api/error-responses' ? 'selected' : ''))
+            | Error responses

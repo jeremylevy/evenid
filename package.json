@@ -1,0 +1,142 @@
+{
+  "name": "EvenID",
+  "version": "1.0.4",
+  "description": "EvenID App",
+  "main": "./index.js",
+  "scripts": {
+    "buildBrandBtnCss": "./node_modules/.bin/lessc --clean-css ./publicSrc/css/branding/btn.less ./out/branding/btn.css",
+    "buildAppCss": "./node_modules/.bin/lessc ./publicSrc/css/all.less ./public/css/all.css",
+    "buildOauthAuthCSS": "./node_modules/.bin/lessc ./publicSrc/css/oauth/oauth.less ./public/css/oauth.css",
+    "buildOauthAuthDesktopAppCSS": "./node_modules/.bin/lessc ./publicSrc/css/oauth/oauthDesktopApp.less ./public/css/oauthDesktopApp.css",
+    "buildCSS": "npm run buildAppCss && npm run buildOauthAuthCSS && npm run buildOauthAuthDesktopAppCSS",
+    "buildAppJS": "./node_modules/.bin/browserify ./publicSrc/js/bootloaderApp.js -o ./public/js/all.js",
+    "buildOauthAuthJS": "./node_modules/.bin/browserify ./publicSrc/js/bootloaderOauthAuthorize.js -o ./public/js/oauthAuthorize.js",
+    "buildOauthAuthFileUploadJS": "./node_modules/.bin/browserify ./publicSrc/js/bootloaderOauthAuthorizeFileUpload.js -o ./public/js/oauthAuthorizeFileUpload.js",
+    "buildJS": "npm run buildAppJS && npm run buildOauthAuthJS && npm run buildOauthAuthFileUploadJS",
+    "buildAssets": "npm run buildCSS && npm run buildJS",
+    "testAppOnDocker": "./bin/startTest 'foreman start -f Procfile.test.app -p 63000 -e .env,.env.test'",
+    "testRoutesOnDocker": "./bin/startTest 'foreman start -f Procfile.test.routes -p 63000 -e .env,.env.test'",
+    "testOnDocker": "npm run testAppOnDocker && npm run testRoutesOnDocker",
+    "testAppOnStage": "foreman start -f Procfile.test.app -p 63000 -e .env,.env.test,.env.testOnStage",
+    "testRoutesOnStage": "foreman start -f Procfile.test.routes -p 63000 -e .env,.env.test,.env.testOnStage",
+    "testOnStage": "npm run testAppOnStage && npm run testRoutesOnStage",
+    "testApp": "foreman start -f Procfile.test.app -p 63000 -e .env,.env.test",
+    "testRoutes": "foreman start -f Procfile.test.routes -p 63000 -e .env,.env.test",
+    "test": "npm run testApp && npm run testRoutes",
+    "startDev": "foreman start -f Procfile.development -p 80 -e .env,.env.development",
+    "deployAssets": "foreman start -f Procfile.deploy.assets -e .env,.env.development,.env.deploy.assets",
+    "deployOnStage": "./bin/deployOnStage",
+    "startOnStage": "foreman start -p 7000 -e .env,.env.stage",
+    "startOnProd": "foreman start -p 7000 -e .env"
+  },
+  "author": "Jeremy Levy <jje.levy@gmail.com> (https://twitter.com/jeremy_levy)",
+  "license": "ISC",
+  "private": true,
+  "engines": {
+    "node": ">=0.10.26",
+    "npm": ">=1.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeremylevy/evenid"
+  },
+  "devDependencies": {
+    "highcharts": "^6.0.7",
+    "aws-sdk": "^2.2.3",
+    "bootstrap": "^3.2.0",
+    "browserify": "^4.2.0",
+    "browserify-shim": "^3.6.0",
+    "clean-css": "^3.4.3",
+    "hideshowpassword": "^2.0.8",
+    "jquery": "^1.11.3",
+    "jquery-placeholder": "^2.1.1",
+    "jquery.mmenu": "https://github.com/BeSite/jQuery.mmenu/tarball/master",
+    "less": "1.7.4",
+    "less-monitor": "https://github.com/jeremylevy/less-monitor/tarball/patch-1",
+    "mime": "^1.3.4",
+    "minify": "^1.4.20",
+    "mocha": "^2.3.3",
+    "moment": "^2.8.3",
+    "mongoose": "^4.0.3",
+    "nock": "^2.13.0",
+    "node-phonenumber": "^0.1.2",
+    "nodemon": "^1.2.1",
+    "raphael": "^2.1.4",
+    "regexp-quote": "0.0.0",
+    "retina.js": "^1.1.0",
+    "supertest": "^1.1.0",
+    "sweetalert": "https://github.com/jeremylevy/sweetalert/tarball/master",
+    "watchify": "^3.4.0"
+  },
+  "dependencies": {
+    "express": "^4.4.4",
+    "body-parser": "^1.4.3",
+    "validator": "^3.16.0",
+    "csurf": "^1.2.2",
+    "express-session": "^1.5.1",
+    "jade": "^1.3.1",
+    "async": "^0.9.0",
+    "request": "^2.37.0",
+    "change-case": "^2.1.1",
+    "i18n-2": "^0.4.6",
+    "connect-flash": "https://github.com/jeremylevy/connect-flash/tarball/master",
+    "method-override": "^2.1.2",
+    "escape-html": "^1.0.1",
+    "express-device": "^0.3.11",
+    "cookie-parser": "^1.3.3",
+    "type-of-is": "^3.3.0",
+    "connect-mongo": "^0.7.0",
+    "diacritics": "^1.2.1",
+    "moment-timezone": "^0.4.0",
+    "jsesc": "^0.5.0"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "bootstrapTransition": "./node_modules/bootstrap/js/transition.js",
+    "bootstrapCollapse": "./node_modules/bootstrap/js/collapse.js",
+    "bootstrapTooltip": "./node_modules/bootstrap/js/tooltip.js",
+    "bootstrapPopover": "./node_modules/bootstrap/js/popover.js",
+    "bootstrapAlert": "./node_modules/bootstrap/js/alert.js",
+    "jqueryMmenu": "./node_modules/jQuery.mmenu/dist/core/js/jquery.mmenu.min.js",
+    "retinajs": "./node_modules/retina.js/src/retina.js"
+  },
+  "browserify-shim": {
+    "bootstrapTransition": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
+    "bootstrapCollapse": {
+      "depends": [
+        "bootstrapTransition",
+        "jquery:jQuery"
+      ]
+    },
+    "bootstrapTooltip": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
+    "bootstrapPopover": {
+      "depends": [
+        "jquery:jQuery",
+        "bootstrapTooltip"
+      ]
+    },
+    "bootstrapAlert": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
+    "jqueryMmenu": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
+    "retinajs": "retinajs"
+  }
+}

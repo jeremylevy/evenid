@@ -1,0 +1,72 @@
+.unauthenticated-app-container {
+    background-color: #f5f5f5;
+    // Overwrite clearfix height
+    margin-top: -2px;
+
+    &.form {
+        background-color: white;
+    }
+
+    .unauthenticated-app {
+        .alert-container {
+            @media(max-width: @screen-tablet) {
+                background-color: #fafafa;
+            }
+
+            .alert {
+                font-size: 13px;
+                margin: 20px 0;
+
+                @media(max-width: @screen-tablet) {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+.contact-social-container {
+    position: relative;
+    background: #fafafa;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 30px 0;
+    text-align: center;
+
+    &:before {
+        display: block;
+        position: absolute;
+        content: '';
+        width: 1px;
+        left: 50%;
+        top: 20px;
+        bottom: 20px;
+        pointer-events: none;
+        background-color: #f0f0f0;
+
+        @media(max-width: (@screen-desktop - 1)) {
+            left: 25%;
+            right: 25%;
+            top: 51%;
+            bottom: auto;
+            width: auto;
+            height: 1px;
+        }
+    }
+
+    h3 {
+        font-size: 1.5em;
+        color: #000;
+        font-weight: 500;
+        line-height: 1.4em;
+        margin-bottom: .2em;
+    }
+
+    p {
+        font-size: 1.4em;
+        color: #6F7C82;
+        line-height: 1.5em;
+        padding: 0;
+        margin: 0 0 1em;
+    }
+}

@@ -1,0 +1,14 @@
+mixin sha1SizeInfo(entity)
+    .bs-callout.bs-callout-info
+        h5
+            = entity + ' size'
+        p
+            = entity + ' are created as '
+            a(href="http://en.wikipedia.org/wiki/SHA-1"
+              target="http://en.wikipedia.org/wiki/SHA-1") SHA-1 hash
+            |  (ie: a 
+            a(href="http://en.wikipedia.org/wiki/Hexadecimal"
+              target="http://en.wikipedia.org/wiki/Hexadecimal") hexadecimal number
+            | , 
+            strong 40
+            |  digits long).

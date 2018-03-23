@@ -1,0 +1,119 @@
+extend ../../layouts/baseDocs
+
+block prepend title
+    | How to use an access token
+
+block docContent
+    h2 How to use an access token
+    
+    p
+        | After your application obtains an access token, you can use it to make calls to an EvenID API method on behalf of a given user account. 
+    p 
+        | To do this, you have two ways to proceed:
+    ul
+        li Include the access token in the URL query string.
+        li Add an Authorization: Bearer HTTP header to the request. 
+    p
+        strong
+            | When possible, the HTTP header is preferable
+        | , because query strings tend to be visible in server logs.
+
+    h4
+        | Add an access token to query string
+
+    p 
+        | Access token is appended to query string by adding an 
+        code access_token
+        |  parameter as follows:
+
+    pre
+        span.pln https
+        span.pun :
+        span.com //api.evenid.com/method
+        span.pln ?access_token
+        span.pun ={
+        span.pln access_token
+        span.pun }
+
+    p
+        | For example, if your access token is set to: 
+        em 9bef2485410e9378bc9adfb3e32236af4f683fa2 
+        
+    p   
+        | Then the URL may looks like the following:
+    
+    pre
+        span.pln https
+        span.pun :
+        span.com //api.evenid.com/method
+        span.pln ?access_token
+        span.pun =
+        span.pln
+            em 9bef2485410e9378bc9adfb3e32236af4f683fa2
+
+    h4
+        | Construct Bearer HTTP header
+
+    p The Authorization header is constructed by concatening the word 'Bearer', a space and the access token:
+    
+    pre Authorization: Bearer 
+        span.pun {
+        | access_token
+        span.pun }
+    
+    p
+        | For example, if your access token is set to: 
+        em 9bef2485410e9378bc9adfb3e32236af4f683fa2 
+        
+    p   
+        | Then the header is formed as follows:
+    
+    pre
+        | Authorization: Bearer 
+        em 9bef2485410e9378bc9adfb3e32236af4f683fa2
+    
+    p
+        | With this header, you can query API methods which need an access token.
+
+    h4
+        | Examples
+
+    p
+        | In the example that follow:
+
+    p
+        code access_token
+        |  is set to: 
+        em 9bef2485410e9378bc9adfb3e32236af4f683fa2
+
+    p
+        code user_id
+        |  is set to: 
+        em 53f74adfd8520d0000a428f9
+
+
+    p
+        | A call to the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+        |  method using the access token query string parameter might look like the following:
+
+
+    pre
+        | GET /users/
+        em 53f74adfd8520d0000a428f9
+        | ?access_token=
+        em 9bef2485410e9378bc9adfb3e32236af4f683fa2 
+        | HTTP/1.1
+        | Host: api.evenid.com
+
+    p
+        | Here is the same call but using the Authorization: Bearer HTTP header:
+
+    pre
+        | GET /users/
+        em 53f74adfd8520d0000a428f9 
+        | HTTP/1.1
+        | Authorization: Bearer 
+        em 9bef2485410e9378bc9adfb3e32236af4f683fa2
+        | 
+        | Host: api.evenid.com

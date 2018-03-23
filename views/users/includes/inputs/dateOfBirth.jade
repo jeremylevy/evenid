@@ -1,0 +1,78 @@
+mixin dateOfBirthDays()
+  select.used-by-field(name="date_of_birth_day"
+                       id= currentLocale === 'fr-fr' ? 'date-of-birth' : 'date-of-birth-day'
+                       class= flash('errors.date_of_birth') ? 'invalid' : ''
+                       required= required
+                       data-field="date_of_birth"
+                       data-first-value= user.date_of_birth && user.date_of_birth.getDate())
+      
+      option(value="")= __('Day')
+      
+      - for (var i = 1, j = 31; i <= j; ++i)
+          - hasFlash = undefined !== flash('date_of_birth_day')
+          - selected = user.date_of_birth && user.date_of_birth.getDate() === i && !hasFlash
+          - selected = selected || flash('date_of_birth_day') == i
+
+          option(value= i
+                 selected= selected)= i
+
+mixin dateOfBirthMonths()
+  select.used-by-field(name="date_of_birth_month"
+                       id= currentLocale === 'en-us' ? 'date-of-birth' : 'date-of-birth-month'
+                       class= flash('errors.date_of_birth') ? 'invalid' : ''
+                       required= required
+                       data-field="date_of_birth"
+                       data-first-value= user.date_of_birth && user.date_of_birth.getMonth() + 1)
+      
+      option(value="")= __('Month')
+      
+      - for (var i = 0, j = months.length; i < j; ++i)
+          - hasFlash = undefined !== flash('date_of_birth_month')
+          - selected = user.date_of_birth && user.date_of_birth.getMonth() === i && !hasFlash 
+          - selected = selected || flash('date_of_birth_month') == i + 1
+          
+          option(value= i + 1
+                 selected= selected)= months[i]
+
+mixin dateOfBirth (required)
+    - var currentYear = (new Date()).getFullYear()
+    - var hasFlash = false
+    - var selected = false
+
+    div
+        div
+            label.user-fields(for="date-of-birth")
+                if path === '/oauth/authorize' && (Object.keys(fieldsToAuthorize || {}).length || flow === 'login' || userWasLoggedByClient)
+                    = __('Your date of birth')
+                else
+                    = __('Date of birth')
+
+            if (authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'date_of_birth'))
+        
+        if (currentLocale === 'en-us')
+          +dateOfBirthMonths()
+          +dateOfBirthDays()
+        if (currentLocale === 'fr-fr')
+          +dateOfBirthDays()
+          +dateOfBirthMonths()
+        
+        select.used-by-field(name="date_of_birth_year"
+                             class= flash('errors.date_of_birth') ? 'invalid' : ''
+                             required= required
+                             data-field="date_of_birth"
+                             data-first-value= user.date_of_birth && user.date_of_birth.getFullYear())
+            
+            option(value="")= __('Year')
+
+            - for (var i = currentYear, j = currentYear - 120; i > j; --i)
+                - hasFlash = undefined !== flash('date_of_birth_year')
+                - selected = user.date_of_birth && user.date_of_birth.getFullYear() === i && !hasFlash
+                - selected = selected || flash('date_of_birth_year') == i
+
+                option(value= i
+                       selected= selected)= i
+
+        if flash('errors.date_of_birth')
+            .error-wrapper= flash('errors.date_of_birth')

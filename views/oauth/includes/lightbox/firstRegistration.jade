@@ -1,0 +1,18 @@
+.lightbox-content-container.lightbox-first-registration
+    .main
+        h1= __('First steps...')
+        
+        p!= __('%sEvenID%s\'s mission is to facilitate the management of personal information on the Web.', '<a href="/" target="/">', '</a>')
+
+        p= __('To do this, we keep, in a secure way, all of your personal information in your EvenID account.')
+
+        p!= __('%sYour EvenID account will be created with the email and password that you\'ve just used.%s', '<strong>', '</strong>')
+
+        p= __('Use it on all websites and applications that use EvenID to never have to fill form anymore. (Locate the orange logo !)')
+        
+        p
+            != __('Even better ! You change your email address? Your phone number? Your address? Go to %sEvenID%s, log in, and do the update. All websites and applications that have asked for this information will be notified !', '<a href="/" target="/">', '</a>')
+    
+    .bottom
+        button.btn.close-btn
+            = __('I got it')

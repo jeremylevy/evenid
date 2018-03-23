@@ -1,0 +1,26 @@
+if client
+    form(method="post", action="/clients/" + client.id)
+        input(type="hidden", name="user_password", value="")
+        input(type="hidden", name="_method", value="DELETE")
+        
+        include /includes/csrf
+        +csrf(csrfToken)
+        
+        button.btn.cancel(type="submit"
+                            data-user-id= session.login.user.id
+                            data-ajax-error-title= __('Oops!')
+                            data-ajax-error-message= __('An unknown error has occurred. Please try again.')
+                            data-ajax-success-title= __('Success!')
+                            data-ajax-success-message= __('The password you provided is correct.')
+                            data-empty-password-error-message= __('You must enter your password.')
+                            data-sweetalert="true"
+                            data-sweetalert-title= __('Delete this client')
+                            data-sweetalert-text= __('Enter your password to delete the client:')
+                            data-sweetalert-type="input"
+                            data-sweetalert-input-type="password"
+                            data-sweetalert-callback-function="checkUserPassword"
+                            data-sweetalert-allow-outside-click="true"
+                            data-sweetalert-show-cancel-button="true"
+                            data-sweetalert-close-on-confirm="false"
+                            data-sweetalert-confirm-button-text= __('OK')
+                            data-sweetalert-cancel-button-text= __('Cancel'))= __('Delete this client')

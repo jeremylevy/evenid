@@ -1,0 +1,36 @@
+script.
+    var loadZopimFn = function (e) {
+        window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+        _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+        $.src="//v2.zopim.com/?3KwADJJTptXhIgvMCHwouNiqZsmaojgZ";z.t=+new Date;$.
+        type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+
+        $zopim(function() {
+            $zopim.livechat.badge.setText('#{escapeJS(__("We\'re here for you"))}');
+
+            $zopim.livechat.window.setTitle('#{escapeJS(__("EvenID Support"))}');
+
+            $zopim.livechat.concierge.setName('#{escapeJS(__("EvenID Support"))}');
+            $zopim.livechat.concierge.setTitle('#{escapeJS(__("We\'re here for you"))}');
+
+            $zopim.livechat.setGreetings({
+                'online': '#{escapeJS(__("Need help?"))}',
+                'offline': '#{escapeJS(__("Need help?"))}'
+            });
+
+            $zopim.livechat.offlineForm.setGreetings('#{escapeJS(__("We are currently offline. Please leave us a message."))}');
+        });
+    };
+
+    jQuery(function () {
+        var $ = jQuery;
+
+        if ($('body').data('has-highcharts')) {
+            $(document).one('evenID.highcharts.loaded', loadZopimFn);
+            
+            return;
+        }
+
+        loadZopimFn();
+    });

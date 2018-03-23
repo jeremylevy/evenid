@@ -1,0 +1,217 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+
+block prepend title
+    if client
+        = client.name
+    else
+        = __('Create a client')
+
+block appContentHeadTitle
+    include ./includes/headerTitle
+
+block appContentHeadBtn
+    include ./includes/headerDeleteForm
+
+block appContent
+    - var hasFlash = false
+    - var checked = false
+    - var value = null
+
+    if client
+        ul.form-entity-list.client-credentials-container
+            li
+                h3= __('Client credentials')
+
+                h4 client_id:
+                p= client.client_id
+                
+                h4
+                    | client_secret:
+                p
+                  button.btn(type="button"
+                                data-client-id= client.id
+                                data-ajax-error-title= __('Oops!')
+                                data-ajax-error-message= __('An unknown error has occurred. Please try again.')
+                                data-ajax-success-title= __('Success!')
+                                data-ajax-success-message= __('The password you provided is correct.')
+                                data-empty-password-error-message= __('You must enter your password.')
+                                data-sweetalert="true"
+                                data-sweetalert-title= __('See the client secret')
+                                data-sweetalert-text= __('Enter your password to see the client secret:')
+                                data-sweetalert-type="input"
+                                data-sweetalert-input-type="password"
+                                data-sweetalert-callback-function="seeClientSecret"
+                                data-sweetalert-allow-outside-click="true"
+                                data-sweetalert-show-cancel-button="true"
+                                data-sweetalert-close-on-confirm="false"
+                                data-sweetalert-confirm-button-text= __('OK')
+                                data-sweetalert-cancel-button-text= __('Cancel'))= __('See the client secret')
+
+    .form
+        if client
+            +formSep(__('Update this client'))
+
+        include /includes/uploadImgFileForm
+        +uploadImgFileForm()
+
+        form.file-upload-sibling-form(method="post", action= currentURI)
+            div
+                .form-logo-push-fields-container
+                    div
+                        label(for="client_name")= __('Name')
+                        
+                        - hasFlash = undefined !== flash('client_name')
+                        - value = client && !hasFlash ? client.name : flash('client_name')
+
+                        input(type="text"
+                                name="client_name"
+                                id="client_name"
+                                class= flash('errors.name') ? 'invalid' : ''
+                                placeholder= __('Zilo')
+                                maxlength= config.EVENID_OAUTH_CLIENTS.MAX_LENGTHS.NAME
+                                required="required"
+                                value= value)
+                        
+                        if flash('errors.name')
+                            .error-wrapper= flash('errors.name')
+                    
+                    div
+                        label(for="client_description")= __('Description')
+                        
+                        - hasFlash = undefined !== flash('client_description')
+                        - value = client && !hasFlash ? client.description : flash('client_description')
+                        
+                        input(type="text"
+                                name="client_description"
+                                id="client_description"
+                                class= flash('errors.description') ? 'invalid' : ''
+                                placeholder= __('The best place to make online shopping.')
+                                maxlength= config.EVENID_OAUTH_CLIENTS.MAX_LENGTHS.DESCRIPTION
+                                required="required",
+                                value= value)
+                        
+                        if flash('errors.description')
+                            .error-wrapper= flash('errors.description')
+                    
+                    div
+                        label(for="client_website")= __('Website')
+                        
+                        - hasFlash = undefined !== flash('client_website')
+                        - value = client && !hasFlash ? client.website : flash('client_website')
+
+                        input(type="url"
+                                name="client_website"
+                                id="client_website"
+                                class= flash('errors.website') ? 'invalid' : ''
+                                placeholder= __('http://zilo.com')
+                                maxlength= config.EVENID_OAUTH_CLIENTS.MAX_LENGTHS.WEBSITE
+                                required="required"
+                                value= value)
+                        
+                        if flash('errors.website')
+                            .error-wrapper= flash('errors.website')
+
+                    .checkbox.test-accounts(class= flash('errors.website') ? 'previous-field-error' : '')
+                        input(type="hidden"
+                                name="authorize_test_accounts"
+                                value="false") 
+
+                        label
+
+                            - hasFlash = undefined !== flash('authorize_test_accounts')
+                            - checked = client && client.authorize_test_accounts && !hasFlash
+                            //- flash('authorize_test_accounts') is an array when checked
+                            //- and equals to 'false' otherwise.
+                            //- It's easier to check than flash exits and that it's different from 'false'
+                            //- than to check an array.
+                            - checked = checked || hasFlash && flash('authorize_test_accounts') !== 'false'
+
+                            input(type="checkbox"
+                                    name="authorize_test_accounts"
+                                    value="true"
+                                    checked= checked)
+                            
+                            = __('Allow test accounts')
+                
+                +formSep(__('Usernames (optional)'))
+                
+                .clearfix
+                    div
+                        label(for="client_facebook_username")= __('Facebook')
+
+                        - hasFlash = undefined !== flash('client_facebook_username')
+                        - value = client && !hasFlash ? client.facebook_username : flash('client_facebook_username')
+                        
+                        input(type="text"
+                                name="client_facebook_username"
+                                id="client_facebook_username"
+                                class= flash('errors.facebook_username') ? 'invalid' : ''
+                                placeholder= __('zilo')
+                                maxlength= config.EVENID_OAUTH_CLIENTS.MAX_LENGTHS.FACEBOOK_USERNAME
+                                value= value)
+                        
+                        if flash('errors.facebook_username')
+                            .error-wrapper= flash('errors.facebook_username')
+                    
+                    div
+                        label(for="client_twitter_username")= __('Twitter')
+
+                        - hasFlash = undefined !== flash('client_twitter_username')
+                        - value = client && !hasFlash ? client.twitter_username : flash('client_twitter_username')
+                        
+                        input(type="text"
+                                name="client_twitter_username"
+                                id="client_twitter_username"
+                                class= flash('errors.twitter_username') ? 'invalid' : ''
+                                placeholder= __('zilo')
+                                maxlength= config.EVENID_OAUTH_CLIENTS.MAX_LENGTHS.TWITTER_USERNAME
+                                value= value)
+                        
+                        if flash('errors.twitter_username')
+                            .error-wrapper= flash('errors.twitter_username')
+                    
+                    div
+                        label(for="client_instagram_username")= __('Instagram')
+
+                        - hasFlash = undefined !== flash('client_instagram_username')
+                        - value = client && !hasFlash ? client.instagram_username : flash('client_instagram_username')
+                        
+                        input(type="text"
+                                name="client_instagram_username"
+                                id="client_instagram_username"
+                                class= flash('errors.instagram_username') ? 'invalid' : ''
+                                placeholder= __('zilo')
+                                maxlength= config.EVENID_OAUTH_CLIENTS.MAX_LENGTHS.INSTAGRAM_USERNAME
+                                value= value)
+                        
+                        if flash('errors.instagram_username')
+                            .error-wrapper.last= flash('errors.instagram_username')
+                
+                .form-fields-section
+                    include /includes/csrf
+                    +csrf(csrfToken)
+                    
+                    if client
+                        input(type="hidden", name="_method", value="PUT")
+                    else
+                        //- To set client logo during creation
+                        input#input-file-url(type="hidden", name="file_url", value='')
+                    
+                    button.btn.create.file-upload-sibling-form-submit-btn(type="submit")
+                        = client ? __('Update this client') : __('Create this client')
+
+block rawJS
+    if client
+        script.
+            // `true`: Keep image ratio?
+            // `true`: Update File?
+            var fileUpload = new app.FileUpload(true, true);
+            fileUpload.load();
+    else
+        script.
+            // `true`: Keep image ratio?
+            // `false`: Update File?
+            var fileUpload = new app.FileUpload(true, false);
+            fileUpload.load();

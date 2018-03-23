@@ -1,0 +1,83 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+include /includes/csrf
+
+block prepend title
+    = __('Phone numbers')
+
+block appContentHeadTitle
+    include ./includes/headerTitle
+
+block appContentHeadBtn
+    //- include ./includes/headerDeleteForm
+
+mixin phoneNumberList (phoneNumbers, isUpdate)
+    - var phoneNumber = null
+    
+    - for (var i = 0, j = phoneNumbers.length; i < j; ++i)
+        - phoneNumber = phoneNumbers[i];
+        
+        li
+            h3= __(phoneNumber.phone_type)
+            
+            if (authorizations && !isUpdate)
+                include ./includes/authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'phone_numbers'), (fieldID = phoneNumber.id))
+            
+            p= phoneNumber.number
+            
+            if !isUpdate
+                .entity-actions-container
+                    form(method="post", action= '/users/' + user.id + '/phone-numbers/' + phoneNumber.id)
+                        p
+                            input(type="hidden", name="_method", value="DELETE")
+
+                            +csrf(csrfToken)
+                            
+                            a.btn(href= '/users/' + user.id + '/phone-numbers/' + phoneNumber.id)= __('Edit')
+                            
+                            button.btn.cancel(type="submit"
+                                              data-sweetalert="true"
+                                              data-sweetalert-title= __('Confirm the deletion?')
+                                              data-sweetalert-text= __('Click "OK" if you want to delete this phone number.')
+                                              data-sweetalert-type="warning"
+                                              data-sweetalert-allow-outside-click="true"
+                                              data-sweetalert-show-cancel-button="true"
+                                              data-sweetalert-confirm-button-text= __('OK')
+                                              data-sweetalert-cancel-button-text= __('Cancel'))= __('Delete')
+
+block appContent
+    - var isUpdate = !!phoneNumber
+
+    if isUpdate
+        .form-breadcrumb
+            ol.breadcrumb
+                li
+                    a(href= '/users/' + user.id + '/phone-numbers')= __('Phone numbers')
+                
+                li.active
+                    = phoneNumber.number
+
+    if phoneNumbers.length
+        ul.form-entity-list
+            +phoneNumberList(phoneNumbers, isUpdate)
+
+        include /includes/pagination
+        +pagination(nbOfPages, currentPage, previousDisabled, nextDisabled, '/users/' + user.id + '/phone-numbers')
+
+    form.form(method="post", action= '/users/' + user.id + '/phone-numbers' + (isUpdate ? '/' + phoneNumber.id : ''))
+        +formSep(isUpdate ? __('Edit this phone number') : __('Add a phone number'))
+            
+        div
+            div 
+                include ./includes/inputs/phoneNumber
+                +phoneNumber((_fieldName = __('Phone number')), (_fieldPrefix = ''), (_disabled = false))
+            
+            .form-fields-section
+                +csrf(csrfToken)
+                
+                if isUpdate
+                    input(type="hidden", name="_method", value="PUT")
+                
+                button.btn.create(type="submit")= isUpdate ? __('Edit this phone number') : __('Add this phone number')

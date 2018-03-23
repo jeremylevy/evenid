@@ -1,0 +1,8 @@
+mixin logoutForm (redirectTo, btnText)
+    form(method="post", action="/logout")
+        input(type="hidden", name="redirect_to", value= redirectTo)
+        
+        include /includes/csrf
+        +csrf(csrfToken)
+        
+        button(type="submit")= btnText

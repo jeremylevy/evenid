@@ -1,0 +1,145 @@
+extend ../../layouts/baseDocs
+
+block prepend title
+    | How to inspect an access token
+
+block docContent
+    h2 
+        | How to inspect an access token
+
+    p.api-requirements
+        a(href="https://github.com/evenid",
+          target="https://github.com/evenid")
+            span.label.label-default Sdk::inspectToken(accessToken)
+
+    p
+        | At this point in the flow, the person using your app has granted access to the personal information
+        | that you have bound to your  
+        code redirect_uri
+        |  and is redirected to it.
+
+    p 
+        | The 
+        code redirect_uri
+        |  your app returns to will be appended with URL parameters or fragments as per the chosen 
+        code response_type
+        | .
+
+    p
+        | Because this redirect flow involves browsers being redirected to URLs 
+        | in your app, traffic could directly access your 
+        code redirect_uri
+        |  with made-up fragments or parameters. 
+        
+    p
+        | If your app assumed these were valid parameters, 
+        | the made-up data would be used by your app for potentially malicious purposes. 
+    
+    p
+        | As a result, 
+        strong.stronger
+            | your app should confirm that the person using the app is the same person that 
+            | you have response data for before generating an access token for them
+        | .
+        
+    p
+        | Confirming identity is accomplished in different ways depending on the used 
+        code response_type
+        | :
+
+    ul
+        li 
+            | When 
+            code code
+            |  is used, received code has to be exchanged for an access token, as described previously in 
+            a(href="/docs/flow#request-access-token") the flow
+            | .
+    
+        li
+            | When 
+            code token
+            |  is used, received token 
+            strong.stronger
+                | needs to be inspected
+            | . 
+
+    p 
+        | To inspect an access token, you need to make an HTTP GET request to the following endpoint:
+    
+    pre
+        span.pln https
+        span.pun :
+        span.com //api.evenid.com/oauth/inspect-token
+        span.com ?
+        span.pln token
+        span.pun ={
+        span.pln token
+        span.pun }
+    
+    p 
+        | This endpoint has the following 
+        strong required
+        |  parameters:
+    
+    ul
+        li
+            code token
+            | . The access token that you want to inspect.
+
+    p
+        | The actual request might look like the following:
+
+    pre
+        | GET /oauth/inspect-token?token={access_token} HTTP/1.1
+        | Host: api.evenid.com
+    
+    include ../includes/successfulResponseSentence
+    
+    pre
+        | {
+        |   "client_id":"5470d8b73eb1bed4223d050e",
+        |   "user_id":"546e66045b0539cc539bc82f",
+        |   "user_status":"new_user",
+        |   "scope":["email", "first_name"],
+        |   "issued_at":358898400,
+        |   "is_expired":false
+        | }
+
+    .bs-callout.bs-callout-info
+        h5
+            | Date format
+        p
+            code issued_at
+            |  date is sent as 
+            a(href="http://en.wikipedia.org/wiki/Unix_time"
+              target="http://en.wikipedia.org/wiki/Unix_time") Timestamp
+            | .
+    
+    p
+        | If the response is successful, you 
+        strong must
+        |  ensure that:
+
+    ul
+        li 
+            code is_expired
+            |  is set to 
+            code false
+            | .
+        li
+            code client_id
+            |  is equal to your client ID.
+
+        li
+            code user_id
+            |  is equal to the one sent through URL fragment.
+
+        li
+            code user_status
+            |  is equal to the one sent through URL fragment.
+
+        li
+            code scope
+            |  contains expected values.
+
+    include ../includes/apiErrorBlock

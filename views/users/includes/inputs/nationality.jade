@@ -1,0 +1,36 @@
+mixin nationality (required)
+    - var hasFlash = false
+    - var selected = false
+
+    div
+        div
+            label.user-fields(for="nationality")
+                if path === '/oauth/authorize' && (Object.keys(fieldsToAuthorize || {}).length || flow === 'login' || userWasLoggedByClient)
+                    = __('Your nationality')
+                else
+                    = __('Nationality')
+
+            if (authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'nationality'))
+        
+        select.used-by-field(name="nationality"
+                             id="nationality"
+                             class= flash('errors.nationality') ? 'invalid' : ''
+                             required= required
+                             data-field="nationality"
+                             data-first-value= user.place_of_birth)
+
+            option(value="")= __('Select a nationality')
+            
+            - for (var countryCode in nationalities)
+                - hasFlash = undefined !== flash('nationality')
+                - selected = user.nationality === countryCode && !hasFlash 
+                - selected = selected || path === '/oauth/authorize' && probableCountryForUser === countryCode && !hasFlash
+                - selected = selected || flash('nationality') === countryCode
+
+                option(value= countryCode
+                       selected= selected)= nationalities[countryCode]
+
+        if flash('errors.nationality')
+            .error-wrapper= flash('errors.nationality')

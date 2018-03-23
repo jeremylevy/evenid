@@ -1,0 +1,43 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+include /includes/csrf
+
+block prepend title
+    = __('Statistics')
+
+block appContentHeadTitle
+    h2= __('Statistics')
+    
+    include ./includes/categoriesStats
+    
+block appContent
+    .today-statistics-container
+        .today-statistics-content
+            h3
+                = __('To date')
+            
+            .row
+                .col-md-4.stats-item
+                    .wrapper
+                        p= numberWithCommas(stats.registeredUsers)
+                        h4= __('Registered users')
+
+                .col-md-4.stats-item
+                    .wrapper
+                        p= numberWithCommas(stats.activeUsers)
+                        h4= __('Monthly active users')
+
+                .col-md-4.stats-item.last
+                    .wrapper
+                        p= Math.round(stats.retention * 100) + '%'
+                        h4= __('Retention')
+    
+    form.form
+        include ./includes/statsCharts
+        +statsCharts('/clients/' + client.id + '/statistics/users/for-period')
+
+block rawJS
+    script.
+        app.clientStats.load();
+        app.clientStats.loadChartFor('11 months');

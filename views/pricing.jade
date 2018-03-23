@@ -1,0 +1,12 @@
+extend layouts/baseUnauthenticated
+
+block prepend title
+    = __('Pricing')
+
+block appContent
+    .pricing-container
+        .container
+            h2
+                = __('Free. Forever.')
+                span
+                    != __('Have questions? Contact us at %s.', '<a href="mailto:contact@evenid.com"><b>contact@evenid.com</b></a>')

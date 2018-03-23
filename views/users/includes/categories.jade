@@ -1,0 +1,17 @@
+ul.cat-list.clearfix
+    li
+        a(href='/users/' + session.login.user.id
+            class= path === '/users/' + session.login.user.id ? 'selected' : '')
+            = __('Information')
+    li
+        a(href='/users/' + session.login.user.id + '/emails'
+            class= path.indexOf('/users/' + session.login.user.id + '/emails') === 0 ? 'selected' : '')
+            = __('Emails')
+    li
+        a(href='/users/' + session.login.user.id + '/phone-numbers'
+            class= path.indexOf('/users/' + session.login.user.id + '/phone-numbers') === 0 ? 'selected' : '')
+            = __('Phone numbers')
+    li
+        a(href='/users/' + session.login.user.id + '/addresses', 
+            class= path.indexOf('/users/' + session.login.user.id + '/addresses') === 0 ? 'selected' : '')
+            = __('Addresses')

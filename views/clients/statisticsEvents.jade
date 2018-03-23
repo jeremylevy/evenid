@@ -1,0 +1,74 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+include /includes/csrf
+
+block prepend title
+    = __('Statistics')
+
+block appContentHeadTitle
+    h2= __('Statistics')
+
+    include ./includes/categoriesStats
+    
+block appContent
+    - var successRegistration = stats.todayVsYesterday.registration >= 0 && stats.today.registration > 0
+    - var successLogin = stats.todayVsYesterday.login >= 0 && stats.today.login > 0
+
+    .today-statistics-container
+        .today-statistics-content
+            h3
+                = __('Today')
+            .row
+                .col-md-4.stats-item
+                    .wrapper
+                        p(class='text-' + (successRegistration ? 'success' : 'danger'))= numberWithCommas(stats.today.registration)
+                        
+                        h4= __('Registration(s)')
+
+                        .progress-description
+                            strong(class='text-' + (successRegistration  ? 'success' : 'danger'))
+                                if (stats.todayVsYesterday.registration > 0)
+                                    = __('%s more than yesterday', numberWithCommas(stats.todayVsYesterday.registration))
+                                else if (stats.todayVsYesterday.registration === 0)
+                                    = __('Same than yesterday')
+                                else
+                                    = __('%s less than yesterday', numberWithCommas(Math.abs(stats.todayVsYesterday.registration)))
+
+                .col-md-4.stats-item
+                    .wrapper
+                        p(class='text-' + (successLogin ? 'success' : 'danger'))= numberWithCommas(stats.today.login)
+                        
+                        h4= __('Login(s)')
+
+                        .progress-description
+                            strong(class='text-' + (successLogin ? 'success' : 'danger'))
+                                if (stats.todayVsYesterday.login > 0)
+                                    = __('%s more than yesterday', numberWithCommas(stats.todayVsYesterday.login))
+                                else if (stats.todayVsYesterday.login === 0)
+                                    = __('Same than yesterday')
+                                else
+                                    = __('%s less than yesterday', numberWithCommas(Math.abs(stats.todayVsYesterday.login)))
+
+                .col-md-4.stats-item.last
+                    .wrapper
+                        p(class='text-' + (stats.todayVsYesterday.deregistration <= 0 ? 'success' : 'danger'))= numberWithCommas(stats.today.deregistration)
+                        h4= __('Deregistration(s)')
+
+                        .progress-description
+                            strong(class='text-' + (stats.todayVsYesterday.deregistration <= 0 ? 'success' : 'danger'))
+                                if (stats.todayVsYesterday.deregistration > 0)
+                                    = __('%s more than yesterday', numberWithCommas(stats.todayVsYesterday.deregistration))
+                                else if (stats.todayVsYesterday.deregistration === 0)
+                                    = __('Same than yesterday')
+                                else
+                                    = __('%s less than yesterday', numberWithCommas(Math.abs(stats.todayVsYesterday.deregistration)))
+    
+    form.form
+        include ./includes/statsCharts
+        +statsCharts('/clients/' + client.id + '/statistics/events/for-period')
+
+block rawJS
+    script.
+        app.clientStats.load();
+        app.clientStats.loadChartFor('11 months');

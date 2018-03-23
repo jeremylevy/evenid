@@ -1,0 +1,89 @@
+extend layouts/baseUnauthenticated
+
+block prepend title
+    = __('FAQ')
+
+block appContent
+    .faq-container
+        .container
+            .row
+                .col-md-12
+                    header.title
+                        h1
+                            = __('Frequently asked questions')
+                        p 
+                            = __('The most frequently asked questions.')
+            
+            .row
+                .col-md-12
+                    h2
+                        = __('I. Your users')
+            
+            .row
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('1. Can I store the information of my users?')
+                        p
+                            = __('It\'s up to you to decide what you want to do with the information of your users. You may choose to save it in a persistent store, like a database, or you may choose to call the API on each login. Really, it\'s up to you.')
+                
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('2. What personal information can I ask for?')
+                        p
+                            = __('You can ask for user\'s email, nickname, profil photo, first name, last name, date of birth, gender, phone numbers, addresses, place of birth, nationality and time zone.')
+            .row
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('3. Can I ask for a specific phone type?')
+                        p
+                            = __('Yes, you can ask for mobile and landline phone type.')
+
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('4. Can I separate shipping and billing address?')
+                        p
+                            = __('Yes, you can. Shipping and billing address will be confirmed by user on each login.')
+
+            .row
+                .col-md-12
+                    h2
+                        = __('II. EvenID')
+
+            .row
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('1. Which browsers are officially supported?')
+                        p
+                            = __('EvenID supports the following browsers: Google Chrome, Mozilla Firefox, Internet Explorer 8+ and Safari.')
+                
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('2. What EvenID does to ensure an uptime close to 100%?')
+
+                        p
+                            = __('EvenID is hosted in multiple isolated locations known as Availability Zones. Each servers are replicated across Availability Zones to a standby replica to provide high availability and failover support.')
+            
+            .row
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('3. What EvenID does to ensure the security of my data?')
+
+                        p
+                            = __('EvenID is protected by extensive network and security monitoring systems. EvenID infrastructure components are continuously scanned and tested multiple times a day. In addition, EvenID is housed in Amazon’s highly secure data centers, which utilize state-of-the art electronic surveillance and multi-factor access control systems.')
+
+                .col-md-6
+                    div.faq-item
+                        h3
+                            = __('4. What if I want to remove EvenID from my app?')
+                        p
+                            = __('Given that you have access to all your users\' data, you can remove EvenID at any moment. The sole requirement is that you will have to ask your users to choose a new login password.')
+
+
+        include /includes/contactSocialContainer

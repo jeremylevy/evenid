@@ -1,0 +1,96 @@
+extend /layouts/baseOauthAuthorize
+
+//- It's a mixin
+include /includes/csrf
+
+block formContent
+    if step === 'credentials'
+
+        .login-container
+            .client-logo-container
+                img(src= client.logo + '/200', alt="")
+            
+            include ../includes/title
+            +title(flow, client)
+
+            include /includes/notifications
+            +notificationBanner()
+
+            include ../includes/useTestAccountBtn
+            +useTestAccountBtn(flow, step, client, userWasLoggedByClient, testAccount, !!installedApp)
+
+            form.login-form(method="post", action= currentURI)
+                if !flash('maxAttemptsError')
+                    div
+                        include /users/includes/inputs/email
+                        +email((_flow = 'login'), (_disabled = false))
+                        
+                        include /users/includes/inputs/password
+                        +password(flow, recoverPasswordLink)
+                        
+                        include /users/includes/inputs/persistentLogin
+
+                        div 
+                            //- User can register after testing
+                            if flow === 'registration' && testAccount
+                                input(type="hidden", name="test_account", value= testAccount)
+                            
+                            +csrf(csrfToken)
+
+                        .btn-container
+                            include ../includes/submitBtn
+                            +submitBtn(flow, step, scope)
+                else
+                    include /includes/recaptcha
+                    +recaptcha(flash('recaptchaPublicKey'))
+
+                    noscript
+                        .btn-container
+                            include ../includes/submitBtn
+                            +submitBtn(flow, step, scope)
+
+                if (flow === 'registration' && !flash('maxAttemptsError'))
+                    p.login-form-ajax-loader
+                        img(src= staticURL('/img/ajaxLoader.gif'), alt="")
+                    
+                    p.legals
+                        != __('By continuing, you confirm that you accept the %sterms of use%s and %sprivacy policy%s of EvenID.', '<a href="/privacy" target="/privacy">', '</a>', '<a href="/privacy" target="/privacy">', '</a>')
+
+    if step === 'choose_account'
+        .stay-logged-as-wrapper
+            .client-logo-container
+                img(src= client.logo, alt="")
+            
+            include ../includes/title
+            +title(flow, step, client, userWasLoggedByClient, testAccount)
+
+            include /includes/notifications
+            +notificationBanner()
+
+            form(method="post", action= currentURI)
+                .stay-logged-as-container
+                    .stay-logged-as-header.clearfix
+                        
+                        .stay-logged-as-img-container
+                            img(src= session.login.user.profil_photo + '/100', alt="")
+                        
+                        .stay-logged-as-content-container
+                            if session.login.user.first_name
+                                p= __('Welcome %s!', session.login.user.first_name)
+                            else
+                                p= __('Welcome back!')
+                            p.email= session.login.user.email
+                    
+                    .stay-logged-as-btn-container
+                        +csrf(csrfToken)
+                        
+                        button.btn.create(type="submit")
+                            if session.login.user.first_name
+                                = __('Continue as %s', session.login.user.first_name + ' ' + session.login.user.last_name)
+                            else
+                                = __('Continue as %s', session.login.user.email)
+            
+            .use-another-account
+                include /includes/logoutForm
+                +logoutForm((_redirectTo = currentURI), (_btnText = __('Use another account')))
+                

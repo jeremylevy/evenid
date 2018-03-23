@@ -1,0 +1,13 @@
+ul.cat-list.clearfix
+    li
+        a(href= client && '/clients/' + client.id
+            class= client && path === '/clients/' + client.id || !client ? 'selected' : '')
+            = __('Information')
+    li
+        a(href= client && '/clients/' + client.id + '/redirection-uris'
+            class= (client ? '' : 'disabled') + (client && path.indexOf('/clients/' + client.id + '/redirection-uris') === 0 ? 'selected' : ''))
+            = __('Redirection uris')
+    li
+        a(href= client && '/clients/' + client.id + '/notification-handlers'
+            class= (client ? '' : 'disabled') + (client && path.indexOf('/clients/' + client.id + '/notification-handlers') === 0 ? 'selected' : ''))
+            = __('Notification handlers')

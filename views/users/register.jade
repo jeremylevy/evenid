@@ -1,0 +1,48 @@
+extend ../layouts/baseUnauthenticated
+
+block prepend title
+    = __('Register')
+
+block appContent
+    .container
+        .login-register-form-container
+            .login-register-form-content
+                .login-register-container
+                    .register-container
+                        .login-register-header-container.clearfix
+                            .login-register-header
+                                h2
+                                    = __('Register')
+                            
+                            .login-register-switch
+                                != __('or %slog in%s', '<a href="/login">', '</a>') 
+                        
+                        .login-form-container
+                            form(method="post", action= currentURI)
+                                if !flash('maxAttemptsError')
+                                    include ./includes/inputs/email
+                                    +email((_flow = 'registration'), (_disabled = false))
+
+                                    include ./includes/inputs/password
+                                    +password((_flow = 'registration'), (_forgottenPath = '/recover-password'))
+
+
+                                    include ./includes/inputs/persistentLogin
+
+                                    p
+                                        include ./includes/inputs/hiddenTimezone
+                                        +hiddenTimezone()
+                                        
+                                        include ../includes/csrf
+                                        +csrf(csrfToken)
+
+                                    p
+                                        button.btn.full-width.create(type="submit")= __('Register')
+
+                                else
+                                    include /includes/recaptcha
+                                    +recaptcha(flash('recaptchaPublicKey'))
+
+                                    noscript
+                                        div
+                                            button.btn.full-width.create(type="submit")= __('Register')

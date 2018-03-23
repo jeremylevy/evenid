@@ -1,0 +1,76 @@
+extend ../../layouts/baseDocs
+
+block prepend title
+    | How to refresh an access token
+
+block docContent
+    h2 
+        | How to refresh an access token
+
+    p.api-requirements
+        a(href="https://github.com/evenid",
+          target="https://github.com/evenid")
+            span.label.label-default Sdk::exchangeRefreshTokenForTokens(refreshToken)
+    
+    p
+        | If your application needs access to an EvenID API method beyond the lifetime of a single access token, 
+        | it can use the refresh token sent along with access token to obtain a new one.
+
+    p 
+        | To do so, you need to make an HTTP POST request to the following endpoint:
+    
+    pre
+        span.pln https
+        span.pun :
+        span.com //api.evenid.com/oauth/token
+    
+    p 
+        | This endpoint has the following  
+        strong required
+        |  parameters:
+    
+    ul
+        li
+            code client_id
+            | . Your client ID.
+        li
+            code grant_type
+            | . Must be set to 
+            code refresh_token
+            | .
+        li
+            code refresh_token
+            | . The refresh token sent along with expired access token.
+
+    p 
+        | Depending on the 
+        code redirect_uri
+        |   used to obtain authorization 
+        code code
+        | , it may also have the following 
+        strong required 
+        |  parameters:
+
+    ul
+        li
+            code client_secret
+            | . Your client secret.
+
+    p 
+        | The actual request might look like the following:
+
+    pre
+        | POST /oauth/token HTTP/1.1
+        | Host: api.evenid.com
+        | Content-Type: application/x-www-form-urlencoded
+        | 
+        | client_id={client_id}
+        | &amp;client_secret={client_secret}
+        | &amp;grant_type=refresh_token
+        | &amp;refresh_token={refresh_token}
+    
+    include ../includes/oauthTokenResponseBlock
+    
+    p
+        | If the response is successful, used refresh token will be invalidated and thrown away. 
+        | You may safely replace it with the new one.

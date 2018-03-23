@@ -1,0 +1,45 @@
+mixin gender (required, displayedOnApp)
+    - var hasFlash = false
+    - var checked = false
+
+    div
+        div
+            label.user-fields(for="gender") 
+                if path === '/oauth/authorize' && (Object.keys(fieldsToAuthorize || {}).length || flow === 'login' || userWasLoggedByClient)
+                    = __('Your gender')
+                else
+                    = __('Gender')
+
+            if (authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'gender'))
+        
+        - hasFlash = undefined !== flash('gender')
+        - checked = user.gender === 'female' && !hasFlash || flash('gender') === 'female'
+
+        label.radio-inline
+            input.used-by-field(type="radio"
+                                name="gender"
+                                id="gender"
+                                value="female"
+                                required= required
+                                checked= checked
+                                data-field="gender"
+                                data-first-value= user.gender) 
+            = __('Female')
+        
+        - hasFlash = undefined !== flash('gender')
+        - checked = user.gender === 'male' && !hasFlash || flash('gender') === 'male'
+
+        label.radio-inline
+            input.used-by-field(type="radio"
+                                name="gender"
+                                value="male"
+                                required= required
+                                checked= checked
+                                data-field="gender"
+                                data-first-value= user.gender) 
+            = __('Male')
+        
+        if flash('errors.gender')
+            .error-wrapper(class= displayedOnApp ? 'last' : '')= flash('errors.gender')

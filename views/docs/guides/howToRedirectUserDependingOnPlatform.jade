@@ -1,0 +1,272 @@
+extend ../../layouts/baseDocs
+
+block prepend title
+    | How to redirect user depending on platform
+
+block docContent
+    h2 
+        | How to redirect user depending on platform
+    
+    p
+        | Depending on platform, you may have many choices 
+        | to redirect user to dialog page. 
+    
+    p
+        | This section discusses the best ways to do it on 
+        a(href="#websites") websites
+        | , 
+        a(href="#mobile-apps") mobile
+        |  and 
+        a(href="#desktop-apps") desktop apps
+        | .
+
+    .bs-callout.bs-callout-danger
+        h5
+            | Branding Guidelines
+        
+        p
+        
+            | No matter the platform, you are required 
+            | to read our 
+            a(href="/docs/branding-guidelines") Branding Guidelines
+            |  to learn more about the obligations and responsibilities 
+            | that all developer need to comply with during the use of EvenID. 
+
+    h4#websites Websites
+
+    p
+        | For websites, the best way to redirect user is by displaying one (or more) 
+        a(href="/docs/branding-guidelines") EvenID button 
+        | as 
+        code &lt;a&gt;
+        |  tag and to wait for users to click on it.
+
+    .bs-callout.bs-callout-info
+        h5
+            | Why not to use a popup?
+        
+        p
+            | Filling a form is always painful and by displaying it in a popup 
+            | you make the job even more difficult. Also, given that 
+            | it's the popup (and not your main page) that will be redirected to your 
+            code redirect_uri
+            | , you will need
+            | to find a way to close it while notifying the main page.
+
+    p
+        a(href= staticURL('/img/docs/websitesRedirect@2x.png')
+          target= staticURL('/img/docs/websitesRedirect@2x.png'))
+            img(src= staticURL('/img/docs/websitesRedirect.png'), alt="")
+    
+    h4#mobile-apps Mobile apps
+
+    p
+        | For mobile apps, the prefered way to redirect user is by opening the native browser and by using an "app-specific" URL as 
+        code redirect_uri
+        | .
+
+    .bs-callout.bs-callout-info
+        h5
+            | Why not to use a web view?
+        
+        p
+            | A web view doesn't share cookies with default browser,
+            | so users will be forced to re-enter their credentials 
+            | for each app which use EvenID.
+
+
+    p.text-center
+        a(href= staticURL('/img/docs/mobilesRedirect@2x.png')
+          target= staticURL('/img/docs/mobilesRedirect@2x.png'))
+            img(src= staticURL('/img/docs/mobilesRedirect.png'), alt="")
+
+    h4.subtitle a) iOS
+
+    .bs-callout.bs-callout-info
+        h5
+            | iOS 9 and SFSafariViewController
+        
+        p
+            | Starting from iOS 9, Apple introduced the 
+            a(href="http://code.tutsplus.com/tutorials/ios-9-getting-started-with-sfsafariviewcontroller--cms-24260"
+              target="http://code.tutsplus.com/tutorials/ios-9-getting-started-with-sfsafariviewcontroller--cms-24260") SFSafariViewController
+            |  that can be used to display web content within your app. 
+            | Given that this controller shares cookies and other website data with Safari, 
+            | you may want to use it instead of forcing users to leave your app.
+
+    p
+        | For older versions of iOS, if you want to open the default browser you can use the following code:
+
+    pre
+        | NSURL *url = [NSURL URLWithString:@"https://evenid.com/oauth/auth.."];  
+        | [[UIApplication sharedApplication] openURL:url];
+
+    p
+        | To register an "app-specific" URL, you can read the following page in the Apple documentation: 
+        a(href="https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10"
+          target="https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10") 
+            | https://developer.apple.com/library/ios/documentation/...#//apple_ref/doc/uid/TP40007072-CH6-SW10
+
+    h4.subtitle b) Android
+
+    p
+        | On Android, if you want to open the default browser you can use an Intent with 'ACTION_VIEW' to open the browser with your URL:
+
+    pre
+        | Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://instasi..."));
+
+    p
+        | To register an "app-specific" URL, you can add an intent filter in your app's AndroidManifest.xml 
+        | so that your app launches when another app (like Chrome browser) launches a URL with your custom scheme.
+
+    p
+        | You can read the following page in the Android documentation to learn more about intent filter: 
+        a(href="http://developer.android.com/guide/topics/manifest/intent-filter-element.html"
+          target="http://developer.android.com/guide/topics/manifest/intent-filter-element.html")
+            | http://developer.android.com/guide/topics/manifest/intent-filter-element.html
+
+    h4.subtitle c) Windows phone
+
+    p
+        | If you want to open the built-in IE Browser, you need to use the WebBrowserTask object.
+
+    p
+        | To do this, you add references to Microsoft.Phone and Microsoft.Phone.Tasks, then launch the IE Browser using the following code:
+
+    pre
+        | WebBrowserTask wbt = new WebBrowserTask(); 
+        | wbt.URL = "https://evenid.com/oauth/auth..";  
+        | wbt.Show();
+
+    p
+        | To register an "app-specific" URL, you can read the following page in the Microsoft documentation: 
+        a(href="http://msdn.microsoft.com/library/windows/apps/jj206987(v=vs.105).aspx#BKMK_LaunchingaURIusingProximity"
+          target="http://msdn.microsoft.com/library/windows/apps/jj206987(v=vs.105).aspx#BKMK_LaunchingaURIusingProximity")
+            | http://msdn.microsoft.com/library/windows/...#BKMK_LaunchingaURIusingProximity
+
+    hr
+
+    p
+        | An app that has its own custom URL scheme must be able to handle URLs passed to it and to extract code as described previously in 
+        a(href="/docs/flow") the flow
+        | . 
+
+    p
+        | For example, on iOS, all URLs are passed to your app delegate, either at launch time or while your app is running or in the background.
+
+    p
+        | Read the documentation corresponding to your operating system to learn more.
+
+    h4#desktop-apps Desktop apps
+
+    p
+        | The prefered way to redirect user on a desktop app is by opening the user default browser and by using a special uri as 
+        code redirect_uri
+        | .
+
+    p
+        | The mechanism for opening the user default browser may varies from platform to platform. 
+        | Read the documentation corresponding to your operating system to learn more.
+    
+    p
+        | When you create a client for a desktop app, two special uris are available for you to use:
+
+    ul
+        li 
+            code http://localhost
+        li 
+            code urn:ietf:wg:oauth:2.0:oob
+
+    p
+        | The value your application uses determines how the authorization code is returned to your application.
+    
+    h4.subtitle a) http://localhost
+    
+    p
+        | This value signals to the EvenID Authorization Server that the authorization code should be 
+        | returned as a query string parameter to the web server on the client. 
+    p
+        | You may specify a port number without changing the 
+        code redirect_uri
+        |  configuration. To receive the authorization code using this URL, your application must be listening on the local web server. 
+
+    p
+        | This is possible on many, but not all, platforms. If your platform supports it, 
+        | this is the recommended mechanism for obtaining the authorization code.
+    
+    .bs-callout.bs-callout-info
+        h5
+            | Interference with other software
+        
+        p
+            | In some cases, although it is possible to listen, other software (such as a Windows firewall) 
+            | prevents delivery of the message without significant client configuration.
+    
+    h4.subtitle b) urn:ietf:wg:oauth:2.0:oob
+    
+    p
+        a(href= staticURL('/img/docs/desktopRedirect@2x.png')
+          target= staticURL('/img/docs/desktopRedirect@2x.png'))
+            img(src= staticURL('/img/docs/desktopRedirect.png'), alt="")
+
+    p
+        | This value signals to the EvenID Authorization Server that the authorization 
+        code code
+        |  should be returned in the title bar of the browser, 
+        | with the page text prompting the user to copy the 
+        code code
+        |  and paste it in the application 
+        | (as shown in the screenshot above).
+
+    p
+        | This is useful when the client (such as a Windows application) cannot listen on an HTTP port without significant client configuration.
+    
+    p
+        | When you use this value, your application can then detect that the page has loaded, 
+        | and can read the title of the HTML page to obtain the authorization 
+        code code
+        |  parameter. 
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Authorization code parameter format
+        
+        p
+            | When 
+            strong "urn:ietf:wg:oauth:2.0:oob"
+            |  or 
+            strong "urn:ietf:wg:oauth:2.0:oob:auto"
+            |  is used, the 
+            code state
+            |  parameter is appended to     
+            code code
+            |   along with a dot (ie:  
+            strong
+                | code = code + '.' + state
+            | ).     
+    
+    p
+        | It is then up to your application to close the browser window if you want to ensure that the user never sees the page 
+        | that contains the authorization 
+        code code
+        |  parameter. The mechanism for doing this varies from platform to platform.
+    
+    p
+        | If your platform doesn't allow you to detect that the page has loaded or read the title of the page, 
+        | you can have the user paste the 
+        code code
+        |  back to your application, as prompted by the page text.
+    
+    h4.subtitle c) urn:ietf:wg:oauth:2.0:oob:auto 
+    
+    p
+        | This is identical to urn:ietf:wg:oauth:2.0:oob, but the text in the confirmation page won't 
+        | instruct the user to copy the authorization 
+        code code
+        |  parameter, but instead will simply ask the user to close the window.
+    
+    p
+        | This is useful when your application reads the title of the HTML page 
+        | (by checking window titles on the desktop, for example) to obtain the authorization 
+        code code
+        |  parameter, but can't close the page on its own.

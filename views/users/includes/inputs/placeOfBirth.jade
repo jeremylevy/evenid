@@ -1,0 +1,36 @@
+mixin placeOfBirth (required)
+    - var hasFlash = false
+    - var selected = false
+
+    div
+        div
+            label.user-fields(for="place-of-birth")
+                if path === '/oauth/authorize' && (Object.keys(fieldsToAuthorize || {}).length || flow === 'login' || userWasLoggedByClient)
+                    = __('Your place of birth')
+                else
+                    = __('Place of birth')
+
+            if (authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'place_of_birth'))
+        
+        select.used-by-field(name="place_of_birth"
+                             id="place-of-birth"
+                             class= flash('errors.place_of_birth') ? 'invalid' : ''
+                             required= required
+                             data-field="place_of_birth"
+                             data-first-value= user.place_of_birth)
+
+            option(value="")= __('Select a country')
+
+            - for (var countryCode in territories)
+                - hasFlash = undefined !== flash('place_of_birth')
+                - selected = user.place_of_birth === countryCode && !hasFlash 
+                - selected = selected || path === '/oauth/authorize' && probableCountryForUser === countryCode && !hasFlash
+                - selected = selected || flash('place_of_birth') === countryCode
+                
+                option(value= countryCode
+                       selected= selected)= territories[countryCode]
+
+        if flash('errors.place_of_birth')
+            .error-wrapper= flash('errors.place_of_birth')

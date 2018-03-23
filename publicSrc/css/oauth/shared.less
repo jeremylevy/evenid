@@ -1,0 +1,470 @@
+@font-face {
+    font-family: 'proxima_nova_rgregular';
+    src: url('../fonts/proximanovareg.eot');
+    src: url('../fonts/proximanovareg.eot?#iefix') format("embedded-opentype"),
+         url('../fonts/proximanovareg.woff') format("woff"),
+         url('../fonts/proximanovareg.ttf') format("truetype"),
+         url('../fonts/proximanovareg.svg#proxima_nova_rgregular') format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'proxima_nova_ltsemibold';
+    src: url('../fonts/proximanovasbold.eot');
+    src: url('../fonts/proximanovasbold.eot?#iefix') format("embedded-opentype"),
+         url('../fonts/proximanovasbold.woff') format("woff"),
+         url('../fonts/proximanovasbold.ttf') format("truetype"),
+         url('../fonts/proximanovasbold.svg#proxima_nova_ltsemibold') format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'proxima_nova_rgbold';
+    src: url('../fonts/proximanovabold.eot');
+    src: url('../fonts/proximanovabold.eot?#iefix') format("embedded-opentype"),
+         url('../fonts/proximanovabold.woff') format("woff"),
+         url('../fonts/proximanovabold.ttf') format("truetype"),
+         url('../fonts/proximanovabold.svg#proxima_nova_rgbold') format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'proxima_nova_thin';
+    src: url('../fonts/proximanovathin.eot');
+    src: url('../fonts/proximanovathin.eot?#iefix') format("embedded-opentype"),
+         url('../fonts/proximanovathin.woff') format("woff"),
+         url('../fonts/proximanovathin.ttf') format("truetype"),
+         url('../fonts/proximanovathin.svg#proximanova-thin') format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+// Fix Competing controls in IE10+
+// https://github.com/cloudfour/hideShowPassword
+::-ms-reveal,
+::-ms-clear {
+    display: none !important;
+}
+
+strong {
+    font-family: "proxima_nova_ltsemibold";
+    font-weight: normal;
+}
+
+/* Needs to be separated */
+
+input:-moz-placeholder {  
+    color: #aaa!important;
+}
+
+input::-moz-placeholder {  
+    color: #aaa!important;
+}
+
+input::-webkit-input-placeholder {
+    color: #aaa!important;
+}
+
+input:-ms-input-placeholder {
+    color: #aaa!important;
+} 
+
+.placeholder {
+    color: #aaa!important;
+}
+
+/* END */
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+// Clearfix
+//
+// For modern browsers
+// 1. The space content is one way to avoid an Opera bug when the
+//    contenteditable attribute is included anywhere else in the document.
+//    Otherwise it causes space to appear at the top and bottom of elements
+//    that are clearfixed.
+// 2. The use of `table` rather than `block` is only necessary if using
+//    `:before` to contain the top-margins of child elements.
+//
+// Source: http://nicolasgallagher.com/micro-clearfix-hack/
+
+.clearfix {
+    &:before,
+    &:after {
+        content: " "; // 1
+        display: table; // 2
+    }
+
+    &:after {
+        clear: both;
+    }
+}
+
+html, body {
+    font-family: "proxima_nova_rgregular";
+    font-size: 14px;
+    color: #37474F;
+    -webkit-text-rendering: optimizeLegibility;
+    -moz-text-rendering: optimizeLegibility;
+    -ms-text-rendering: optimizeLegibility;
+    -o-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -ms-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+
+    &.iframe,
+    &.no-scroll {
+        overflow: hidden!important;
+    }
+
+    &.no-scroll {
+        @media(max-width: @screen-tablet) {
+            overflow: auto!important;
+        }
+    }
+}
+
+// We want to use it as mixin, 
+// so add a `.link` class
+a, .link {
+    font-family: "proxima_nova_ltsemibold";
+    letter-spacing: .025rem;
+    color: @default-link-color;
+    -webkit-transition: color 0.2s ease-in;
+    -moz-transition: color 0.2s ease-in;
+    -ms-transition: color 0.2s ease-in;
+    -o-transition: color 0.2s ease-in;
+    transition: color 0.2s ease-in;
+    text-decoration: none;
+    outline: none!important;
+
+    &:hover {
+        color: @default-hovered-link-color;
+        text-decoration: none;
+    }
+
+    &:hover, &:focus, &:active {
+        outline: none!important;
+        text-decoration: none!important;
+    }
+}
+
+.hidden {
+    display: none!important;
+    visibility: hidden!important;
+}
+
+// Same class is used in app
+// because whe share form inputs 
+// between Oauth authorize
+// and app
+.desktop-only-block {
+    display: block!important;
+
+    html.mobile &,
+    html.tablet & {
+        display: none!important;
+    }
+}
+
+// Same class is used in app
+// because whe share form inputs 
+// between Oauth authorize
+// and app
+.tablet-only-block {
+    display: none!important;
+
+    html.tablet & {
+        display: block!important;
+    }
+}
+
+// Same class is used in app
+// because whe share form inputs 
+// between Oauth authorize
+// and app
+.mobile-only-block {
+    display: none!important;
+
+    html.mobile & {
+        display: block!important;
+    }
+}
+
+.title-container + .alert-container {
+    margin-top: -20px;
+
+    @media(max-width: @screen-tablet) {
+        margin-top: -6px;
+    }
+}
+
+.alert {
+    padding: 14px 8px;
+    margin: 20px 0;
+    text-align: center;
+    line-height: 24px;
+
+    &.alert-danger {
+        color: #A94442;
+        background-color: #F2DEDE;
+    }
+
+    &.alert-success {
+        color: #3C763D;
+        background-color: #DFF0D8;
+    }
+
+    button {
+        display: none;
+    }
+}
+
+.btn {
+    background-color: @default-btn-bg;
+    display: block;
+    padding-bottom: 12px;
+    padding-left: 45px;
+    padding-right: 45px;
+    padding-top: 12px;
+    font-family: "proxima_nova_ltsemibold";
+    font-weight: normal;
+    letter-spacing: 0.25px;
+    font-size: 16px;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-transition: background 0.2s ease-in;
+    -moz-transition: background 0.2s ease-in;
+    -ms-transition: background 0.2s ease-in;
+    -o-transition: background 0.2s ease-in;
+    transition: background 0.2s ease-in;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    outline: none!important;
+
+    &::-moz-focus-inner {
+        border: 0;
+    }
+
+    &:hover {
+        background-color: @default-btn-hover-bg;
+    }
+
+    @media(max-width: @screen-phone) {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+
+    &:hover, &:focus, &:active {
+        outline: none!important;
+    }
+
+    &.disabled {
+        cursor: default;
+        cursor: not-allowed;
+        .opacity(0.4);
+        outline: none;
+
+        &:hover, &:active, &:active:focus, &:focus {
+            background-color: @default-btn-bg;
+            outline: none!important;
+        }
+    }
+}
+
+.main-container {
+    position: relative;
+
+    @media(max-width: @screen-tablet) {
+        padding-top: 0;
+        padding-bottom: 18px;
+    }
+}
+
+.learn-more-main-ads-container {
+    border: 1px solid rgb(229, 229, 229);
+    background-color: rgb(255, 255, 255);
+    color: rgb(102, 102, 102);
+    font-family: arial, sans-serif;
+    font-size: 13px;
+    padding-bottom: 20px;
+    position: absolute;
+    left: 16px;
+    top: 20px;
+    z-index: 986;
+    width: 300px;
+
+    @media(max-width: @screen-tablet) {
+        position: static;
+        width: 100%;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        margin-left: 0;
+        background-color: #F9F9F9;
+        border: 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .close-btn-container {
+        text-align: right;
+        position: relative;
+        height: 15px;
+
+        @media(max-width: @screen-tablet) {
+            height: 19px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 8px;
+            color: rgb(153, 153, 153);
+            cursor: pointer;
+            font-family: arial, sans-serif;
+            font-size: 23px;
+            line-height: 5px;
+
+            &:hover {
+                color: darken(rgb(153, 153, 153), 10%)
+            }
+        }
+    }
+
+    .logo-container {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 0 10px 0 13px;
+    }
+
+    .content-container {
+        display: table-cell;
+        vertical-align: middle;
+        padding-top: 4px;
+        padding-left: 8px;
+
+        @media(max-width: @screen-tablet) {
+            padding-top: 0;
+        }
+
+        p {
+            line-height: 23px;
+            padding-right: 20px;
+
+            a {
+                letter-spacing: 0.01px;
+                white-space: nowrap;
+            }
+        }
+    }
+}
+
+.user-status-container {
+    margin: 0 auto;
+    width: 936px;
+    max-width: 100%;
+    padding: 35px 18px;
+    text-align: right;
+
+    @media(max-width: @screen-tablet) {
+        width: auto;
+        padding: 35px @mobile-default-horizontal-padding;
+    }
+
+    @media(max-width: @screen-phone) {
+        padding-top: 18px;
+    }
+
+    p {
+        display: inline;
+        color: #90A4AE;
+        font-size: 13px;
+        line-height: 21.125px;
+    }
+
+    form {
+        display: inline;
+
+        button, .logout-btn-as-link {
+            .appearance-none();
+            //margin: 0;
+            display: inline;
+            padding: 2px 6px 3px 4px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 13px;
+            border: 0;
+            .link();
+
+            @media(max-width: @screen-phone) {
+                padding-left: 2px;
+            }
+
+            &:focus, &:active {
+                outline: none;
+            }
+        }
+    }
+}
+
+/* sweetAlert */
+// Overwrite box-sizing set by bootstrap on all elements
+.sweet-overlay, .sweet-alert, .sweet-alert > * {
+    font-size: 16px;
+    box-sizing: content-box!important;
+    -webkit-box-sizing: content-box!important;
+    -moz-box-sizing: content-box!important;
+}
+
+.sweet-alert  {
+    font-family: "proxima_nova_rgregular";
+    
+    h2 {
+        margin: 0;
+        margin-bottom: 8px;
+        line-height: 33px;
+    }
+
+    p {
+        line-height: 23px;
+    }
+
+    fieldset {
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-top: 5.59999990463257px;
+        padding-bottom: 0;
+    }
+
+    input {
+        font-size: 24px;
+        margin-bottom: 0;
+    }
+
+    button {
+        font-family: "proxima_nova_rgregular";
+        padding: 11px 32px 10px 32px;
+    }
+
+    .sa-error-container.show {
+        margin-top: 17px;
+    }
+}

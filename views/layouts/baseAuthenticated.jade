@@ -1,0 +1,139 @@
+extend base
+
+block content
+    - var developedClients = session.login.user.developer.clients;
+    - var authorizedClients = session.login.user.authorized_clients;
+    - var authorizedClientLink = null
+    
+    - var selectPersonalInfos = path.indexOf('/users/' + session.login.user.id) === 0
+    - selectPersonalInfos = selectPersonalInfos && !path.match(/authorized-clients|change-password/)
+
+    - var isAuthorizedClientPage = path.indexOf('/users/' + session.login.user.id + '/authorized-clients') === 0
+
+    mixin displayDevelopedClients(developedClients)
+        - for (var i = 0, j = developedClients.length; i < j; ++i)
+            li
+                a(href= '/clients/' + developedClients[i].id
+                  class= path.indexOf('/clients/' + developedClients[i].id) === 0 && ['statistics'].indexOf(path.split('/').slice(-2)[0]) === -1 ? 'selected' : '')
+
+                    = developedClients[i].name
+            li.subcat
+                a(href= '/clients/' + developedClients[i].id + '/statistics/events'
+                  class= path.indexOf('/clients/' + developedClients[i].id + '/statistics') === 0 ? 'selected' : '')
+                    = __('Statistics')
+
+    mixin displayedAuthorizedClients(authorizedClients)
+        - for (var i = 0, j = authorizedClients.length; i < j; ++i)
+            - authorizedClientLink = '/users/' + session.login.user.id 
+            - authorizedClientLink = authorizedClientLink + '/authorized-clients/' 
+            - authorizedClientLink = authorizedClientLink + authorizedClients[i].id
+            
+            li
+                a(href= authorizedClientLink
+                  class= path.indexOf(authorizedClientLink) === 0 ? 'selected' : '')
+
+                    = authorizedClients[i].name
+
+    
+    include ../includes/header
+    +header((_displayMobileLeftMenu = true), (_displayMobileLeftMenuOnTablet = true))
+    
+    nav#mobile-left-menu.mm-offcanvas
+        ul
+            li
+                h3= __('Me')
+            li
+                a(href= '/users/' + session.login.user.id
+                  class= selectPersonalInfos ? 'selected' : '')
+
+                    = __('Personal information')
+
+            li
+                a(href= '/users/' + session.login.user.id + '/change-password'
+                  class= path === '/users/' + session.login.user.id + '/change-password' ? 'selected' : '')
+
+                    = __('Change password')
+            
+            //- Users can become developer by creating a client
+            if session.login.user.is_developer || path === '/clients'
+                li 
+                    h3= __('Clients')
+                li
+                    a(href="/clients"
+                      class= path === '/clients' ? 'selected' : '')
+
+                        = __('Create a client')
+
+                +displayDevelopedClients(developedClients)
+            
+            li
+                h3= __('Registrations')
+            
+            +displayedAuthorizedClients(authorizedClients)
+
+    .app-content-container
+        include ../includes/notifications
+        +notificationBanner()
+        
+        .container
+            .row
+                .col-md-12
+                    .app-content-wrapper
+                        .app-content-head.clearfix
+                            .app-content-head-btn-container
+                                block appContentHeadBtn
+                            .app-content-head-title-container
+                                block appContentHeadTitle
+                        
+                        .app-content-table
+                            div
+                                div.app-content-table-sidebar-cell
+                                    .app-sidebar
+                                        h3= __('Me')
+                                        nav
+                                            ul
+                                                li
+                                                    a(href= '/users/' + session.login.user.id
+                                                      class= selectPersonalInfos ? 'selected' : '')
+                                                        = __('Personal information')
+
+                                                li
+                                                    a(href= '/users/' + session.login.user.id + '/change-password'
+                                                      class= path === '/users/' + session.login.user.id + '/change-password' ? 'selected' : '')
+
+                                                        = __('Change password')
+                                        
+                                        //- Users can become developer by creating a client
+                                        if session.login.user.is_developer || path === '/clients'
+                                            h3 
+                                                = __('Clients')
+                                                span.label.label-default
+                                                    = __('developer')
+                                            
+                                            div
+                                                a.btn(href= '/clients'
+                                                      class= path === '/clients' ? 'selected' : '')
+
+                                                    = __('Create a client')
+                                            
+                                            if !developedClients.length
+                                                p.empty-list-text
+                                                    = __('No clients')
+                                            
+                                            nav
+                                                ul
+                                                    +displayDevelopedClients(developedClients)
+
+                                        h3= __('Registrations')
+
+                                        if !authorizedClients.length
+                                            p.empty-list-text
+                                                = __('No registration')
+                                        nav
+                                            ul
+                                               +displayedAuthorizedClients(authorizedClients)
+                                div(class= isAuthorizedClientPage ? 'authorized-client' : '')
+                                    .app-content
+                                        block appContent
+    include ../includes/footer
+    +footer()

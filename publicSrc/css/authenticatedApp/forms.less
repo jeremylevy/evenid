@@ -1,0 +1,623 @@
+.app-content {
+    // Breadcrumb displayed on top 
+    // of update form
+    .form-breadcrumb {
+        padding: 0 @desktop-main-content-padding;
+
+        @media(max-width: @screen-tablet) {
+            padding: 0 @not-desktop-main-content-padding;
+        }
+
+        .breadcrumb {
+            padding: 10px 15px 8px 15px;
+
+            // Slash separator
+            & > li + li:before {
+                padding: 0 2px 0px 5px;
+            }
+        }
+    }
+
+    // Entities displayed on top of form
+    // like when adding an email, a phone number...
+    .form-entity-list {
+        margin: 0px @desktop-main-content-padding;
+        padding: 0;
+        list-style-type: none;
+
+        @media(max-width: @screen-tablet) {
+            margin: 0 @not-desktop-main-content-padding;
+        }
+
+        .authorizations-list {
+            .authorizationsList();
+            margin-bottom: 8px;
+            vertical-align: top;
+
+            @media(max-width: @screen-tablet) {
+                margin-bottom: 6px;
+            }
+        }
+
+        li {
+            padding: 18px 18px 10px 18px;
+            background-color: #FAFAFA;
+            margin-bottom: 8px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            h3 {
+                display: inline-block;
+                margin: 0 6px 8px 0;
+                font-weight: bold;
+                font-size: 14px;
+                // Fix http://stackoverflow.com/questions/7548255/is-there-a-css-workaround-for-firefox-bug-inline-block-first-letter-with-cha?lq=1
+                -moz-animation: firstletterbugfix 0.001s;
+
+                @media(max-width: @screen-tablet) {
+                    margin-bottom: 6px;
+                }
+
+                &:first-letter {
+                    text-transform: uppercase;
+                }
+
+                &.email:first-letter {
+                    text-transform: none;
+                }
+            }
+
+            form,
+            form p {
+                display: inline-block;
+            }
+
+            p {
+                margin: 0;
+                margin-bottom: 8px;
+                line-height: 1.5em;
+
+                @media(max-width: @screen-tablet) {
+                    margin-bottom: 6px;
+                }
+            }
+
+            // Displayed in emails entity list
+            // `not validated`, `contact address`
+            .label-container {
+                float: right;
+
+                @media(max-width: @screen-tablet) {
+                    float: none;
+                    margin-bottom: 16px;
+                }
+
+                .label {
+                    padding: 4px 6px;
+                    font-size: 12px;
+                    margin-left: @form-entity-list-label-margin;
+
+                    @media(max-width: @screen-tablet) {
+                        margin-left: 0;
+                        margin-right: @form-entity-list-label-margin;
+                        display: inline-block;
+                        padding-bottom: 4px;
+                    }
+                }
+
+                & + div {
+                    //margin-right: 250px;
+
+                    @media(max-width: @screen-tablet) {
+                        margin-right: 0;
+                        margin-bottom: 10px;
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
+    }
+
+    // Pagination displayed under entity list
+    .pagination-nav {
+        margin: 0 @desktop-main-content-padding;
+
+        @media(max-width: @screen-tablet) {
+            margin: 0 @not-desktop-main-content-padding;
+        }
+
+        ul.pagination-sm,
+        ul.pagination {
+            margin: 0;
+            margin-top: 14px;
+            margin-bottom: -10px;
+        }
+
+        .pagination > .active > a, 
+        .pagination > .active > span, 
+        .pagination > .active > a:hover, 
+        .pagination > .active > span:hover, 
+        .pagination > .active > a:focus, 
+        .pagination > .active > span:focus {
+            background-color: #4B91CD;
+        }
+    }
+
+    // Container for the forms
+    .form {
+        padding: 20px @desktop-main-content-padding;
+
+        @media(max-width: @screen-tablet) {
+            padding: @not-desktop-main-content-padding;
+        }
+
+        .error-wrapper {
+            color: @form-error-color;
+            margin-bottom: 8px;
+
+            &.last {
+                margin-bottom: 0;
+            }
+        }
+
+        .radio-inline + .error-wrapper {
+            margin-top: 8px;
+        }
+
+        .checkbox + .error-wrapper {
+            margin-top: -2px;
+        }
+
+        label {
+            margin-bottom: 0;
+            line-height: 20px;
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #777;
+            cursor: pointer;
+
+            &.user-fields {
+                display: inline-block;
+                margin-right: 6px;
+                vertical-align: middle;
+            }
+
+            &.radio-inline {
+                text-transform: none;
+                margin-top: .5em;
+
+                &.not-last {
+                    margin-bottom: 0.8em;
+                }
+            }
+
+            &.auth {
+                text-transform: none;
+                font-weight: 400;
+                font-family: @form-elements-default-font;
+                font-size: 13px;
+                color: #585858;
+            }
+
+            &.disabled {
+                cursor: not-allowed;
+            }
+        }
+
+        .radio label, 
+        .checkbox label,
+        label.radio-inline,
+        label.checkbox-inline {
+            padding-left: 20px;
+            margin-bottom: 0;
+            font-weight: 400;
+            cursor: pointer;
+            display: inline-block;
+            max-width: 100%;
+            line-height: 22px;
+        }
+
+        .radio label,
+        label.radio-inline {
+            line-height: 22px;
+        }
+
+        .radio.disabled label, 
+        .checkbox.disabled label, 
+        fieldset[disabled] .radio label, 
+        fieldset[disabled] .checkbox label
+        .radio label.disabled, 
+        .checkbox label.disabled,
+        label.radio-inline.disabled,
+        label.checkbox-inline.disabled {
+            cursor: not-allowed;
+        }
+
+        .checkbox.test-accounts {
+            margin-top: 0;
+
+            &.previous-field-error {
+                margin-top: -3px;
+            }
+
+            label {
+                line-height: 22px;
+                font-size: 13px;
+                color: #777;
+            }
+        }
+
+        .toggle-password-visibility-container {
+            background-color: #f4f4f4;
+            margin-top: -9px;
+            padding: 7px 8px;
+            font-size: 12px;
+            line-height: 20px;
+            margin-bottom: 4px;
+            border: 1px solid #E0E4E7;
+        }
+
+        .toggle-password-visibility-container + label {
+            margin-top: 18px;
+        }
+
+        .checkbox-sub-cat {
+            margin-left: 18px;
+            padding-left: 8px;
+            border-left: 1px dotted #CCC;
+
+            label.auth {
+                color: #777;
+            }
+        }
+
+        .checkbox-sub-cat-hidden {
+            display: none;
+        }
+
+        input[type=text],
+        input[type=password],
+        input[type=url],
+        input[type=tel],
+        input[type=email] {
+            background-color: #FFF;
+            padding-bottom: 7px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-top: 7px;
+            font-size: 14px;
+            width: 100%;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            height: 39px;
+            margin: 8px 0;
+            border: 1px solid #DDD;
+            display: inline-block;
+            line-height: 20px;
+            color: #555;
+            vertical-align: middle;
+            font-weight: normal;
+            font-family: @form-elements-default-font;
+
+            &:focus {
+                .inputFocus();
+            }
+        }
+
+        textarea {
+            -webkit-border-radius: 0px;
+            -moz-border-radius: 0px;
+            -ms-border-radius: 0px;
+            -o-border-radius: 0px;
+            border-radius: 0px;
+            box-shadow: none;
+            border: 1px solid #DDD;
+            display: inline-block;
+            padding: 12px;
+            margin: .5em 0;
+            font-size: 14px;
+            height: 60px;
+            color: #555;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            vertical-align: middle;
+            width: 100%;
+            font-weight: normal;
+            font-family: @form-elements-default-font;
+
+            &:focus {
+                .inputFocus();
+            }
+        }
+
+        select {
+            font-weight: normal;
+            font-family: @form-elements-default-font;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -ms-border-radius: 4px;
+            -o-border-radius: 4px;
+            border-radius: 4px;
+            color: #555;
+            font-size: 14px;
+            padding: 4px 6px;
+            height: 30px;
+            line-height: 30px;
+            min-width: 120px;
+            max-width: 400px;
+            background-color: #FFF;
+            border: 1px solid #CCC;
+            display: inline-block;
+            margin-bottom: 0;
+            vertical-align: middle;
+            margin: .5em .5em .5em 0;
+
+            &:focus {
+                .inputFocus();
+            }
+
+            @media(max-width: @screen-tablet) {
+                min-width: 0;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 0;
+                height: 39px;
+            }
+        }
+
+        input[type=text].invalid,
+        input[type=password].invalid,
+        input[type=url].invalid,
+        input[type=email].invalid,
+        input[type=password].invalid,
+        input[type=tel].invalid,
+        textarea.invalid,
+        select.invalid {
+            .invalidInput();
+        }
+
+        input[type=radio][disabled], 
+        input[type=checkbox][disabled], 
+        input[type=radio].disabled, 
+        input[type=checkbox].disabled, 
+        fieldset[disabled] input[type=radio], 
+        fieldset[disabled] input[type=checkbox] {
+            cursor: not-allowed;
+        }
+
+        .form-file-img-container {
+            float: left;
+            width: 149px;
+            position: relative;
+
+            @media(max-width: @screen-tablet) {
+                float: none;
+                margin: 0px auto 18px auto;
+            }
+
+            .ajax-loader-container {
+                position: absolute;
+                right: 0;
+                margin-right: -25px;
+                top: 164px;
+
+                img {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            .error-container {
+                text-align: center;
+                padding-top: 4px;
+                color: #C00000;
+                font-size: 12px;
+            }
+
+            .form-file-img-link {
+                width: 148px;
+                height: 148px;
+                display: block;
+                border: 4px dashed #dadada;
+                text-align: center;
+                padding: 20px 20px;
+                margin: 0;
+                line-height: 100px;
+
+                &.disabled {
+                    cursor: default;
+                }
+
+                &.error {
+                    border-color: @form-error-color;
+                }
+
+                img {
+                    max-width: 100px;
+                    max-height: 100px;
+                    display: inline;
+                    vertical-align: middle;
+                }
+
+                i {
+                    display: inline-block;
+                    width: 100px;
+                    height: 100px;
+                    vertical-align: middle;
+                    background-repeat: no-repeat;
+
+                    &.centered-bg {
+                        background-position: 50% 25%;
+                        background-size: cover;
+                        -webkit-transition-duration: 500ms;
+                        -webkit-transition-property: width, height;
+                    }
+                }
+            }
+
+            .form-input-file-img-container {
+                position: relative;
+            }
+
+            .btn {
+                padding: 9px 0 8px 0;
+                width: 148px;
+                display: block;
+                margin: 10px 0 0 0;
+                cursor: default;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                line-height: 13px;
+            }
+
+            @media screen and (-moz-images-in-menus:0) {
+                .btn {
+                    line-height: 14px;
+                    padding-top: 9px;
+                    padding-bottom: 7px;
+                }
+            }
+        }
+
+        input.form-file-input {
+            position: absolute;
+            width: 148px;
+            height: 29px;
+            top: 10px;
+            .opacity(0);
+            cursor: default;
+            font-size: 100px;
+            overflow: hidden;
+        }
+
+        #upload-target {
+            width: 0;
+            height: 0;
+            border: 0;
+            overflow: hidden;
+            position: absolute;
+        }
+
+        .form-avatar-push-fields-container,
+        .form-logo-push-fields-container {
+            margin-left: 200px;
+            margin-top: -5px;
+
+            @media(max-width: @screen-tablet) {
+                margin-left: 0;
+            }
+        }
+
+        .form-avatar-push-fields-container {
+            margin-bottom: 33px;
+        }
+
+        // Form sections separator
+        .formSep();
+
+        & > .form-sep {
+            margin-top: 8px;
+        }
+
+        .form-fields-section {
+            margin-top: 18px;
+
+            @media(max-width:@screen-tablet) {
+                //margin-top: 8px;
+            }
+        }
+
+        .form-fields-spacer {
+            margin-top: 10px;
+        }
+
+        .authorizations-list {
+            .authorizationsList();
+            line-height: 20px;
+
+            @media(max-width:@screen-tablet) {
+                margin-top: 1px;
+            }
+        }
+
+        #input-file-btn + .authorizations-list {
+            margin-top: 4px;
+            line-height: 18px;
+        }
+    }
+}
+
+.popover {
+    .popover-title {
+        color: #333;
+        font-size: 12px;
+    }
+
+    .authorizations-list {
+        .authorizationsList();
+
+        margin-top: 0;
+
+        &:before {
+            content: "";
+        }
+
+        &:after {
+            content : "";
+        }
+    }
+}
+
+/* `Used by...` Mixins */
+.authorizationsListInTitle() {
+    margin-top: 0;
+    margin-left: 8px;
+}
+
+.btn.create + .authorizations-list {
+    @media(max-width:@screen-phone) {
+        margin-top: 8px;
+    }
+}
+
+.authorizationsList() {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    font-size: 12px;
+    color: #aaa;
+    display: inline-block;
+    font-weight: normal;
+    vertical-align: middle;
+
+    &:before {
+        content: "(";
+    }
+
+    &:after {
+        content: ")";
+    }
+
+    li {
+        display: inline;
+        vertical-align: middle;
+        padding: 0;
+        margin: 0;
+
+        span.updated-on {
+            color: #68be44;
+        }
+
+        a {
+            color: #4f95d6;
+
+            &:hover {
+                color: #292E31;
+            }
+        }
+    }
+}

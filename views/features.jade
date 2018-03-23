@@ -1,0 +1,107 @@
+extend layouts/baseUnauthenticated
+
+block prepend title
+    = __('Features')
+
+block appContent
+    article.main-features
+        .container
+            .row.head
+                .col-md-12
+                    header
+                        h2
+                            = __('Registration as a service')
+                        p
+                            = __('EvenID provides you a suite of APIs that makes user management super easy.')
+            
+            .row.nav
+                .col-md-3.col-sm-6
+                    .feature.forms
+                        h3
+                            = __('Forms')
+                        p
+                            = __ ('EvenID allows you to set up login, registration and password recovery form in an instant. Persistent login is also included.')
+                 
+                .col-md-3.col-sm-6
+                    .feature.emails-and-sms
+                        h3
+                            = __('Emails & SMS management')
+                        p
+                            = __('Send an email or a SMS to one or more users by performing a single HTTP POST request.  Email validation is also included.')
+
+                .col-md-3.col-sm-6
+                    .feature.test-accounts
+                        h3
+                            = __('Test accounts')
+                        p
+                            = __('Improve your conversion rate by allowing users to test your app before registering for real. No additional code is required.')
+
+                .col-md-3.col-sm-6
+                    .feature.rely-on-each-other
+                        h3
+                            = __('Cooperation between apps')
+                        p 
+                            = __('Personal information updated in one app will be updated in all. Email validated in one app doesn\'t have to be validated by others.')
+    
+    article.feature-mobile
+        .container
+            .col-sm-5
+                div.desc
+                    h3
+                        = __('Seamlessly integrated with mobile')
+                    p
+                        = __('By leveraging the power of mobile website, EvenID is immediately available for all mobile platforms, including iOS and Android. The EvenID mobile app will be available shortly after, for all major platforms.')
+                    p
+                        a.arrow(href="/docs/guides/how-to-redirect-user-depending-on-platform#mobile-apps")= __('View mobile documentation')
+                    aside
+                        p
+                            = __('EvenID app will be available on the App Store and Google Play.')
+            .col-sm-6.col-md-offset-1
+                div.img
+                    img(src= staticURL('/img/features/mobiles_' + currentLocale + '.png')
+                        alt="")
+
+    article.other-features
+        .container
+            .row.head
+                .col-md-12
+                    header
+                        h2
+                            = __('And much, much more...')
+                        p
+                            = __('With over a dozen powerful features, EvenID is certainly the best way to manage users online.')
+                            if !userIsLoggedIn()
+                                a.arrow(href="/register") 
+                                    span= __('Register')
+                            else
+                                a.arrow(href='/users/' + session.login.user.id) 
+                                    span= __('My account')
+            .row.nav
+                .col-sm-4.twofa
+                    h3
+                        =  __('Two-factor authentication')
+                    
+                    p
+                        = __ ('Improve the security of your user accounts by letting them log in with both a password and a code that EvenID will send to a cellphone, via SMS.')
+                    
+                    p
+                        a.arrow(href='/docs') 
+                            span= __('Learn more')
+
+                .col-sm-4.social-login
+                    h3
+                        = __('Social login')
+                    p
+                        = __('Improve your conversion rate by allowing your users to use their existing Facebook, Google or Twitter account to register. No additional code is required.')
+                    p
+                        a.arrow(href='/docs') 
+                            span= __('Learn more')
+
+                .col-sm-4.statistics
+                    h3
+                        =  __('Statistics')
+                    p
+                        = __('View the number of registered users, active users, as well as retention for day, month and year. Test accounts conversion rate is also included.')
+                    p
+                        a.arrow(href='/docs') 
+                            span= __('Learn more')

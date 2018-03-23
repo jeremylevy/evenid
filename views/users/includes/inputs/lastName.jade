@@ -1,0 +1,32 @@
+mixin lastName (required)
+    - var hasFlash = false
+    - var value = null
+
+    div
+        div
+            label.user-fields(for="last-name")
+                if path === '/oauth/authorize' && (Object.keys(fieldsToAuthorize || {}).length || flow === 'login' || userWasLoggedByClient)
+                    = __('Your last name')
+                else
+                    = __('Last Name')
+
+            if (authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'last_name'))
+        
+        - hasFlash = undefined !== flash('last_name')
+        - value = user.last_name && !hasFlash ? user.last_name : flash('last_name')
+
+        input.used-by-field(type="text"
+                            name="last_name"
+                            id="last-name"
+                            class= flash('errors.last_name') ? 'invalid' : ''
+                            placeholder= __('Cooper')
+                            required= required
+                            value= value
+                            maxlength= config.EVENID_USERS.MAX_LENGTHS.LAST_NAME
+                            data-field="last_name"
+                            data-first-value= value)
+        
+        if flash('errors.last_name')
+            .error-wrapper= flash('errors.last_name')

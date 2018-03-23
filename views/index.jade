@@ -1,0 +1,61 @@
+extend layouts/baseUnauthenticated
+
+block title
+    = __('EvenID')
+
+block appContent
+    .cover-content-container
+        .cover-content-header
+            .container
+                .row
+                    .col-md-6
+                        .text
+                            h1(class= currentLocale)
+                                = __('Focus on your application not on managing your users.')
+                            p.desc-title(class= currentLocale)
+                                = __('EvenID is the first service that enables you to set up a complete user management, from registration to unsubscription, in a matter of minutes.')
+                            p.button-group
+                                a.btn.big.homepage(href="/features")
+                                    = __('Learn more')
+                                if !userIsLoggedIn()
+                                    a.btn.big.homepage-registration(href="/register")
+                                        = __('Register')
+                                else 
+                                    a.btn.big.homepage-registration(href='/users/' + session.login.user.id)
+                                        = __('My account')
+                    .col-md-6
+                        img.img(src= "/img/features/mobiles_" + currentLocale + ".png", alt="")
+        .cover-content
+            .container.cat-container
+                .col-md-4
+                    section.features
+                        a(href="/features")
+                            h2 
+                                = __('From registration to unsubscription')
+                            p 
+                                = __('Handle login, password recovering, test accounts and email sending in an instant.')
+                            p
+                                span.arrow
+                                    = __('Learn more')
+                
+                .col-md-4
+                    section.benefits.middle
+                        a(href="/features")
+                            h2
+                                = __('Always up-to-date personal information')
+                            p 
+                                = __('You are notified of each update no matter the app on which it occurs.')
+                            p
+                                span.arrow
+                                    = __('Learn more')
+                
+                .col-md-4
+                    section.platforms
+                        a(href="/features")
+                            h2
+                                = __('Platform agnostic')
+                            p
+                                = __('No matter the platform, EvenID works fine with browsers, mobile and desktop apps.')
+                            p
+                                span.arrow
+                                    = __('Learn more')

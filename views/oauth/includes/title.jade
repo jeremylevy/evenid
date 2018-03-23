@@ -1,0 +1,16 @@
+mixin title(flow, client)
+    .title-container
+        if flow === 'registration'
+            h2
+                = __('Register on %s', client.name)
+        
+        if flow === 'login'
+            h2
+                = __('Log in to your account')
+
+        if flow === 'recover_password'
+            h2
+                if !code
+                    = __('Reset my password')
+                else
+                    = __('Change password')

@@ -1,0 +1,30 @@
+extend layouts/baseUnauthenticated
+
+block prepend title
+    = __('Contact')
+
+block appContent
+    .contact-container
+        .container
+            .row
+                .col-md-12
+                    header.title
+                        h1
+                            = __('Contact us')
+                        p 
+                            = __('Get in touch and let us know how we can help.')
+            .row
+                .col-md-6
+                    a.contact-section-link.help(href="mailto:support@evenid.com")
+                        h2
+                            = __('Help & Support')
+                        p
+                            = __('We’re here to help with any questions or code.')
+                .col-md-6
+                    a.contact-section-link.general-communication(href="mailto:contact@evenid.com")
+                        h2
+                            = __('General communication')
+                        p
+                            = __('For general queries, including partnership opportunities.')
+    
+    include /includes/contactSocialContainer

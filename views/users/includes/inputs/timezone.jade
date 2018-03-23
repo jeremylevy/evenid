@@ -1,0 +1,41 @@
+mixin timezone (required)
+    - var hasFlash = false
+    - var selected = false
+
+    div
+        div
+            label.user-fields(for="timezone")
+                if path === '/oauth/authorize' && (Object.keys(fieldsToAuthorize || {}).length || flow === 'login' || userWasLoggedByClient)
+                    = __('Your timezone')
+                else
+                    = __('Time zone')
+
+            if (authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'timezone'))
+        
+        select.used-by-field(name="timezone"
+                             id="timezone"
+                             class= flash('errors.timezone') ? 'invalid' : ''
+                             required= required
+                             data-field="timezone"
+                             data-first-value="")
+
+            option(value="")= __('Select a time zone')
+            
+            - for (var continent in timezones)
+                optgroup(label=continent)
+                    - for (var timezone in timezones[continent])
+                        - hasFlash = undefined !== flash('timezone')
+                        - selected = user.timezone === timezone && !hasFlash 
+                        - selected = selected || flash('timezone') === timezone
+
+                        option(value= timezone
+                               selected= selected)= timezones[continent][timezone]
+
+        if flash('errors.timezone')
+            .error-wrapper= flash('errors.timezone')
+
+        if path === '/oauth/authorize' && !hasFlash && !user.timezone
+            include ../detectTimezoneScript
+            +detectTimezoneScript()

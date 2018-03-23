@@ -1,0 +1,534 @@
+extend ../layouts/baseDocs
+
+block prepend title
+    | The flow
+
+block docContent
+    h2 
+        | The flow
+    
+    p 
+        | EvenID uses the OAuth 2.0 protocol for login and registration flow. 
+    
+    p
+        | We support common OAuth 2.0 scenarios such as those for web server, installed, and client-side applications.
+    
+    p 
+        | OAuth 2.0 is a relatively simple protocol. 
+    
+    p
+        | To begin, you need to 
+        a(href="#create-a-client") create a client
+        |  to obtain a client ID and client secret which were required to communicate with the API.
+    
+    p 
+        | Next, you need to 
+        a(href="#add-a-redirection-uri") add a URL 
+        |  to redirect the person registering in or logging in back to. 
+        | This URL will be used to capture the response from the login and registration dialog.
+    
+    p 
+        | Then, your client application display login or registration form by 
+        a(href="#redirecting-user") redirecting user 
+        |  to a specially crafted URL. 
+
+    p 
+        | Finally, your client application 
+        a(href="#request-access-token") requests an access token
+        |  using the response from the login or registration dialog, 
+        | and 
+        a(href="#use-access-token") sends it to the wanted API method
+        | .
+
+    h4#create-a-client
+        | 1) Create a client to obtain a client ID and client secret
+
+    p 
+        | In order to create a client, you must be logged in and go to the following page:
+    
+    p
+        a(href="/clients", target="/clients")= currentDomain + '/clients'
+    
+    p
+        | Each client has the following 
+        strong required 
+        |  parameters:
+    
+    ul
+        li
+            code Logo
+            | . The logo of your app.
+        li
+            code Name
+            | . The name of your app.
+        li
+            code Description
+            | . The description of your app.
+        li
+            code Website
+            | . The website of your app. (
+            strong Mobile and desktop apps can set store URL
+            | .)
+        li
+            code allow_test_accounts
+            | . Allow users to test your app before registering.
+            | (Read the 
+            a(href="/docs/test-accounts-and-user-status#manage-test-accounts") "test accounts and user status"
+            |  page to learn more about test accounts.)
+    
+    p
+        | It also has the following 
+        strong optional 
+        |  parameters:
+    
+    ul
+        li
+            code Facebook_username
+            | . Facebook page username.
+        li
+            code Twitter_username
+            | . Twitter account username.
+        li
+            code Instagram_username
+            | . Instagram account username.
+    
+    p
+        | Once created, you obtain a 
+        code client_id
+        |  and  
+        code client_secret
+        |  which were required to communicate with the API.
+
+    .bs-callout.bs-callout-danger
+        h5
+            | Client secrets confidentiality
+        p
+            | Clients incapable of maintaining the confidentiality of their
+            | credentials (e.g., clients executing on the device used by the
+            | user, such as an installed native application or a web
+            | browser-based application) 
+            strong.stronger must not use (neither store)
+            |  the issued secret. 
+            strong.stronger
+                | Embedding the client secret in your installed application is not considered safe
+            | .
+
+    include ./includes/mixins/objectIDSizeInfo
+    +objectIDSizeInfo('Client IDs')
+
+    include ./includes/mixins/sha1SizeInfo
+    +sha1SizeInfo('Client secrets')
+
+    h4#add-a-redirection-uri
+        | 2) Add a URL to redirect the person registering in or logging in back to
+    
+    p 
+        | To create a URL, you need to go to your client page (the one created during 
+        a(href="#create-a-client") previous step
+        | ) and click on the "Redirection uris" category.
+    
+    p
+        | Each URL has the following 
+        strong required 
+        |  parameters:
+
+    ul
+        li
+            p
+                code uri
+                | . The URL that you want to redirect the person registering in or logging in back to. 
+                | This URL will capture the response from the login and registration dialog.
+            p
+                | This URL 
+                strong must be an absolute URI
+                |  and may include a querystring (which will be retained when adding additional query parameters) but 
+                strong must not include a fragment component
+                | .
+
+
+            .bs-callout.bs-callout-info
+                h5
+                    | Mobile apps
+                p
+                    | The prefered way to redirect user on a mobile app is by registering an "app-specific" URL as 
+                    code uri
+                    |  (see 
+                    a(href="https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10"
+                        target="https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Inter-AppCommunication/Inter-AppCommunication.html#//apple_ref/doc/uid/TP40007072-CH6-SW10") 
+                        | here
+
+                    |  for iOS, 
+                    a(href="http://stackoverflow.com/questions/2448213/how-to-implement-my-very-own-uri-scheme-on-android/2448531#2448531"
+                        target="http://stackoverflow.com/questions/2448213/how-to-implement-my-very-own-uri-scheme-on-android/2448531#2448531") 
+                        | here
+
+                    |  for Android, and 
+                    a(href="http://msdn.microsoft.com/library/windows/apps/jj206987(v=vs.105).aspx#BKMK_LaunchingaURIusingProximity"
+                      target="http://msdn.microsoft.com/library/windows/apps/jj206987(v=vs.105).aspx#BKMK_LaunchingaURIusingProximity")
+                      | here
+                    |  for Windows Phone). 
+                    strong.stronger When an "app-specific" URL is used the client secret should not be used
+                    | .
+            
+            .bs-callout.bs-callout-info
+                h5
+                    | Desktop apps
+                p
+                    | Two special   
+                    code uri
+                    | s may be used by desktop apps which cannot have access to any URL: 
+                    code http://localhost
+                    |  and 
+                    code urn:ietf:wg:oauth:2.0:oob
+                    | . Read  
+                    a(href="/docs/guides/how-to-redirect-user-depending-on-platform#desktop-apps") our guide
+                    |  to learn what uri to choose and why. 
+                    strong.stronger When a special uri is used the client secret should not be used
+                    | .
+        li
+            code scope
+            | . When a person register into your app via EvenID you can access a subset of it's personal information stored on EvenID. 
+            | Scope is how you ask someone if you can access that data. 
+            strong What you ask for will determine what you can access.
+        li
+            code response_type
+            | . Determines whether the response data included when the redirect back to the 
+            code uri
+            |  occurs is in URL parameters (?param=value) or fragment (#param=value). 
+            | This may be one of the following values:
+            ul
+                li
+                    code code
+                    | . Response data is included as URL parameters (?param=value) and contains a code
+                    |  parameter (an encrypted string unique to each registration and login request).
+                    | It's most useful when your server will be handling the token.
+                li
+                    code token
+                    | . Response data is included as a URL fragment (#param=value) and contains an access token.
+                    | This is most useful when the client will be handling the token.
+
+                    .bs-callout.bs-callout-warning
+                        h5
+                            | Token response type limitations
+                        p
+                            | Given that access token will be send to you through the URI fragment, 
+                            | it can be exposed to unauthorized parties. As a result, 
+                            strong
+                                | the 
+                                code token
+                                |  response type is only available for 
+                                code https
+                                |  uris
+                            | . 
+                            | Also, given that no refresh token will be issued to you, 
+                            strong you will not be able to implement persistent login
+                            | .
+
+    h4#redirecting-user
+        | 3) Redirect user to a specially crafted URL
+    
+    p
+        | Your app start the registration and login process by redirecting user 
+        | to an endpoint which will display the registration or login dialog:
+    pre
+        span.pln https
+        span.pun :
+        span.com //evenid.com/oauth/authorize
+        span.com ?
+        span.pln client_id
+        span.pun ={
+        span.pln client_id
+        span.pun }
+        span.pun &
+        span.pln redirect_uri
+        span.pun ={
+        span.pln redirect_uri
+        span.pun }
+        span.pun &
+        span.pln flow
+        span.pun ={
+        span.pln flow
+        span.pun }
+        span.pun &
+        span.pln state
+        span.pun ={
+        span.pln state
+        span.pun }
+    
+    p
+        | This endpoint has the following 
+        strong required
+        |  parameters:
+    
+    ul
+        li
+            code client_id
+            | . The client ID obtained during 
+            a(href="#create-a-client") first step
+            | .
+        li
+            p
+                code redirect_uri
+                | . The URL added during 
+                a(href="#add-a-redirection-uri") previous step 
+                | and where you want to redirect the person registering in or logging in back to.
+
+        li
+            code flow
+            | . Determines which forms the dialog will display.
+            | This may be one of the following values:
+            ul
+                li
+                    code login
+                    | . The dialog will display the login form.
+                li
+                    code registration
+                    | . The dialog will display the registration form.
+                li
+                    code recover_password
+                    | . The dialog will display the recover password form.
+
+        li
+            code state
+            | . An arbitrary 
+            strong unique non-guessable 
+            |  string created by your app to guard against 
+            a(href="http://en.wikipedia.org/wiki/Cross-site_request_forgery"
+              target="http://en.wikipedia.org/wiki/Cross-site_request_forgery") Cross-site Request Forgery
+            | .
+            strong 
+                | You will have to check this string against the one passed once user has been redirected to your 
+                code redirect_uri
+                | . 
+            | See below.
+
+    p
+        | Depending on your platform, you may have many choices to redirect user to dialog page. 
+        | Read 
+        a(href="/docs/guides/how-to-redirect-user-depending-on-platform") our guide
+        |  to learn what redirection type to use and why.
+
+    h4#request-access-token 
+        | 4) Request an access token using the response from the login or registration dialog
+    
+    p
+        | At this point in the flow, the person using your app has granted access to the personal information
+        | that you have bound to your 
+        code redirect_uri
+        |  and is redirected to it.
+
+    p 
+        | The URL your app returns to will be appended with URL parameters or fragments (as per the chosen 
+        code response_type
+        | ), which must be captured:
+
+    h4.subtitle 
+        | a) When 
+        code response_type
+        |  is set to 
+        code code
+        | :
+
+    p.api-requirements
+        a(href="https://github.com/evenid",
+          target="https://github.com/evenid")
+            span.label.label-default Sdk::exchangeCodeForTokens(code)
+    
+    p
+        | The person using your app will be redirected to the following URL:
+    
+    pre
+        span.pln redirect_uri
+        span.pun ?
+        span.pln code
+        span.pun ={
+        span.pln code
+        span.pun }&
+        span.pln state
+        span.pun ={
+        span.pln state
+        span.pun }
+
+    include ./includes/csrfDangerBanner
+    
+    p
+        | When 
+        code code
+        |  is received, it has to be exchanged for an access token using an endpoint.
+        | The call will need to be server-to-server, since it may involves your 
+        | client secret (
+        strong.stronger
+            | your client secret should never end up in client code
+        | ).
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Authorization codes lifetime
+        p
+            | In order to mitigate the risk of leak, authorization codes are 
+            strong single-use 
+            |  and will expire 
+            strong 5 minutes
+            |  after they were issued.
+    
+    p
+        | To get an access token, you need to make an HTTP POST request to the following endpoint:
+    
+    pre
+        span.pln https
+        span.pun :
+        span.com //api.evenid.com/oauth/token
+    
+    p
+        | This endpoint has the following 
+        strong required 
+        |  parameters:
+    
+    ul
+        li
+            code client_id
+            | . The client ID obtained during 
+            a(href="#create-a-client") step one
+            | .
+        li
+            code grant_type
+            | . Must be set to 
+            code authorization_code
+            | .
+        li
+            code code
+            | . The received code.
+
+    p 
+        | Depending on the used 
+        code redirect_uri
+        | , it may also have the following 
+        strong required 
+        |  parameters:
+
+    ul
+        li
+            code client_secret
+            | . The client secret obtained during 
+            a(href="#create-a-client") step one
+            | .
+
+    p
+        | The actual request might look like the following:
+
+    pre
+        | POST /oauth/token HTTP/1.1
+        | Host: api.evenid.com
+        | Content-Type: application/x-www-form-urlencoded
+        | 
+        | client_id={client_id}
+        | &amp;client_secret={client_secret}
+        | &amp;grant_type=authorization_code
+        | &amp;code={code}
+    
+    include ./includes/oauthTokenResponseBlock
+    
+    h4.subtitle 
+        | b) When 
+        code response_type
+        |  is set to 
+        code token
+        | :
+
+    p 
+        | The person using your app will be redirected to the following:
+    
+    pre
+        span.pln redirect_uri
+        span.pun #
+        span.pln access_token
+        span.pun ={
+        span.pln access_token
+        span.pun }&
+        span.pln token_type
+        span.pun ={
+        span.pln token_type
+        span.pun }&
+        span.pln expires_in
+        span.pun ={
+        span.pln expires_in
+        span.pun }&
+        span.pln user_id
+        span.pun ={
+        span.pln user_id
+        span.pun }&
+        span.pln user_status
+        span.pun ={
+        span.pln user_status
+        span.pun }&
+        span.pln state
+        span.pun ={
+        span.pln state
+        span.pun }
+    
+    include ./includes/csrfDangerBanner
+    
+    p 
+        | Because this redirect flow involves browsers being redirected to URLs in your app from the registration or login dialog, 
+        | traffic could directly access this URL with made-up fragments. 
+    p
+        | If your app assumed these were valid parameters, the made-up data would be used by your app for potentially malicious purposes. 
+    
+    p
+        | As a result, when token is received, it must be verified. 
+        strong.stronger
+            | You should make an API call to an inspection endpoint 
+            | that will indicate who the token was generated for and by which app
+        | . 
+    p
+        | You can do this from the client or from the server, depending on your use case.
+        | Read 
+        a(href="/docs/inspect-access-token") our guide
+        |  to learn how to inspect an access token.
+    
+    h4#use-access-token 
+        | 5) Call an EvenID API method using the returned access token
+    
+    p 
+        | After your application obtains an access token, you can use the token to make calls to an EvenID API method 
+        | on behalf of a given user account. 
+    p
+        | To do this, include the access token in a request to the API by including 
+        | either an 
+        code access_token
+        |  query parameter or an 
+        code Authorization:
+        |  Bearer HTTP header. 
+        
+    p
+        | When possible, the HTTP header is preferable, because query strings tend to be visible in server logs.
+
+    h4.subtitle 
+        | Examples:
+
+    p.api-requirements
+        a(href="https://github.com/evenid",
+          target="https://github.com/evenid")
+            span.label.label-default Sdk::getUser(accessToken, userID)
+
+    p
+        | A call to the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}"
+        |  method using the access token query string parameter might look like the following:
+
+    pre
+        | GET /users/{user_id}?access_token={access_token} HTTP/1.1
+        | Host: api.evenid.com
+
+    p
+        | Here is the same call but using the Authorization: Bearer HTTP header:
+
+    pre
+        | GET /users/{user_id} HTTP/1.1
+        | Authorization: Bearer {access_token}
+        | Host: api.evenid.com
+
+    p
+        | Read 
+        a(href="/docs/use-access-token") our guide
+        |  to learn more about the use of access tokens.

@@ -1,0 +1,243 @@
+// https://gist.github.com/brandonb927/3874012
+.image-2x(@image, @width, @height, @repeat: no-repeat) {
+    @filename  : ~`/(.*)\.(jpg|jpeg|png|gif)/.exec(@{image})[1]`;
+    @extension : ~`/(.*)\.(jpg|jpeg|png|gif)/.exec(@{image})[2]`;
+    background-image: ~`"url(@{filename}.@{extension})"`;
+    background-repeat: @repeat;
+  
+    @media
+        only screen and (-webkit-min-device-pixel-ratio: 2),
+        only screen and (   min--moz-device-pixel-ratio: 2),
+        only screen and (     -o-min-device-pixel-ratio: 2/1),
+        only screen and (        min-device-pixel-ratio: 2),
+        only screen and (                min-resolution: 192dpi),
+        only screen and (                min-resolution: 2dppx) {
+            /* on retina, use image that's scaled by 2 */
+            background-image: ~`"url(@{filename}@2x.@{extension})"`;
+            background-size: @width @height;
+    }
+}
+
+.opacity(@opacity) {
+    opacity: @opacity;
+    // IE8 filter
+    @opacity-ie: (@opacity * 100);
+    filter: ~"alpha(opacity=@{opacity-ie})";
+}
+
+.min-height(@minHeight) {
+    min-height: @minHeight; 
+    height: auto !important; 
+    height: @minHeight; 
+}
+
+.link-arrow() {
+    &:after {
+        content: "";
+        display: inline-block;
+        width: 5px;
+        height: 7px;
+        .image-2x("../img/linkArrowBlue.png", 10px, 7px);
+        position: relative;
+        top: -1px;
+        margin: 0 0 0 6px;
+    }    
+}
+
+.drop-shadow(@shadow) {
+    -webkit-filter: drop-shadow(@shadow);
+    -moz-filter: drop-shadow(@shadow);
+    -ms-filter: drop-shadow(@shadow);
+    -o-filter: drop-shadow(@shadow);
+    filter: drop-shadow(@shadow);
+}
+
+// Say thanks to 
+// http://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
+.break-word() {
+    -ms-word-break: break-all;
+
+    word-break: break-all;
+    word-break: break-word;
+
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+.btn() {
+    border: 0;
+    border-radius: 3px;
+    padding: 10px 20px 8px 20px;
+    box-shadow: none;
+    background-color: @default-btn-bg;
+    color: #FFF;
+    text-transform: uppercase;
+    margin-right: 10px;
+    text-shadow: none;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: bold;
+    .transition(.1s ease-in background-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    border-color: #C5C5C5;
+    border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+    display: inline-block;
+    text-align: center;
+    background-repeat: repeat-x;
+    cursor: pointer;
+    outline: none!important;
+
+    &::-moz-focus-inner {
+        border: 0;
+    }
+
+    .ie8 & {
+        padding: 9px 20px;
+    }
+
+    &.disabled {
+        cursor: default;
+        cursor: not-allowed;
+        .opacity(0.4);
+        outline: none;
+
+        &:hover, &:active, &:active:focus, &:focus {
+            background-color: @default-btn-bg;
+            outline: none!important;
+        }
+    }
+
+    &:hover, &:focus, &:active {
+        outline: none!important;
+    }
+
+    &:hover, &:active, &:active:focus, &:focus {
+        color: #FFF;
+        background-color: darken(@default-btn-bg, 4%);
+        .transition(.1s ease-in background-color);
+        box-shadow: none;
+        outline-offset: inherit;
+    }
+
+    &.big {
+        padding: 13px 20px 11px 20px;
+        font-size: 12px;
+    }
+
+    &.full-width {
+        width: 100%;
+        padding: 13px 20px 12px 20px;
+    }
+
+    &.homepage {
+        background-color: #39729E;
+
+        &:hover {
+            background-color: #3C7AAA;
+        }
+    }
+
+    &.homepage-registration {
+        background-color: #4081B4;
+
+        &:hover {
+            background-color: #4385B9;
+        }
+    }
+
+    &.cancel {
+        background-color: @default-btn-cancel-bg;
+
+        &:hover, &:active, &:active:focus, &:focus {
+            background-color: darken(@default-btn-cancel-bg, 4%);
+        }
+
+        &.disabled {
+            &:hover, &:active, &:active:focus, &:focus {
+                background-color: @default-btn-cancel-bg;
+            }
+        }
+    }
+
+    &.create {
+        background-color: @default-btn-create-bg;
+
+        @media(max-width: @screen-tablet) {
+            width: 100%;
+            padding: 14px;
+        }
+
+        &:hover, &:active, &:active:focus, &:focus {
+            background-color: darken(@default-btn-create-bg, 4%);
+        }
+
+        &.disabled {
+            &:hover, &:active, &:active:focus, &:focus {
+                background-color: @default-btn-create-bg;
+            }
+        }
+    }
+}
+
+.inputFocus() {
+    border-color: #66AFE9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.invalidInput() {
+    border-color: #A94442;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+
+    &:focus {
+        border-color: #843534;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),0 0 6px #CE8483;
+        outline: 0;
+    }
+}
+
+// Form sections separator
+.formSep() {
+    .form-sep {
+        border-top: 1px solid #dadada;
+        height: 1px;
+        position: relative;
+        margin: 28px 0;
+
+        &.no-top-margin {
+            margin-top: 0;
+        }
+
+        .form-sep-title-container {
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            text-align: center;
+
+            h3 {
+                margin: 0;
+                display: inline-block;
+                background-color: white;
+                text-transform: uppercase;
+                border: 1px solid #C6C6C6;
+                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+                padding: 4px 8px;
+                color: #333;
+                font-family: arial, sans-serif;
+                font-size: 11px;
+                font-weight: bold;
+            }
+
+            @media screen and (-moz-images-in-menus:0) {
+                h3 {
+                    padding-top: 5px;
+                    padding-bottom: 3px;
+                }
+            }
+        }
+    }
+}

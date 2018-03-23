@@ -1,0 +1,16 @@
+mixin notificationBanner()
+    - var notification = flash('notification')
+    - var notificationType = flash('notification.type')
+
+    if notification
+        .alert-container.container
+            .row
+                .col-md-12
+                    .alert.alert-dismissible.fade.in(role="alert", 
+                                                     class= 'alert-' + (notificationType === 'error' ? 'danger' : notificationType))
+                        
+                        button.close(type="button", data-dismiss="alert")
+                            span(aria-hidden="true") ×
+                            span.sr-only= __('Close')
+                        
+                        = notification

@@ -1,0 +1,498 @@
+extend ../../../layouts/baseDocs
+
+block prepend title
+    | GET /users/{user_id}
+
+block docContent
+    h2 
+        | GET /users/{user_id}
+    
+    p.api-requirements
+        a(href="/docs/guides/how-to-use-an-access-token")
+            span.label.label-default Needs an access token
+        
+        | &nbsp;
+        
+        a(href="https://github.com/evenid",
+          target="https://github.com/evenid")
+            span.label.label-default Sdk::getUser(accessToken, userID)
+
+    p 
+        | This is the central and most important API method, the one that 
+        | gives you the personal information that you have asked for.
+    p
+        | To get the personal information of a user, 
+        | you need to make an HTTP GET request to the following endpoint:
+    
+    pre
+        span.pln https
+        span.pun :
+        span.com //api.evenid.com/users/
+        span.pun {
+        span.pln user_id
+        span.pun }
+    
+    p 
+        strong
+            | This endpoint has 
+            | no 
+            | required parameters other than those present in the URL:
+
+    ul
+        li
+            code user_id
+            | . The user ID. (Could be taken from the access token response.)
+
+    p 
+        | The actual request might look like the following:
+
+    pre
+        | GET /users/{user_id} HTTP/1.1
+        | Host: api.evenid.com
+        | Authorization: Bearer {access_token}
+    
+    include ../../includes/successfulResponseSentence
+    
+    pre
+        | {
+        |   "id":"546e66045b0539cc539bc82f",
+        |   "emails":[{
+        |      "id":"546e66045b0539cc539bc82e",
+        |      "address":"sheldon.cooper@bbt.com",
+        |      "is_verified":false,
+        |      "status":"new",
+        |      "updated_fields":[]
+        |   }],
+        |   "nickname":"Bazinga!",
+        |   "profil_photo":"http://evenid.com/users/profil-photos...",
+        |   "first_name":"Sheldon",
+        |   "last_name":"Lee Cooper",
+        |   "date_of_birth":358898400,
+        |   "gender":"male",
+        |   "place_of_birth":"US",
+        |   "nationality":"US",
+        |   "timezone": "America/Los_Angeles",
+        |   "phone_numbers":[{
+        |      "id":"5474c6019e9dc3ba804978ad",
+        |      "number":"+14155992671",
+        |      "phone_type":"mobile",
+        |      "status":"new",
+        |      "updated_fields":[]
+        |   }, {
+        |      ...
+        |      "phone_type":"landline",
+        |      "status":"new",
+        |      "updated_fields":[]
+        |   }],
+        |   "addresses":[{
+        |      "id":"5474c6019e9dc3ba804978ae"
+        |      "address_type":"residential",
+        |      "full_name":"Sheldon Lee Cooper",
+        |      "address_line_1":"215 South Madison Avenue",
+        |      "address_line_2":"Fourth floor, apartment 4A",
+        |      "access_code":"1981",
+        |      "city":"Pasadena",
+        |      "state":"California",
+        |      "postal_code":"91101",
+        |      "country":"US",
+        |      "first_for":["shipping", "billing"],
+        |      "status":"new",
+        |      "updated_fields":[]
+        |   }],
+        |   "status":"new_user",
+        |   "updated_fields":[],
+        |   "is_test_account":false
+        | }
+
+    p
+        | Received fields (as described below) depend on the personal information that you have asked for.
+
+    .bs-callout.bs-callout-info
+        h5
+            | ID properties
+        p
+            | You may safely use the 
+            code id
+            |  properties, appended to each entity, which are 
+            | guaranteed to be unique and to remain constant across updates.
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Fields used to manage personal information updates
+        
+        p
+            | The  
+            code status
+            |  and 
+            code updated_fields
+            |  fields will be described separately, in the 
+            a(href="/docs/guides/how-to-handle-personal-information-update"
+              class=(path === '/docs/guides/how-to-handle-personal-information-update' ? 'selected' : ''))
+
+                | "how to handle personal information update" guide
+            | , and 
+            strong.stronger must not be saved along with user data
+            | .
+
+    h4 User fields:
+
+    .table-responsive
+        table.table.table-striped
+            thead
+                tr
+                    th Field
+                    th Description
+                    th Set
+                    th Type
+            tbody
+                tr
+                    td 
+                        code id
+                    td 
+                        | The user ID
+                    td 
+                        | Always set.
+                    td
+                        | String - [0-9a-fA-F]{24} - Unique
+                
+                tr
+                    td 
+                        code nickname
+                    td 
+                        | The user's nickname
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - {1,50} - Unique
+
+                tr
+                    td 
+                        code profil_photo
+                    td 
+                        | The user's profil photo
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - URL (
+                        a(href="#profil-photo-sizes") Profil photo sizes
+                        | )
+
+                tr
+                    td 
+                        code first_name
+                    td 
+                        | The user's first name
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - {1,50}
+
+                tr
+                    td 
+                        code last_name
+                    td 
+                        | The user's last name
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - {1,50}
+
+                tr
+                    td 
+                        code date_of_birth
+                    td 
+                        | The user's date of birth
+                    td 
+                        | If you have asked for.
+                    td
+                        | Number - 
+                        a(href="http://en.wikipedia.org/wiki/Unix_time"
+                          target="http://en.wikipedia.org/wiki/Unix_time") Timestamp
+
+                tr
+                    td 
+                        code gender
+                    td 
+                        | The user's gender
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - female|male
+
+                tr
+                    td 
+                        code place_of_birth
+                    td 
+                        | The user's place of birth
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - 
+                        a(href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements"
+                          target="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements") ISO 3166-1
+                        |  (US, FR...)
+
+                tr
+                    td 
+                        code nationality
+                    td 
+                        | The user's nationality
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - 
+                        a(href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements"
+                          target="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements") ISO 3166-1
+                        |  (US, FR...)
+
+                tr
+                    td 
+                        code timezone
+                    td 
+                        | The user's timezone
+                    td 
+                        | If you have asked for.
+                    td
+                        | String - 
+                        a(href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"
+                          target="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones") IANA
+                        |  (Europe/Paris, America/New_York...)
+                
+                tr
+                    td 
+                        code is_test_account
+                    td 
+                        | Is user uses a test account?
+                    td 
+                        | Always set.
+                    td
+                        | Boolean
+
+    .bs-callout.bs-callout-info#profil-photo-sizes
+        h5
+            | Profil photo sizes
+        p
+            | By default, profil photos are presented at original size. 
+            | You may request a specific image size, by appending 
+            code /{size}
+            |  to URL
+            | and passing a single pixel dimension (since the images are square).
+            | The following sizes are available for you to use: 
+            strong 25, 50, 100, 200
+            | .
+            | If you request a size larger than the original, the profil photo will be presented 
+            strong.stronger at original size
+            | .
+
+
+    h4 Emails (set only if you have asked for):
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Number of emails returned
+        p
+            | When you ask for user email, the received array contains 
+            strong.stronger only one
+            |  email address. 
+            strong.stronger Users cannot give you access to more than one email address
+            | .
+
+    .table-responsive
+        table.table.table-striped
+            thead
+                tr
+                    th Field
+                    th Description
+                    th Type
+            tbody
+                tr
+                    td 
+                        code id
+                    td 
+                        | The email ID
+                    td
+                        | String - [0-9a-fA-F]{24} - Unique
+                
+                tr
+                    td 
+                        code address
+                    td 
+                        | The email address
+                    td
+                        | String - Email{3, 50} - Unique
+
+                tr
+                    td 
+                        code is_verified
+                    td 
+                        | Is user confirmed address ownership?
+                    td
+                        | Boolean
+
+    h4 Phone numbers (set only if you have asked for):
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Number of phone numbers returned
+        p
+            | The number of phone numbers returned depends on the number of phone type you have asked for (one number per phone type). 
+            | When phone type doesn't matter, 
+            strong.stronger only one
+            |  phone number will be returned. 
+            strong.stronger Users cannot give you access to more than one phone number per phone type
+            | .
+
+    .table-responsive
+        table.table.table-striped
+            thead
+                tr
+                    th Field
+                    th Description
+                    th Type
+            tbody
+                tr
+                    td 
+                        code id
+                    td 
+                        | The phone number ID
+                    td
+                        | String - [0-9a-fA-F]{24} - Unique
+                
+                tr
+                    td 
+                        code number
+                    td 
+                        | The phone number
+                    td
+                        | String - 
+                        a(href="http://en.wikipedia.org/wiki/E.164"
+                          target="http://en.wikipedia.org/wiki/E.164") E.164
+                        |  (+14155992671...)
+
+                tr
+                    td 
+                        code phone_type
+                    td 
+                        | The phone number type.
+                    td
+                        | String - unknown|mobile|landline
+
+    h4 Addresses (set only if you have asked for):
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Number of addresses returned
+        p
+            | Currently, users may give you access to up to ten addresses. As a result, 
+            strong.stronger you should not make assumptions about the number of received addresses
+            | .
+
+    .table-responsive
+        table.table.table-striped
+            thead
+                tr
+                    th Field
+                    th Description
+                    th Type
+            tbody
+                tr
+                    td 
+                        code id
+                    td 
+                        | The address ID
+                    td
+                        | String - [0-9a-fA-F]{24} - Unique
+                tr
+                    td 
+                        code address_type
+                    td 
+                        | Residential or commercial?
+                    td
+                        | String - residential|commercial
+
+                tr
+                    td 
+                        code full_name
+                    td 
+                        | The name on the mailbox (residential) 
+                        br
+                        | or the one to ask for (commercial)
+                    td
+                        | String - {1,100}
+
+                tr
+                    td 
+                        code address_line_1
+                    td 
+                        | Street address, P.O. box...
+                    td
+                        | String - {1,100}
+
+                tr
+                    td 
+                        code address_line_2
+                    td 
+                        | Apartment, suite, unit...
+                    td
+                        | String - {0,100}
+
+                tr
+                    td 
+                        code access_code
+                    td 
+                        | For buildings or gated communities
+                    td
+                        | String - {0,10}
+
+                tr
+                    td 
+                        code city
+                    td 
+                        | The address's city
+                    td
+                        | String - {1,50}
+
+                tr
+                    td 
+                        code state
+                    td 
+                        | The address's state
+                    td
+                        | String - {0,50}
+
+                tr
+                    td 
+                        code postal_code
+                    td 
+                        | The address's zip code
+                    td
+                        | String - {1,50}
+
+                tr
+                    td 
+                        code country
+                    td 
+                        | The address's country
+                    td
+                        | String - 
+                        a(href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements"
+                          target="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements") ISO 3166-1
+                        |  (US, FR...)
+
+                tr
+                    td 
+                        code first_for
+                    td
+                        | Does this address need to be placed  
+                        br
+                        | first in:
+                        br
+                        | - shipping and/or billing address select (if 
+                        br
+                        | shipping and billing addresses are separated) 
+                        br
+                        | - addresses select (if not)
+                    td
+                        | Array - {0,2} - (shipping|billing|addresses)
+    
+    include ../../includes/apiErrorBlock  

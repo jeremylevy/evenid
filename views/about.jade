@@ -1,0 +1,32 @@
+extend layouts/baseUnauthenticated
+
+block prepend title
+    = __('About')
+
+block appContent
+    .about-container
+        .container
+            .row
+                .col-md-12
+                    header.title
+                        h1
+                            = __('About EvenID')
+                        p 
+                            = __('EvenID is certainly the best way to manage users online.')
+            
+            .row
+                .col-md-6
+                    .about-section
+                        h2
+                            = __('About EvenID')
+                        p
+                            != __('Originally founded by %s to simplify user management, EvenID has grown into a fully fledged company.', '<a href="https://twitter.com/jeremy_levy">Jérémy Levy</a>')
+
+                .col-md-6
+                    .about-section.why-to-choose
+                        h2
+                            = __('Why to choose EvenID?')
+                        p
+                            = __('With all the features of evenid.com and our mobile apps to come, it has never been easier for individuals and teams to manage users online.')
+
+    include /includes/contactSocialContainer

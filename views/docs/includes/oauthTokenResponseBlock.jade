@@ -1,0 +1,15 @@
+include ./successfulResponseSentence
+        
+include ./accessTokenResponse
+
+include ./errorResponseSentence
+
+pre
+    | {
+    |   "error":"{error}"
+    | }
+
+p
+    | For a detailed list of errors, read the 
+    a(href="/docs/oauth-token-error-responses") "Oauth token error responses"
+    |  page.

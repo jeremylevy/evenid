@@ -1,0 +1,385 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+include /includes/csrf
+
+block prepend title
+    = __('Redirection uris')
+
+block appContentHeadTitle
+    include ./includes/headerTitle
+
+block appContentHeadBtn
+    include ./includes/headerDeleteForm
+    
+mixin redirectionURIList(redirectionURIs, isUpdate)
+    - for (var i = 0, j = redirectionURIs.length; i < j; ++i)
+        - var redirectionURI = redirectionURIs[i];
+        li
+            .label-container
+                if !redirectionURI.needs_client_secret
+                    span.label.label-danger= __('Client secret must not be used')
+                else
+                    span.label.label-success= __('Client secret must be used')
+
+            div
+                h3= __('URI')
+                p
+                    a(href=redirectionURI.uri, target=redirectionURI.uri)= redirectionURI.uri
+            
+                h3= __('Scope')
+                p= redirectionURI.scope.join(', ')
+            
+                h3= __('Response type')
+                p= redirectionURI.response_type
+
+                h3= __('Links')
+                p
+                    a(href= currentDomain + '/oauth/authorize?client_id=' + client.client_id + '&redirect_uri=' + encodeURIComponent(redirectionURI.uri) + '&state=REPLACE_WITH_YOUR_VALUE&flow=registration'
+                        target= currentDomain + '/oauth/authorize?client_id=' + client.client_id + '&redirect_uri=' + encodeURIComponent(redirectionURI.uri) + '&state=REPLACE_WITH_YOUR_VALUE&flow=registration')
+                        = __('redirection.uri.links.registration')
+                    
+                    |  / 
+                    
+                    a(href= currentDomain + '/oauth/authorize?client_id=' + client.client_id + '&redirect_uri=' + encodeURIComponent(redirectionURI.uri) + '&state=REPLACE_WITH_YOUR_VALUE&flow=login'
+                        target= currentDomain + '/oauth/authorize?client_id=' + client.client_id + '&redirect_uri=' + encodeURIComponent(redirectionURI.uri) + '&state=REPLACE_WITH_YOUR_VALUE&flow=login')
+                        = __('redirection.uri.links.login')
+                    
+                    |  / 
+                    
+                    a(href= currentDomain + '/oauth/authorize?client_id=' + client.client_id + '&redirect_uri=' + encodeURIComponent(redirectionURI.uri) + '&state=REPLACE_WITH_YOUR_VALUE&flow=recover_password'
+                        target= currentDomain + '/oauth/authorize?client_id=' + client.client_id + '&redirect_uri=' + encodeURIComponent(redirectionURI.uri) + '&state=REPLACE_WITH_YOUR_VALUE&flow=recover_password')
+                        = __('redirection.uri.links.recover.password')
+            
+            if !isUpdate
+                form(method="post", action= '/clients/' + client.id + '/redirection-uris/' + redirectionURI.id)
+                    p
+                        input(type="hidden", name="_method", value="DELETE")
+                        
+                        +csrf(csrfToken)
+                        
+                        a.btn(href= '/clients/' + client.id + '/redirection-uris/' + redirectionURI.id)= __('Edit')
+                        button.btn.cancel(type="submit"
+                                            data-sweetalert="true"
+                                            data-sweetalert-title= __('Confirm the deletion?')
+                                            data-sweetalert-text= __('Click "OK" if you want to delete this redirection URI.')
+                                            data-sweetalert-type="warning"
+                                            data-sweetalert-allow-outside-click="true"
+                                            data-sweetalert-show-cancel-button="true"
+                                            data-sweetalert-confirm-button-text= __('OK')
+                                            data-sweetalert-cancel-button-text= __('Cancel'))= __('Delete')
+
+block appContent
+    - var hasFlash = false
+    - var isUpdate = !!redirectionURI
+    
+    - var authHasPhoneNumber = redirectionURI && redirectionURI.scope.indexOf('phone_numbers') !== -1
+    - var authHasMobileNumber = redirectionURI && redirectionURI.scope_flags.indexOf('mobile_phone_number') !== -1
+    - var authHasLandlineNumber = redirectionURI && redirectionURI.scope_flags.indexOf('landline_phone_number') !== -1
+    
+    - var authHasAddress = redirectionURI && redirectionURI.scope.indexOf('addresses') !== -1
+    - var authHasShippingAddress = redirectionURI && redirectionURI.scope_flags.indexOf('separate_shipping_billing_address') !== -1
+    - var authHasBillingAddress = redirectionURI && redirectionURI.scope_flags.indexOf('separate_shipping_billing_address') !== -1
+
+    - var isChecked = false
+    - var mobileChecked = false
+    - var landlineChecked = false
+    - var addressChecked = false
+
+    - var classes = []
+
+    if isUpdate
+        .form-breadcrumb
+            ol.breadcrumb
+                li
+                    a(href= '/clients/' + client.id + '/redirection-uris')= __('Redirection uris')
+                li.active
+                    =redirectionURI.uri
+
+    if redirectionURIs.length
+        ul.form-entity-list
+            +redirectionURIList(redirectionURIs, isUpdate)
+
+        include /includes/pagination
+        +pagination(nbOfPages, currentPage, previousDisabled, nextDisabled, '/clients/' + client.id + '/redirection-uris')
+
+    form.form(method="post", action= '/clients/' + client.id + '/redirection-uris' + (isUpdate ? '/' + redirectionURI.id : ''))
+        +formSep(isUpdate ? __('Update this redirection URI') : __('Add a redirection URI'))
+            
+        div
+            .form-fields-section
+                div
+                    label(for="redirect_uri")= __('URI')
+
+                    - classes = classes.concat(flash('errors.uri') ? ['invalid'] : [])
+                    - classes = classes.concat(isUpdate ? ['input-to-focus-to'] : [])
+                    
+                    input(type="url"
+                            id="redirect_uri"
+                            name="redirect_uri"
+                            class= classes.join(' ')
+                            placeholder= __('http://zilo.com/callback')
+                            required="required"
+                            maxlength= config.EVENID_OAUTH_REDIRECTION_URIS.MAX_LENGTHS.URI
+                            value= redirectionURI && undefined === flash('redirect_uri') ? redirectionURI.uri : flash('redirect_uri'))
+                    
+                    if flash('errors.uri')
+                        .error-wrapper= flash('errors.uri')
+            
+            .form-fields-section
+                div
+                    label= __('Scope')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[emails]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('emails') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[emails]') === 'emails'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="emails"
+                                checked= isChecked)
+                        
+                        = __('Email address')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[nickname]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('nickname') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[nickname]') === 'nickname'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="nickname"
+                                checked= isChecked)
+                        
+                        = __('Nickname')
+
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[profil_photo]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('profil_photo') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[profil_photo]') === 'profil_photo'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="profil_photo"
+                                checked= isChecked)
+                        
+                        = __('Profil photo')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[first_name]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('first_name') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[first_name]') === 'first_name'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="first_name"
+                                checked= isChecked)
+                        
+                        = __('First name')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[last_name]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('last_name') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[last_name]') === 'last_name'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="last_name"
+                                checked= isChecked) 
+                        
+                        = __('Last name')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[date_of_birth]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('date_of_birth') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[date_of_birth]') === 'date_of_birth'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="date_of_birth"
+                                checked= isChecked) 
+                        
+                        = __('Date of birth')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[gender]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('gender') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[gender]') === 'gender'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="gender"
+                                checked= isChecked)
+                        
+                        = __('Gender')
+
+                - hasFlash = undefined !== flash('authorizations[phone_numbers]')
+                - isChecked = (authHasPhoneNumber || authHasLandlineNumber || authHasMobileNumber) && !hasFlash
+                - isChecked = isChecked || flash('authorizations[phone_numbers]') === 'phone_numbers';
+                
+                .checkbox
+                    label.checkbox-inline.auth
+                        input.checkbox-has-sub-cat(type="checkbox"
+                                                    name="authorizations[]"
+                                                    value="phone_numbers"
+                                                    checked= isChecked) 
+                        
+                        = __('Phone numbers')
+                
+                .checkbox.checkbox-sub-cat(class= isChecked ? '' : 'checkbox-sub-cat-hidden')
+                    label.checkbox-inline.auth
+                        - hasFlash = undefined !== flash('authorization_flags[phone_numbers][landline_phone_number]')
+                        - landlineChecked = authHasLandlineNumber && !hasFlash
+                        - landlineChecked = landlineChecked || hasFlash
+
+                        input.checkbox-phone-matter(type="checkbox"
+                                                    name="authorization_flags[phone_numbers]"
+                                                    value="landline_phone_number"
+                                                    checked= landlineChecked)
+                        
+                        = __('Landline')
+                    
+                    label.checkbox-inline.auth
+                        - hasFlash = undefined !== flash('authorization_flags[phone_numbers][mobile_phone_number]')
+                        - mobileChecked = authHasMobileNumber && !hasFlash
+                        - mobileChecked = mobileChecked || hasFlash
+
+                        input.checkbox-phone-matter(type="checkbox"
+                                                    name="authorization_flags[phone_numbers]"
+                                                    value="mobile_phone_number"
+                                                    checked= mobileChecked)
+                        
+                        = __('Mobile')
+                    
+                    label.checkbox-inline.auth.disabled
+                        - hasFlash = undefined !== flash('authorization_flags[phone_numbers][doesnt_matter]')
+                        - isChecked = !landlineChecked && !mobileChecked && !hasFlash
+                        - isChecked = isChecked || hasFlash
+
+                        input.checkbox-phone-doesnt-matter(type="checkbox"
+                                                            name="authorization_flags[phone_numbers]"
+                                                            value="doesnt_matter"
+                                                            checked= isChecked
+                                                            disabled=true)
+                        = __('Doesn\'t matter')
+
+                - hasFlash = undefined !== flash('authorizations[addresses]')
+                - addressChecked = (authHasAddress || authHasShippingAddress || authHasBillingAddress) && !hasFlash
+                - addressChecked = addressChecked || flash('authorizations[addresses]') === 'addresses';
+                
+                .checkbox
+                    label.checkbox-inline.auth
+                        input.checkbox-has-sub-cat(type="checkbox"
+                                                    name="authorizations[]"
+                                                    value="addresses"
+                                                    checked= addressChecked) 
+                        
+                        = __('Addresses (Include full name)')
+                
+                .checkbox.checkbox-sub-cat(class= addressChecked ? '' : 'checkbox-sub-cat-hidden')
+                    label.checkbox-inline.auth
+                        - hasFlash = undefined !== flash('authorization_flags[addresses][separate_shipping_billing_address]')
+                        - isChecked = !addressChecked || hasFlash || (authHasShippingAddress && authHasBillingAddress)
+
+                        input(type="checkbox"
+                                name="authorization_flags[addresses]"
+                                value="separate_shipping_billing_address"
+                                checked= isChecked)
+                        
+                        = __('Separate shipping and billing address. (Confirmed on each login.)')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[place_of_birth]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('place_of_birth') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[place_of_birth]') === 'place_of_birth'
+
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="place_of_birth"
+                                checked= isChecked)
+                        
+                        = __('Place of birth')
+                
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[nationality]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('nationality') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[nationality]') === 'nationality'
+                        
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="nationality"
+                                checked= isChecked)
+                        
+                        = __('Nationality')
+
+                .checkbox
+                    label.auth
+                        - hasFlash = undefined !== flash('authorizations[timezone]')
+                        - isChecked = redirectionURI && redirectionURI.scope.indexOf('timezone') !== -1 && !hasFlash 
+                        - isChecked = isChecked || flash('authorizations[timezone]') === 'timezone'
+                        
+                        input(type="checkbox"
+                                name="authorizations[]"
+                                value="timezone"
+                                checked= isChecked)
+                        
+                        = __('Time zone')
+                        
+                if flash('errors.scope')
+                        .error-wrapper= flash('errors.scope')
+
+            .form-fields-section
+                div
+                    label(for="response_type")= __('Response type')
+                    
+                    label.auth.radio-inline
+                        - hasFlash = undefined !== flash('response_type')
+                        - isChecked = !redirectionURI && !hasFlash 
+                        - isChecked = isChecked || redirectionURI && redirectionURI.response_type === 'code' && !hasFlash
+                        - isChecked = isChecked || flash('response_type') === 'code'
+
+                        input(type="radio"
+                                id="response_type"
+                                name="response_type"
+                                value="code"
+                                checked= isChecked)
+                        
+                        = __('Code')
+                    
+                    label.auth.radio-inline
+                        - hasFlash = undefined !== flash('response_type')
+                        - isChecked = redirectionURI && redirectionURI.response_type === 'token' && !hasFlash
+                        - isChecked = isChecked || flash('response_type') === 'token'
+
+                        input(type="radio"
+                                name="response_type"
+                                value="token"
+                                checked= isChecked)
+                        
+                        = __('Token')
+                    
+                    if flash('errors.response_type')
+                        .error-wrapper.last= flash('errors.response_type')
+            
+            .form-fields-section
+                +csrf(csrfToken)
+                
+                if isUpdate
+                    input(type="hidden", name="_method", value="PUT")
+                
+                button.btn.create(type="submit")
+                    = isUpdate ? __('Update this redirection URI') : __('Add this redirection URI')
+
+block rawJS
+    script.
+        app.clientAuthorizations.load();

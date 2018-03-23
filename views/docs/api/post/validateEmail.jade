@@ -1,0 +1,89 @@
+extend ../../../layouts/baseDocs
+
+block prepend title
+    | POST /users/{user_id}/emails/{email_id}/validate
+
+block docContent
+    h2 
+        | POST /users/{user_id}/emails/{email_id}/validate
+    
+    p.api-requirements
+        a(href="/docs/guides/how-to-use-an-access-token")
+            span.label.label-default Needs an access token
+        
+        | &nbsp;
+        
+        a(href="https://github.com/evenid",
+          target="https://github.com/evenid")
+            span.label.label-default Sdk::validateEmail(accessToken, userID, emailID)
+
+    p 
+        | If you have asked for user's email, and discovered, by calling the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}"
+        |  API method, that this email is not validated, you may want to confirm that this address belongs to user.
+
+    p
+        | The way EvenID validates email addresses is by sending user an email 
+        | containing a link which must be followed in order to confirm the ownership of the address.
+
+    .bs-callout.bs-callout-danger
+        h5
+            | Email validation as a requirement to registration
+        p
+            | Forcing users to validate their email before login could drastically hurt your conversion rate.
+
+    p 
+        | To validate an email address, you need to make an HTTP POST request to the following endpoint:
+    
+    pre
+        span.pln https
+        span.pun :
+        span.com //api.evenid.com/users/
+        span.pun {
+        span.pln user_id
+        span.pun }
+        span.com /emails/
+        span.pun {
+        span.pln email_id
+        span.pun }
+        span.com /validate
+    
+    p 
+        strong
+            | This endpoint has 
+            | no 
+            | required parameters other than those present in the URL:
+
+    ul
+        li
+            code user_id
+            | . The user ID. (Could be taken from the access token response.)
+        
+        li
+            code email_id
+            | . The email ID. (Could be retrieved by calling the 
+            a(href="/docs/api/get/user") "GET /users/{user_id}"
+            |  API method.)
+
+    p 
+        | The actual request might look like the following:
+
+    pre
+        | POST /users/{user_id}/emails/{email_id}/validate HTTP/1.1
+        | Host: api.evenid.com
+        | Authorization: Bearer {access_token}
+        | Content-Type: application/x-www-form-urlencoded
+    
+    include ../../includes/successfulResponseSentence
+    
+    pre
+        | {
+        |   "status":"ok"
+        | }
+    
+    include ../../includes/apiErrorBlock
+
+    p
+        | Once user clicked on the link, it will be redirected to your 
+        code redirect_uri
+        | , with code or token, as for each login.

@@ -1,0 +1,233 @@
+mixin address (fieldPrefix, disabled)
+    - var hasFlash = false
+    - var checked = false
+    - var fullName = ''
+    - var value = null
+    - var selected = false
+    
+    div.address-type-checkbox-container
+        label(for= fieldPrefix.replace(/_/g, '-') + 'address-type')= __('Address type')
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'address_type')
+        - checked = !address && !hasFlash
+        - checked = checked || address && address.address_type === 'residential' && !hasFlash
+        - checked = checked || flash(fieldPrefix + 'address_type') === 'residential'
+        
+        div
+            label.radio-inline.not-last
+                input.used-by-field(type="radio" 
+                                    name= fieldPrefix + 'address_type'
+                                    id= fieldPrefix.replace(/_/g, '-') + 'address-type'
+                                    value="residential"
+                                    checked= checked
+                                    disabled= !!disabled
+                                    data-field="addresses"
+                                    data-field-id= address && address.id
+                                    data-first-value= address && address.address_type) 
+                = __('Residential')
+            
+            - hasFlash = undefined !== flash(fieldPrefix + 'address_type') 
+            - checked = address && address.address_type === 'commercial' && !hasFlash
+            - checked = checked || flash(fieldPrefix + 'address_type') === 'commercial'
+            
+            label.radio-inline.not-last
+                input.used-by-field(type="radio"
+                                    name= fieldPrefix + 'address_type'
+                                    value="commercial"
+                                    checked= checked
+                                    disabled= !!disabled
+                                    data-field="addresses"
+                                    data-field-id= address && address.id
+                                    data-first-value= address && address.address_type) 
+                = __('Commercial')
+            
+            if flash('errors.' + fieldPrefix + 'address_type')
+                .error-wrapper= flash('errors.' + fieldPrefix + 'address_type')
+            
+    div
+        label(for= fieldPrefix.replace(/_/g, '-') + 'full-name')= __('Full name')
+        
+        if user.first_name && user.last_name
+            - fullName = user.first_name + ' ' + user.last_name;
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'full_name')
+        - value = address && !hasFlash ? address.full_name : (flash(fieldPrefix + 'full_name') || fullName)
+        
+        input.used-by-field(type="text"
+                            name= fieldPrefix + 'full_name'
+                            id= fieldPrefix.replace(/_/g, '-') + 'full-name'
+                            class= flash('errors.' + fieldPrefix + 'full_name') ? 'invalid' : ''
+                            placeholder= __('Sheldon Cooper')
+                            required="required"
+                            value= value
+                            maxlength= config.EVENID_ADDRESSES.MAX_LENGTHS.FULL_NAME
+                            disabled= !!disabled
+                            data-field="addresses"
+                            data-field-id= address && address.id
+                            data-first-value= value)
+        
+        if flash('errors.' + fieldPrefix + 'full_name')
+            .error-wrapper= flash('errors.' + fieldPrefix + 'full_name')
+
+    div
+        label(for= fieldPrefix.replace(/_/g, '-') + 'address-line-1')
+            = __('Address line 1 (Street address, P.O. box, company name, c/o)')
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'address_line_1')
+        - value = address && !hasFlash ? address.address_line_1 : flash(fieldPrefix + 'address_line_1')
+        
+        input.used-by-field(type="text", 
+                            name= fieldPrefix + 'address_line_1', 
+                            id= fieldPrefix.replace(/_/g, '-') + 'address-line-1', 
+                            class= flash('errors.' + fieldPrefix + 'address_line_1') ? 'invalid' : ''
+                            placeholder= __('215 S Madison Ave')
+                            required="required"
+                            value= value
+                            maxlength= config.EVENID_ADDRESSES.MAX_LENGTHS.ADDRESS_LINE_1
+                            disabled= !!disabled
+                            data-field="addresses"
+                            data-field-id= address && address.id
+                            data-first-value= value)
+        
+        if flash('errors.' + fieldPrefix + 'address_line_1')
+            .error-wrapper= flash('errors.' + fieldPrefix + 'address_line_1')
+
+    div
+        label(for= fieldPrefix.replace(/_/g, '-') + 'address-line-2')
+            = __('Address line 2 (Apartment, suite, unit, building, floor, etc.) (Optional)')
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'address_line_2')
+        - value = address && !hasFlash ? address.address_line_2 : flash(fieldPrefix + 'address_line_2')
+        
+        input.used-by-field(type="text"
+                            name= fieldPrefix + 'address_line_2'
+                            id= fieldPrefix.replace(/_/g, '-') + 'address-line-2'
+                            class= flash('errors.' + fieldPrefix + 'address_line_2') ? 'invalid' : ''
+                            placeholder= __('Fourth floor. Apartment 4A')
+                            value= value
+                            maxlength= config.EVENID_ADDRESSES.MAX_LENGTHS.ADDRESS_LINE_2
+                            disabled= !!disabled
+                            data-field="addresses"
+                            data-field-id= address && address.id
+                            data-first-value= value)
+        
+        if flash('errors.' + fieldPrefix + 'address_line_2')
+            .error-wrapper= flash('errors.' + fieldPrefix + 'address_line_2')
+
+    div
+        label(for= fieldPrefix.replace(/_/g, '-') + 'access-code')
+            = __('Security access code (For buildings or gated communities) (Optional)')
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'access_code')
+        - value = address && !hasFlash ? address.access_code : flash(fieldPrefix + 'access_code')
+        
+        input.used-by-field(type="text"
+                            name= fieldPrefix + 'access_code'
+                            id= fieldPrefix.replace(/_/g, '-') + 'access-code'
+                            class= flash('errors.' + fieldPrefix + 'access_code') ? 'invalid' : ''
+                            placeholder= __('1981')
+                            value= value
+                            maxlength= config.EVENID_ADDRESSES.MAX_LENGTHS.ACCESS_CODE
+                            disabled= !!disabled
+                            data-field="addresses"
+                            data-field-id= address && address.id
+                            data-first-value= value)
+        
+        if flash('errors.' + fieldPrefix + 'access_code')
+            .error-wrapper= flash('errors.' + fieldPrefix + 'access_code')
+
+    div
+        label(for= fieldPrefix.replace(/_/g, '-') + 'city')= __('City')
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'city')
+        - value = address && !hasFlash ? address.city : flash(fieldPrefix + 'city')
+        
+        input.used-by-field(type="text"
+                            name= fieldPrefix + 'city'
+                            id= fieldPrefix.replace(/_/g, '-') + 'city'
+                            class= flash('errors.' + fieldPrefix + 'city') ? 'invalid' : ''
+                            placeholder= __('Pasadena')
+                            required="required"
+                            value= value
+                            maxlength= config.EVENID_ADDRESSES.MAX_LENGTHS.CITY
+                            disabled= !!disabled
+                            data-field="addresses"
+                            data-field-id= address && address.id
+                            data-first-value= value)
+        
+        if flash('errors.' + fieldPrefix + 'city')
+            .error-wrapper= flash('errors.' + fieldPrefix + 'city')
+
+    if (config.EVENID_VIEWS.NO_STATE_FOR_ADDRESSES.indexOf(currentLocale) === -1)
+      div
+          label(for= fieldPrefix.replace(/_/g, '-') + 'state')= __('State/Province/Region (If suitable)')
+          
+          - hasFlash = undefined !== flash(fieldPrefix + 'state')
+          - value = address && !hasFlash ? address.state : flash(fieldPrefix + 'state')
+          
+          input.used-by-field(type="text"
+                              name= fieldPrefix + 'state'
+                              id= fieldPrefix.replace(/_/g, '-') + 'state'
+                              class= flash('errors.' + fieldPrefix + 'state') ? 'invalid' : ''
+                              placeholder= __('California')
+                              required="required"
+                              value= value
+                              maxlength= config.EVENID_ADDRESSES.MAX_LENGTHS.STATE
+                              disabled= !!disabled
+                              data-field="addresses"
+                              data-field-id= address && address.id
+                              data-first-value= value)
+          
+          if flash('errors.' + fieldPrefix + 'state')
+              .error-wrapper= flash('errors.' + fieldPrefix + 'state')
+
+    div
+        label(for= fieldPrefix.replace(/_/g, '-') + 'postal-code')= __('Zip')
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'postal_code')
+        - value = address && !hasFlash ? address.postal_code : flash(fieldPrefix + 'postal_code')
+        
+        input.used-by-field(type="text"
+                            name= fieldPrefix + 'postal_code'
+                            id= fieldPrefix.replace(/_/g, '-') + 'postal-code'
+                            class= flash('errors.' + fieldPrefix + 'postal_code') ? 'invalid' : ''
+                            placeholder= __('91101')
+                            required="required"
+                            value= value
+                            maxlength= config.EVENID_ADDRESSES.MAX_LENGTHS.POSTAL_CODE
+                            disabled= !!disabled
+                            data-field="addresses"
+                            data-field-id= address && address.id
+                            data-first-value= value)
+        
+        if flash('errors.' + fieldPrefix + 'postal_code')
+            .error-wrapper= flash('errors.' + fieldPrefix + 'postal_code')
+
+    div
+        label(for= fieldPrefix.replace(/_/g, '-') + 'country')= __('Country')
+        
+        - hasFlash = undefined !== flash(fieldPrefix + 'postal_code')
+        - value = address && !hasFlash ? address.postal_code : flash(fieldPrefix + 'postal_code')
+        
+        select.used-by-field(name= fieldPrefix + 'country'
+                             id= fieldPrefix.replace(/_/g, '-') + 'country'
+                             class= flash('errors.' + fieldPrefix + 'country') ? 'invalid' : ''
+                             required="required"
+                             disabled= !!disabled
+                             data-field="addresses"
+                             data-field-id= address && address.id
+                             data-first-value= address && address.country)
+            
+            option(value="")= __('Select a country')
+            - for (var locale in territories)
+                
+                - hasFlash = undefined !== flash(fieldPrefix + 'country')
+                - selected = address && !hasFlash && address.country === locale
+                - selected = selected || !address && !hasFlash && probableCountryForUser === locale
+                - selected = selected || flash(fieldPrefix + 'country') === locale
+                
+                option(value= locale 
+                       selected= selected)= territories[locale]
+        
+        if flash('errors.' + fieldPrefix + 'country')
+            .error-wrapper= flash('errors.' + fieldPrefix + 'country')

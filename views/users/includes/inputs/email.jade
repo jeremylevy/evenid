@@ -1,0 +1,40 @@
+mixin email (flow, disabled, idPrefix)
+    - var hasFlash = false
+    - var value = null
+    - var classes = []
+    - idPrefix = idPrefix || ''
+
+    div
+        div
+            label.user-fields(for= idPrefix + 'email') 
+                = __('Your email')
+            
+            if (email && authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'emails'), (fieldID = email.id))
+        
+        - hasFlash = undefined !== flash('email')
+        - value = email && !hasFlash ? email.email : (hasFlash ? flash('email') : '')
+        - classes = classes.concat(flash('errors.email') ? ['invalid'] : [])
+        - classes = classes.concat(flow === 'emails' && email ? ['input-to-focus-to'] : [])
+
+        input.used-by-field(type="email"
+                            name="email"
+                            id= idPrefix + 'email'
+                            class= classes.join(' ')
+                            placeholder= __('sheldon.cooper@email.com')
+                            required="required"
+                            value= value
+                            maxlength= config.EVENID_EMAILS.MAX_LENGTHS.ADDRESS
+                            disabled= !!disabled
+                            data-field="emails"
+                            data-field-id= email && email.id
+                            data-first-value= value)
+        
+        if flash('errors.email')
+            .error-wrapper.last= flash('errors.email')
+
+        if (['emails', 'oauthAuthorize'].indexOf(flow) !== -1)
+            div.form-fields-spacer
+                include ./password
+                +password((_flow = 'email'), (_forgottenPath = null), disabled)

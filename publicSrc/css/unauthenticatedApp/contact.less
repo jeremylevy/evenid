@@ -1,0 +1,70 @@
+.contact-container {
+    background-color: white;
+    padding: 28px 0;
+    
+    header.title {
+        position: relative;
+        text-align: center;
+
+        h1 {
+            margin-bottom: 0;
+            line-height: 1.2em;
+            font-size: 2.9em;
+            font-weight: 300;
+            color: #292E31;
+        }
+
+        p {
+            color: #6F7C82;
+            font-size: 1.7em;
+            line-height: 1.4em;
+            font-weight: 300;
+            margin-top: 3.4px;
+            margin-bottom: 45.05px;
+        }
+    }
+
+    .contact-section-link {
+        position: relative;
+        display: block;
+        padding: 50px 30px 30px;
+        border: 2px solid #f9f9f9;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-transition: border-color 300ms ease;
+        -moz-transition: border-color 300ms ease;
+        -o-transition: border-color 300ms ease;
+        -ms-transition: border-color 300ms ease;
+        transition: border-color 300ms ease;
+        text-align: center;
+        height: 172px;
+        overflow: hidden;
+
+        &:hover {
+            border-color: #008CDD;
+        }
+
+        @media(max-width: (@screen-desktop - 1)) {
+            &.general-communication {
+                margin-top: 18px;
+            }
+        }
+
+        h2 {
+            color: #000;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0;
+            line-height: 24px;
+        }
+
+        p {
+            color: #6F7C82;
+            font-size: 16px;
+            margin-bottom: 0;
+            line-height: 24px;
+            padding: 0;
+            margin: 0 0 1em;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+extend ../layouts/baseUnauthenticated
+
+block prepend title
+    = __('Log in')
+
+block appContent
+    .container
+        .login-register-form-container
+            .login-register-form-content
+                .login-register-container
+                    .login-container
+                        .clearfix.login-register-header-container
+                            .login-register-header
+                                h2
+                                    = __('Log in')
+                            
+                            .login-register-switch
+                                != __('or %sregister%s', '<a href="/register">', '</a>') 
+                        
+                        .login-form-container
+                            form(method="post", action= currentURI)
+                                if !flash('maxAttemptsError')
+                                    include ./includes/inputs/email
+                                    +email((_flow = 'login'), (_disabled = false))
+
+                                    include ./includes/inputs/password
+                                    +password((_flow = 'login'), (_forgottenPath = '/recover-password'))
+
+                                    include ./includes/inputs/persistentLogin
+
+                                    p
+                                        include ../includes/csrf
+                                        +csrf(csrfToken)
+
+                                    div
+                                        button.btn.full-width.create(type="submit")= __('Log in')
+                                
+                                else
+                                    include /includes/recaptcha
+                                    +recaptcha(flash('recaptchaPublicKey'))
+
+                                    noscript
+                                        div
+                                            button.btn.full-width.create(type="submit")= __('Log in')

@@ -1,0 +1,41 @@
+mixin recaptcha(publicKey)
+    - var prefix = null
+    - var requestBody = null
+    - var inputName = null
+
+    div
+        label
+            = __('Are you a robot?')
+        noscript
+            div.label-separator
+    
+    div(class="g-recaptcha hidden"
+        data-sitekey= publicKey
+        data-theme="light"
+        data-callback="recaptchaOnSuccessCallback")
+        
+        .recaptcha-ajax-loader-container
+            img(src= staticURL('/img/ajaxLoader.gif'), alt="")
+
+    noscript
+        div(style="width: 302px; height: 492px;")
+            div(style="width: 302px; height: 422px; position: relative;")
+                div(style="width: 302px; height: 422px; position: absolute;")
+                    iframe(src='https://www.google.com/recaptcha/api/fallback?k=' + publicKey, frameborder="0", scrolling="no", style="width: 302px; height:422px; border-style: none;")
+            div(style="border-style: none; bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px; background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px; height: 60px;")
+                textarea#g-recaptcha-response.g-recaptcha-response(name="g-recaptcha-response", style="width: 250px; height: 40px; border: 1px solid #c1c1c1; margin: 10px 25px; padding: 0px; resize: none; ")
+
+    div.hidden
+        - prefix = 'request.body.'
+        - requestBody = flash(null, prefix)
+        
+        - for (var key in requestBody)
+            - inputName = key.replace(prefix, '')
+            
+            if !inputName.match(/^recaptcha_/)
+                input(type="hidden"
+                      name= inputName
+                      value= requestBody[key])
+
+    div.success-ajax-loader-container
+        img(src= staticURL("/img/ajaxLoader.gif"), alt="")

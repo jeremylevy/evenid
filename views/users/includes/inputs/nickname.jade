@@ -1,0 +1,32 @@
+mixin nickname (required)
+    - var hasFlash = false
+    - var value = null
+
+    div
+        div
+            label.user-fields(for="nickname")
+                if path === '/oauth/authorize' && (Object.keys(fieldsToAuthorize || {}).length || flow === 'login' || userWasLoggedByClient)
+                    = __('Your nickname')
+                else
+                    = __('Nickname')
+
+            if (authorizations)
+                include ../authorizedClientsForField
+                +authorizedClientsForField(authorizations, (field = 'nickname'))
+        
+        - hasFlash = undefined !== flash('nickname')
+        - value = user.nickname && !hasFlash ? user.nickname : flash('nickname')
+
+        input.used-by-field(type="text"
+                            name="nickname"
+                            id="nickname"
+                            class= flash('errors.nickname') ? 'invalid' : ''
+                            placeholder= __('Sheldon')
+                            required= required
+                            value= value
+                            maxlength= config.EVENID_USERS.MAX_LENGTHS.NICKNAME
+                            data-field="nickname"
+                            data-first-value= value)
+
+        if flash('errors.nickname')
+            .error-wrapper= flash('errors.nickname')

@@ -1,0 +1,41 @@
+doctype html
+//- First input is not focused if `html` element has `mobile` class
+//- Also used by helper classes like `mobile-only-block`
+html(lang= currentLocale, class= is_phone ? 'mobile' : (is_tablet ? 'tablet' : ''))
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+        title
+            block title
+        link(rel="shortcut icon", href="/favicon.ico")
+        link(rel="stylesheet", href= staticURL('/css/all.css'))
+        block css
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <!--[if IE 8]>
+    != '<body class="ie ie8" data-i18n="' + escapeHTML(i18n) + '">'
+    <![endif]-->
+    <!--[if IE 9]>
+    != '<body class="ie ie9" data-i18n="' + escapeHTML(i18n) + '">'
+    <![endif]-->
+    <!--[if !IE]><!-->
+    != '<body data-i18n="' + escapeHTML(i18n) + '">'
+    <!--<![endif]-->
+    
+    div
+        block content
+    
+    include ../includes/cookieBanner
+
+    script(src= staticURL('/js/all.js'))
+    
+    block js
+    block rawJS
+    
+    include ../includes/googleAnalytics
+    include ../includes/zopimLiveChat
+    
+    </body>

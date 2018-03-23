@@ -1,0 +1,178 @@
+extend ../layouts/baseDocs
+
+block prepend title
+    | Test accounts and user status
+
+block docContent
+    h2 Test accounts and user status
+    
+    p
+        | Whenever a user logs in to your app, several cases may arise. User may be:
+    
+    ul
+        li A new user.
+        li An existing user.
+        li An existing user which register after testing.
+        li An existing user which have updated fields that you have asked for.
+    
+    p
+        | For each cases, you may want to perform different actions, like inserting or updating user in a database.
+
+    p
+        | To do that, EvenID sends you an 
+        code user_status
+        |  parameter (along with access token) which contains the status of the logged user:
+
+    include ./includes/accessTokenResponse
+
+    p
+        | The 
+        code user_status
+        | parameter may be equals to the following values:
+
+    ul
+        li
+            code new_user
+            | . The user log in to your app for the first time.
+        
+        li
+            code existing_user
+            | . The user log in to your app for the second time (or more).
+
+        li
+            code existing_user_after_test
+            | . The user log in to your app after testing. (This status will be sent only if you have allowed test accounts for your client.)
+
+        li
+            p
+                code existing_user_after_update
+                | . This user status may be sent in the following cases:
+            
+            ul
+                li 
+                    | User has updated one (or several) fields that you have asked for. 
+
+                    .bs-callout.bs-callout-info
+                        h5
+                            | Notification handler
+                        p
+                            | If you want to be notified, at the time when fields are updated, you can register a 
+                            a(href="/docs/client-notifications") notification handler
+                            |  for the 
+                            code user_did_update_personal_information
+                            |  event. In that case, you will 
+                            strong.stronger not
+                            |  receive this status after user update.
+
+                li 
+                    | You have added values to your redirection URI scope,
+                    | and, as a result, the user was forced to authorize additional fields.
+
+            .bs-callout.bs-callout-info
+                h5
+                    | Persistent login and 
+                    code existing_user_after_update
+                    |  status
+                p
+                    | Keep in mind, that you don't have to wait for user to login once again to obtain the updated user status.
+                    | You may also 
+                    a(href="/docs/guides/how-to-refresh-an-access-token") use the refresh token
+                    | , sent along with access token, when user log in to your website using a persistent login cookie,
+                    | or open your app, for example.
+
+    p
+        | Depending on your use case, you may choose to manage user status this way:
+
+    pre
+        | IF userStatus EQUALS "new_user"
+        |   GET /users/{user_id} -> Insert in datastore
+        | IF userStatus IN ["existing_user_after_test", "existing_user_after_update"]
+        |   GET /users/{user_id} -> Update in datastore
+
+    p
+        | For  the 
+        code existing_user_after_test
+        |  and 
+        code existing_user_after_update
+        |  user status, you may want to read 
+        a(href="/docs/guides/how-to-handle-personal-information-update") our guide
+        |   to learn how to handle the update.
+
+    .bs-callout.bs-callout-danger
+        h5
+            | User status are tied to the 
+            a(href="/docs/api/get/user") "GET /users/{user_id}"
+            |  method
+        
+        p
+            | Except for  
+            code existing_user
+            | , EvenID will send you the same user status, on each login, 
+            strong.stronger until
+            |  you call the 
+            a(href="/docs/api/get/user") "GET /users/{user_id}"
+            |  API method for the user. In this way, you are assured that the user status 
+            | stay in sync with your datastore, even in case of error during 
+            a(href="/docs/flow") login flow
+            | . 
+    
+    h4#manage-test-accounts How to manage test accounts
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Did you allow test accounts?
+        p
+            | This section is useful only if you have allowed test accounts for your client.
+    
+    p
+        | Whatever users choose to use (test account or registration) 
+        a(href="/docs/flow") the flow
+        |  described previously 
+        strong.stronger stay the same
+        | . The 
+        strong.stronger sole
+        |  difference is the data returned by the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+        |  method.
+
+    p
+        | When user chooses to use a test account, the data returned by the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+        |  method are not the real user data (except for user and entities ID) but test account data.
+
+    p
+        | Test account data don't belong to user but 
+        strong stay 
+        |  syntactically correct (for emails, phone numbers, etc...) and follow 
+        strong exactly the same rules
+        |  (maxlength, etc...) than those described in the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}"
+        |  method.
+
+    p
+        | Given that returned user ID is real, you can safely insert 
+        | test account in your datastore when user status equals to 
+        code new_user
+        |  and update it, with the real user data, when user status equals to 
+        code existing_user_after_test
+        | . Read 
+        a(href="/docs/guides/how-to-handle-personal-information-update") our guide
+        |  to learn how to handle the update.
+
+    p
+        | Also, given that the user ID is real, you can safely bound 
+        | anything you want to the test account as you would do for real users.
+        | In this way, a user who have used a test account will 
+        | retrieve all their data when registering for real.
+
+    p
+        | Depending on your use case, you may also want to use the 
+        code is_test_account
+        |  flag returned by the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+        |  method to distinguish between test accounts and real users. 
+
+    p
+        | After user has registered, for real, into your app, they 
+        strong cannot
+        |  use test account anymore.    

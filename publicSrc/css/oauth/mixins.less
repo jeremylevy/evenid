@@ -1,0 +1,118 @@
+.image-2x(@image, @width, @height, @repeat: no-repeat) {
+    @filename  : ~`/(.*)\.(jpg|jpeg|png|gif)/.exec(@{image})[1]`;
+    @extension : ~`/(.*)\.(jpg|jpeg|png|gif)/.exec(@{image})[2]`;
+    background-image: ~`"url(@{filename}.@{extension})"`;
+    background-repeat: @repeat;
+  
+    @media
+        only screen and (-webkit-min-device-pixel-ratio: 2),
+        only screen and (   min--moz-device-pixel-ratio: 2),
+        only screen and (     -o-min-device-pixel-ratio: 2/1),
+        only screen and (        min-device-pixel-ratio: 2),
+        only screen and (                min-resolution: 192dpi),
+        only screen and (                min-resolution: 2dppx) {
+            /* on retina, use image that's scaled by 2 */
+            background-image: ~`"url(@{filename}@2x.@{extension})"`;
+            background-size: @width @height;
+    }
+}
+
+.opacity(@opacity) {
+    opacity: @opacity;
+    // IE8 filter
+    @opacity-ie: (@opacity * 100);
+    filter: ~"alpha(opacity=@{opacity-ie})";
+}
+
+.min-height(@minHeight) {
+    min-height: @minHeight; 
+    height: auto !important; 
+    height: @minHeight; 
+}
+
+.text-overflow() {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.appearance-none() {
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -o-appearance:none;
+    appearance:none;
+
+    // Hide select arrow for IE > 9
+    &::-ms-expand{
+        display:none;
+    }
+}
+
+.link-arrow() {
+    &:after {
+        content: "";
+        display: inline-block;
+        width: 5px;
+        height: 7px;
+        .image-2x("../img/linkArrowBlue.png", 10px, 7px);
+        margin: 0 0 0 6px;
+    }    
+}
+
+.logout-btn-as-link() {
+    padding: 0;
+    color: rgba(255, 255, 255, 0.7);
+    display: inline-block;
+    line-height: 15px;
+    padding-right: 12px;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    color: #008CDD;
+    padding-right: 0;
+
+    &:hover {
+        color: #292E31;
+    }
+}
+
+.authorizations-list() {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 5px;
+    margin-left: 0;
+    list-style-type: none;
+    font-size: 13px;
+    line-height: 17.5px;
+    color: #aaa;
+    display: none;
+    font-weight: normal;
+    vertical-align: middle;
+
+    &:before {
+        content: "(";
+    }
+
+    &:after {
+        content: ")";
+    }
+
+    li {
+        display: inline;
+        padding: 0;
+        margin: 0;
+
+        span.updated-on {
+            color: #68be44;
+        }
+
+        a {
+            color: #4f95d6;
+
+            &:hover {
+                color: #292E31;
+            }
+        }
+    }
+}

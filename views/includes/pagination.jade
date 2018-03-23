@@ -1,0 +1,21 @@
+mixin pagination(nbOfPages, currentPage, previousDisabled, nextDisabled, link)
+    - link = link.replace(new RegExp('/$'), '');
+    if (nbOfPages > 1)
+        nav.pagination-nav
+            ul.pagination.pagination-sm
+                
+                li(class= previousDisabled ? 'disabled' : '')
+                    a(href= previousDisabled ? 'javascript:;' : link + '/page/' + (currentPage - 1)
+                      aria-label= __('Previous'))
+                        
+                        span(aria-hidden="true") &laquo;
+                
+                - for (var i = 1, j = nbOfPages; i <= j; ++i)
+                    li(class= currentPage === i ? 'active' : '')
+                        a(href= link + '/page/' + i)= i   
+                
+                li(class= nextDisabled ? 'disabled' : '')
+                    a(href= nextDisabled ? 'javascript:;' : link + '/page/' + (currentPage + 1)
+                      aria-label= __('Next'))
+                        
+                        span(aria-hidden="true") &raquo;

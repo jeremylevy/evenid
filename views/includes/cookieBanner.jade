@@ -1,0 +1,9 @@
+.cookie-banner
+    .container
+        .row
+            .col-md-12
+                .cookie-banner-content
+                    .cookie-banner-text
+                        != __('By continuing your visit on this site, you accept the use of cookies for statistical purposes. %sView our privacy policy%s', '<a href="/privacy">', '</a>')
+                    .cookie-banner-close-btn-container
+                        a.btn.close-btn(href="javascript:;")= __('OK')

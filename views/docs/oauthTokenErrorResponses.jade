@@ -1,0 +1,65 @@
+extend ../layouts/baseDocs
+
+block prepend title
+    | Oauth token error responses
+
+block docContent
+    h2 Oauth token error responses
+
+    p 
+        | This section discusses the response that may accompany a failed request to the 
+        code /oauth/token
+        |  endpoint.
+
+    p
+        | When a request to this endpoint fails, EvenID will responds with an HTTP 400 (Bad Request) response code 
+        | as well as a JSON response that provides more specific information about the error that caused the failure.
+
+    p
+        | For each error, the JSON response includes an 
+        code error
+        |  element which contains the name of the error:
+  
+    pre
+        | HTTP/1.1 400 Bad Request
+        | Content-Type: application/json; charset=utf-8
+        | Content-Length: 27
+        | Connection: keep-alive
+        | 
+        | {"error":"{error_name}"}
+    p
+        code error_name
+        |  may be one of the following values:
+  
+    ul
+        li
+            code invalid_request
+            | . The request is missing a required parameter, includes an
+            | unsupported parameter value (other than grant type),
+            | repeats a parameter, includes multiple credentials,
+            | utilizes more than one mechanism for authenticating the
+            | client, or is otherwise malformed.
+        
+        li
+            code invalid_client
+            | . Client authentication failed (e.g., unknown client, no
+            | client authentication included, or unsupported
+            | authentication method).
+        
+        li
+            code invalid_grant
+            | . The provided authorization grant (e.g., authorization
+            | code, resource owner credentials) or refresh token is
+            | invalid, expired, revoked, does not match the redirection
+            | URI used in the authorization request, or was issued to
+            | another client.
+
+        li
+            code unauthorized_client
+            | . The authenticated client is not authorized to use this
+            | authorization grant type.
+
+        li
+            code unsupported_grant_type
+            | . The authorization grant type is not supported by the
+            | authorization server.

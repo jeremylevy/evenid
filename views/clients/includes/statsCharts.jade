@@ -1,0 +1,22 @@
+mixin statsCharts(dataURL)
+    +formSep(__('Charts'))
+
+    .row
+        .col-md-6
+            div.stats-period-container
+                a.stats-period-link(href="javascript:;", data-period="6 days")
+                    = __('Day')
+                a.stats-period-link.selected(href="javascript:;", data-period="11 months")
+                    = __('Month') 
+                a.stats-period-link.last(href="javascript:;", data-period="6 years")
+                    = __('Year')
+        .col-md-6
+            div.stats-timezone-container
+                p 
+                    != __('Time zone: %s', '<a href="/users/' + escapeHTML(session.login.user.id) + '#timezone">' + escapeHTML(stats.timezone) + '</a>')
+
+    #client-stats-chart-loader
+        img(src= staticURL('/img/ajaxLoader.gif'), alt="")
+    #client-stats-chart-error
+        = __('An unknown error has occurred. Please try again.')
+    #client-stats-chart(data-data-url= dataURL)

@@ -1,0 +1,122 @@
+.file-target-form {
+    html.mobile & {
+        background-color: white;
+    }
+    
+    .form-file-img-container {
+        position: relative;
+        padding-top: 11px;
+
+        .ajax-loader-container,
+        .error-container {
+            padding-top: 8px;
+        }
+
+        .ajax-loader-container {
+            position: absolute;
+            left: 50%;
+            margin-left: -10px;
+            top: 15px;
+            font-size: 13px;
+
+            img {
+                vertical-align: middle;
+            }
+        }
+
+        .error-container {
+            color: #C00000;
+            font-size: 13.5px;
+            position: absolute;
+            left: 0;
+            top: 15px;
+        }
+
+        .form-file-img-link {
+            float: left;
+            width: 100px;
+            height: 100px;
+            display: block;
+            border: 4px dashed #dadada;
+            text-align: center;
+            line-height: 90px;
+            background-image: url(../img/ajaxLoader.gif);
+            background-repeat: no-repeat;
+            background-position: center center;
+
+            &.disabled {
+                cursor: default;
+            }
+
+            img {
+                display: inline;
+                vertical-align: middle;
+                max-width: 70px;
+                max-height: 70px;
+                background-color: white;
+            }
+
+            i {
+                display: inline-block;
+                width: 70px;
+                height: 70px;
+                background-repeat: no-repeat;
+                vertical-align: middle;
+
+                &.centered-bg {
+                    background-position: 50% 50%;
+                    background-size: cover;
+                    -webkit-transition-duration: 500ms;
+                    -webkit-transition-property: width, height;
+                }
+            }
+        }
+
+        .form-input-file-img-container,
+        .form-input-file-img-infos {
+            margin-left: 120px;
+            position: relative;
+        }
+
+        .form-input-file-img-infos {
+            padding-top: 54px;
+
+            .ie8 & {
+                padding-top: 53px;
+            }
+        }
+
+        .btn {
+            padding-left: 0;
+            padding-right: 0;
+            display: block;
+            margin: 0;
+            cursor: default;
+        }
+    }
+}
+
+input.form-file-input {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 46px;
+    overflow: hidden;
+    top: 54px;
+    font-size: 1000px;
+    .opacity(0);
+    cursor: default;
+    z-index: 100;
+
+    .ie8 & {
+        top: 53px;
+    }
+}
+
+#upload-target {
+    width: 0;
+    height: 0;
+    border: 0;
+    overflow: hidden;
+    position: absolute;
+}

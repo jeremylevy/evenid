@@ -1,0 +1,7 @@
+nodemon: ./node_modules/.bin/nodemon index.js
+watchifyApp: ./node_modules/.bin/watchify publicSrc/js/bootloaderApp.js -o public/js/all.js -dv
+watchifyOauth: ./node_modules/.bin/watchify publicSrc/js/bootloaderOauthAuthorize.js -o public/js/oauthAuthorize.js -dv
+watchifyOauthFileUpload: ./node_modules/.bin/watchify publicSrc/js/bootloaderOauthAuthorizeFileUpload.js -o public/js/oauthAuthorizeFileUpload.js -dv
+lessMonitorApp: ./node_modules/.bin/less-monitor -d publicSrc/css/ -m all.less -o ../../public/css/
+lessMonitorOauth: ./node_modules/.bin/less-monitor -d publicSrc/css/oauth/ -m oauth.less -o ../../../public/css/
+lessMonitorOauthDesktopApp: ./node_modules/.bin/less-monitor -d publicSrc/css/oauth/ -m oauthDesktopApp.less -o ../../../public/css/

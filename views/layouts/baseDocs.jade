@@ -1,0 +1,13 @@
+extend ./baseUnauthenticated
+
+block appContent
+    .container
+        .docs-container.clearfix
+            include ../includes/docLeftMenu
+            +docLeftMenu()
+            
+            .right-content
+                section
+                    block docContent
+                    include ../docs/includes/mixins/license
+                    +license(updatedAt)

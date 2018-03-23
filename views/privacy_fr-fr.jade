@@ -1,0 +1,434 @@
+extend layouts/baseUnauthenticated
+
+block prepend title
+    = __('Privacy & Terms')
+
+block appContent
+    .privacy-container
+        .container
+            .row
+                .col-md-12
+                    header.title
+                        h1
+                            = __('Privacy & Terms')
+                        p 
+                            = __('The privacy policy and terms of service.')
+            
+            .row
+                .col-md-6
+                    .privacy-section
+                        h2
+                            = __('Privacy Policy')
+
+                        h3
+                            | Informations générales
+                        
+                        p
+                            | Les informations que nous collectons 
+                            | sont utilisées dans le seul but d'améliorer la qualité 
+                            | de notre service. Elles ne sont, 
+                            | ni partagées, ni vendues à d'autres organisations.
+
+                        p
+                            | Nous nous réservons toutefois le droit de partager des 
+                            | informations vous concernant dans les cas suivants :
+                        
+                        ul
+                            li
+                                | Au cours d'une procédure judiciaire afin d'enquêter, 
+                                | de prévenir ou de mettre un terme à des activités 
+                                | illégales, une fraude présumée, une violation 
+                                | des conditions d'utilisation ou tout autre acte violant la loi Française.
+                            li
+                                | Si EvenID est acquis ou fusionne avec une autre société. Dans ce cas, nous
+                                | vous avertirons avant que les informations vous concernant soit transférées
+                                | et deviennent l'objet d'une politique de confidentialité différente.
+                        
+                        h3
+                            | Collecte et utilisation des informations
+                        
+                        ul
+                            li
+                                | Lorsque vous vous inscrivez sur EvenID nous vous demandons 
+                                | de renseigner votre adresse email et un mot de passe.
+                            
+                            li
+                                | EvenID utilise ces informations dans 
+                                | le seul but de pouvoir vous identifier 
+                                | lors de vos prochaines visites.
+                        
+                        h3
+                            | Cookies
+                        
+                        ul
+                            li
+                                | Un cookie est un petit fichier envoyé à votre 
+                                | navigateur par notre site web 
+                                | et qui est stocké sur votre disque dur.
+                            
+                            li
+                                | Les cookies sont nécessaires pour pouvoir utiliser EvenID.
+                            
+                            li
+                                | Nous utilisons des cookies à des fins statistiques 
+                                | et dans le but de vous permettre de vous connecter
+                                | au service.
+                        
+                        h3
+                            | Stockage de données
+                        
+                        p
+                            | EvenID utilise des fournisseurs tiers dans 
+                            | la délivrance du matériel, des logiciels, 
+                            | du réseaux et du stockage nécessaire à la bonne marche du service. 
+                        p
+                            | Bien qu'EvenID possède le code, les bases de données, 
+                            | et tous les droits sur l'application EvenID, 
+                            | vous conservez l'entière propriété sur vos données.
+                        
+                        h3
+                            | Divulgation
+                        
+                        p
+                            | EvenID se réserve le droit de divulguer 
+                            | des informations vous appartenant 
+                            | lorsque une procédure judiciaire est ouverte  
+                            | à votre encontre ou bien dans le cas d'une acquisition
+                            | ou d'une fusion avec une autre société.
+                        
+                        h3
+                            | Changements
+                        
+                        p
+                            | Nous vous tiendrons informer des changements importants dans la 
+                            | façon dont nous traitons vos informations personnelles en vous contactant par e-mail
+                            | ou en plaçant un avis bien visible sur notre site.
+                        
+                        h3
+                            | Questions
+                        
+                        p
+                            | Toute question concernant cette politique de confidentialité doit être adressée à 
+                            a(href="https://evenid.com/contact") support@evenid.com
+                            | .
+
+
+                .col-md-6
+                    .privacy-section.terms
+                        h2#terms 
+                            = __('Terms of Service')
+                        
+                        h3 Objet
+                        
+                        p
+                            | Les présentes Conditions Générales ont pour objet 
+                            | de définir les modalités de mise à disposition des 
+                            | services du site evenid.com, ci-après nommé 
+                            | « le Service » et les conditions d'utilisation du 
+                            | Service par l'Utilisateur. 
+                        
+                        p
+                            | Tout accès et/ou Utilisation du site evenid.com 
+                            | suppose l'acceptation et le respect de l'ensemble des termes 
+                            | des présentes Conditions et leur acceptation inconditionnelle. 
+                            | Elles constituent donc un contrat entre le Service et l'Utilisateur. 
+                        
+                        p
+                            | Dans le cas où l'Utilisateur ne souhaite pas accepter 
+                            | tout ou partie des présentes conditions générales, il lui 
+                            | est demandé de renoncer à tout usage du Service.       
+                        
+                        h3 Mentions légales
+                        
+                        p
+                            | Le site evenid.com est édité par :
+
+                        p.text-center
+                            | Jérémy Levy
+                            br
+                            a(href="https://twitter.com/jeremy_levy"
+                              target="https://twitter.com/jeremy_levy")
+                                | https://twitter.com/jeremy_levy
+                        
+                        p
+
+                            | Le site evenid.com est hébergé par : 
+
+                        p.text-center
+                            | Amazon Web Services LLC
+                            br
+                            | P.O. Box 8122 
+                            br
+                            | Seattle, WA 98108-1226
+                            br
+                            
+                            a(href="https://aws.amazon.com"
+                              target="https://aws.amazon.com") https://aws.amazon.com
+                            
+                        
+                        h3 Définitions
+                        
+                        p
+                            b Utilisateur
+                            | : L'Utilisateur est toute personne 
+                            | qui utilise le Site ou l'un des 
+                            | services proposés sur le Site.       
+                        
+                        p
+                            b Contenu Utilisateur
+                            | : Le terme « Contenu Utilisateur » 
+                            | désigne les données transmises par 
+                            | l'Utilisateur dans les différentes rubriques du Site.    
+                        
+                        p
+                            b Membre
+                            | : Le terme « Membre » désigne 
+                            | un utilisateur identifié sur le site.         
+                        
+                        p
+                            b Identifiant 
+                            | :  Le terme « Identifiant » recouvre les 
+                            | informations nécessaires à l'identification 
+                            | d'un utilisateur sur le site pour accéder 
+                            | aux zones réservées aux membres.    
+                        
+                        p
+                            b Mot de passe
+                            | : Le « Mot de passe » est une information 
+                            | confidentielle, dont l'Utilisateur doit garder 
+                            | le secret, lui permettant, utilisé conjointement
+                            | avec son Identifiant, de prouver l'identité.          
+                        
+                        h3 Accès au service
+                        
+                        p
+                            | Le Service est accessible gratuitement à tout Utilisateur 
+                            | disposant d'un accès à internet. Tous les coûts afférents
+                            |  à l'accès au Service, que ce soient les frais matériels,
+                            |  logiciels ou d'accès à internet sont exclusivement à la
+                            | charge de l'utilisateur. Il est seul responsable du bon
+                            | fonctionnement de son équipement informatique ainsi que
+                            | de son accès à internet. 
+                        
+                        p
+                            | Certaines sections du site sont réservées aux Membres 
+                            | après identification à l'aide de leur Identifiant et de leur Mot de passe.  
+                        
+                        p
+                            | EvenID se réserve le droit de refuser 
+                            | l'accès au Service, unilatéralement et sans notification 
+                            | préalable, à tout Utilisateur ne respectant pas 
+                            | les présentes conditions d'utilisation.        
+                        
+                        p
+                            | EvenID met en oeuvre tous les moyens raisonnables 
+                            | à sa disposition pour assurer un accès de qualité 
+                            | au Service, mais n'est tenu à aucune obligation d'y parvenir. 
+                        
+                        p
+                            | EvenID ne peut, en outre, être tenue responsable de
+                            | tout dysfonctionnement du réseau ou des serveurs ou
+                            | de tout autre événement échappant au contrôle raisonnable,
+                            | qui empêcherait ou dégraderait l'accès au Service.     
+                        
+                        p
+                            | EvenID se réserve la possibilité d'interrompre, de suspendre
+                            | momentanément ou de modifier sans préavis l'accès à tout 
+                            | ou partie du Service, afin d'en assurer la maintenance, ou pour toute
+                            |  autre raison, sans que l'interruption n'ouvre droit à
+                            |  aucune obligation ni indemnisation.      
+
+                        h3 Propriété intellectuelle
+                        
+                        p
+                            | Les textes et illustrations dont la mention le précise 
+                            | sont soumis à la 
+                            a(href="https://creativecommons.org/licenses/by-nc-sa/2.0/fr/"
+                              target="https://creativecommons.org/licenses/by-nc-sa/2.0/fr/") licence Creative Commons
+                            |  et peuvent sous 
+                            | certaines conditions être reproduits, distribués ou modifiés 
+                            | et ce, sans nécessairement en demander l'autorisation.        
+                        
+                        p
+                            | « EvenID » est une marque déposée. Toute reproduction non 
+                            | autorisée de ces marques, logos et signes distinctifs
+                            | constitue une contrefaçon passible de sanctions pénales.
+                            | Le contrevenant s'expose à des sanctions civiles et pénales
+                            | et notamment aux peines prévues aux articles L. 335.2 
+                            | et L. 343.1 du code de la Propriété Intellectuelle. 
+
+                        p
+                            | L'Utilisateur est seul responsable du Contenu Utilisateur 
+                            | qu'il met en ligne via le Service, ainsi que des textes
+                            | et/ou opinions qu'il formule. Il s'engage notamment 
+                            | à ce que ces données ne soient pas de nature à porter
+                            |  atteinte aux intérêts légitimes de tiers quels qu'ils soient.
+                        
+                        p
+                            | A ce titre, il garantit EvenID contre tous recours,
+                            | fondés directement ou indirectement sur ces propos et/ou données,
+                            | susceptibles d'être intentés par quiconque à l'encontre de EvenID.
+                            | Il s'engage en particulier à prendre en charge le paiement des sommes,
+                            | quelles qu'elles soient, résultant du recours d'un tiers à l'encontre de EvenID,
+                            | y compris les honoraires d'avocat et frais de justice.       
+                        
+                        p
+                            | EvenID se réserve le droit de supprimer tout ou partie du 
+                            | Contenu Utilisateur, à tout moment et pour quelque raison que ce soit,
+                            | sans avertissement ou justification préalable. L'Utilisateur ne 
+                            | pourra faire valoir aucune réclamation à ce titre.                  
+                          
+                        h3 Données personnelles
+                        
+                        p
+                            | Dans une logique de respect de la vie privée de ses Utilisateurs, 
+                            | EvenID s'engage à ce que la collecte et le traitement 
+                            | d'informations personnelles, effectués au sein du présent site, 
+                            | soient effectués conformément à la loi n°78-17 du 6 janvier 1978 
+                            | relative à l'informatique, aux fichiers et aux libertés, 
+                            | dite Loi « Informatique et Libertés ».
+
+                        p
+                            | A ce titre, 
+                            | le site evenid.com fait l'objet d'une 
+                            | déclaration à la CNIL sous le numéro 1887890. 
+
+                        p
+                            | Conformément à l'article 34 de la loi « Informatique et Libertés », 
+                            | EvenID garantit à l'Utilisateur un droit d'opposition, 
+                            | d'accès et de rectification sur les données 
+                            | nominatives le concernant. 
+
+                        p
+                            | L'Utilisateur a la possibilité d'exercer ce droit :
+                          
+                        ul
+                            li
+                                | sur le site, dans l'
+                                a(href="/login") espace membres
+                                | ;
+
+                            li
+                                | en utilisant le 
+                                a(href="/contact") formulaire de contact
+                                |  mis à sa disposition;
+
+                            li
+                                | en rentrant directement en contact par l'adresse suivante : 
+                                a(href="mailto:contact@evenid.com") contact@evenid.com
+                                | .
+                          
+                        h3 Limites de responsabilité
+                        
+                        p
+                            | L'Utilisateur s'engage à indemniser EvenID de 
+                            | toutes conséquences dommageables liées directement 
+                            | ou indirectement à l'usage qu'il fait du Service.         
+                        
+                        p
+                            | L'accès à certaines sections du site evenid.com 
+                            | nécessite l'utilisation d'un Identifiant et d'un Mot de passe.
+                            | Le Mot de passe, choisi par l'utilisateur, est personnel et confidentiel.
+                            
+                        p
+                            | L'utilisateur s'engage à conserver secret son mot de passe et à ne pas
+                            | le divulguer sous quelque forme que ce soit. L'utilisation de son 
+                            | Identifiant et de son Mot de passe à travers internet se fait
+                            | aux risques et périls de l'Utilisateur. 
+                        
+                        p
+                            | Il appartient à l'Utilisateur de prendre toutes les dispositions 
+                            | nécessaires permettant de protéger ses propres données contre toute atteinte.  
+
+                        p
+                            | EvenID s'engage néanmoins à mettre en place tous les moyens 
+                            | nécessaires pour garantir la sécurité et la confidentialité 
+                            | des données transmises. L'Utilisateur est informé qu'un ou 
+                            | plusieurs cookies, ne contenant aucune information personnelle, 
+                            | pourront être placés sur son disque dur afin d'assurer son identification.    
+                        
+                        p
+                            | L'Utilisateur admet connaître les limitations et contraintes 
+                            | propres au réseau internet et, à ce titre, reconnaît notamment
+                            | l'impossibilité d'une garantie totale de la sécurisation des échanges 
+                            | de données. EvenID ne pourra pas être tenue responsable des préjudices
+                            | découlant de la transmission de toute information, y compris de celle
+                            | de son identifiant et/ou de son mot de passe, via le Service.           
+                        
+                        p
+                            | EvenID ne pourra en aucun cas, dans la limite du droit applicable, 
+                            | être tenue responsable des dommages et/ou préjudices, directs ou 
+                            | indirects, matériels ou immatériels, ou de quelque nature que ce soit,
+                            | résultant d'une indisponibilité du Service ou de toute Utilisation du Service.
+                            | Le terme « Utilisation » doit être entendu au sens large, c'est-à-dire 
+                            | tout usage du site quel qu'il soit, licite ou non.        
+                        
+                        p
+                            | L'Utilisateur s'engage, d'une manière générale, 
+                            | à respecter l'ensemble de la réglementation en vigueur en France.        
+                        
+                        h3 Liens hypertextes
+                        
+                        p
+                            | evenid.com propose des liens hypertextes
+                            | vers des sites web édités et/ou gérés par des tiers.          
+                        
+                        p
+                            | Dans la mesure où aucun contrôle n'est exercé sur ces ressources externes,
+                            | l'Utilisateur reconnaît que EvenID n'assume aucune responsabilité
+                            | relative à la mise à disposition de ces ressources, 
+                            | et ne peut être tenue responsable quant à leur contenu.         
+                        
+                        h3 Force majeure
+                        
+                        p
+                            | La responsabilité de EvenID ne pourra être 
+                            | engagée en cas de force majeure ou de 
+                            | faits indépendants de sa volonté.         
+                          
+                        h3 Evolution du présent contrat
+                        
+                        p
+                            | EvenID se réserve le droit de modifier les termes,
+                            | conditions et mentions du présent contrat à tout moment.          
+                          
+                        p
+                            | Il est ainsi conseillé à l'Utilisateur de consulter 
+                            | régulièrement la dernière version des Conditions d'Utilisation 
+                            | disponible sur le site evenid.com.     
+                        
+                        h3 Durée et résiliation
+                        
+                        p
+                            | Le présent contrat est conclu pour une 
+                            | durée indéterminée à compter de l'Utilisation
+                            | du Service par l'Utilisateur.           
+
+                        h3 Droit applicable et juridiction compétente
+                        
+                        p
+                            | Les règles en matière de droit, applicables 
+                            | aux contenus et aux transmissions de données 
+                            | sur et autour du site, sont déterminées par la loi française. 
+                            | En cas de litige, n'ayant pu faire l'objet d'un accord à 
+                            | l'amiable, seuls les tribunaux français du 
+                            | ressort de la cour d'appel de Paris sont compétents.       
+
+                        h3 Licence
+
+                        p
+                            | Ce document intitulé « Conditions générales d'utilisation » 
+                            | issu de CommentCaMarche 
+                            | (
+                            a(href="http://www.commentcamarche.net",
+                              target="http://www.commentcamarche.net") www.commentcamarche.net
+                            | ) 
+                            | est mis à disposition sous les termes de la 
+                            a(href="https://creativecommons.org/licenses/by-nc-sa/2.0/fr/"
+                              target="https://creativecommons.org/licenses/by-nc-sa/2.0/fr/") licence Creative Commons
+                            | . 
+                        
+                        p
+                            | Vous pouvez copier, modifier des copies de cette page, 
+                            | dans les conditions fixées par la licence, 
+                            | tant que cette note apparaît clairement.

@@ -1,0 +1,291 @@
+// Don't overwrite sweetAlert
+// input css rules
+.form-container {
+    label {
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+        font-family: "proxima_nova_ltsemibold";
+        font-weight: normal;
+        letter-spacing: 0.25px;
+        font-size: 13.5px;
+        margin-right: 4px;
+        margin-bottom: 5px;
+        line-height: 17.5px;
+        white-space: nowrap;
+
+        &.wrap {
+            white-space: normal;
+        }
+
+        @media(max-width: @screen-tablet) {
+            white-space: normal;
+        }
+
+        &[for="password"] {
+            display: block;
+            margin-right: 0;
+
+            a.forgotten-password {
+                float: right;
+            }
+        }
+
+        &.disabled {
+            cursor: default;
+        }
+
+        &.radio-inline,
+        &.checkbox-inline {
+            position: relative;
+            display: inline-block;
+            padding-left: 20px;
+            margin-bottom: 20px;
+            vertical-align: middle;
+            font-weight: normal;
+            cursor: pointer;
+            line-height: 22px;
+            font-family: @default-input-font-family;
+            font-size: @default-input-font-size;
+            color: @default-input-color;
+
+            // For OSX which resize radio 
+            // depending on font size
+            input[type="radio"] {
+                font-size: 12px;
+            }
+        }
+
+        &.radio-inline + .radio-inline,
+        &.checkbox-inline + .checkbox-inline {
+            margin-top: 0;
+            margin-left: 10px;
+        }
+    }
+
+    .checkbox label {
+        line-height: 22px;
+    }
+
+    div + .checkbox {
+        margin-top: -10px;
+
+        &.shipping-billing-label {
+            margin-top: -16px;
+            margin-bottom: 20px;
+
+            label {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    textarea, input[type="text"], 
+    input[type="password"], 
+    input[type="datetime"], 
+    input[type="datetime-local"], 
+    input[type="date"], 
+    input[type="month"], 
+    input[type="time"], 
+    input[type="week"], 
+    input[type="number"], 
+    input[type="email"], 
+    input[type="url"], 
+    input[type="search"], 
+    input[type="tel"],
+    .recover-password-email-value {
+        // Remove inset shadow in mobile
+        .appearance-none();
+        background-color: #F5F8FA;
+        border: 1px solid #D3D8DB;
+        border-radius: 0;
+        color: @default-input-color;
+        outline: none;
+        -webkit-transition: all 0.2s ease-in;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0);
+        font-family: @default-input-font-family;
+        font-size: @default-input-font-size;;
+        padding: 12px;
+        display: block;
+        width: 100%;
+        margin-bottom: @default-input-margin-bottom;
+        line-height: 20px;
+
+        &:focus {
+            border-color: #03A9F4;
+            background-color: #fff;
+        }
+
+        &.invalid {
+            border-color: #A94442;
+
+            &:focus {
+                border-color: #843534;
+            }
+        }
+    }
+
+    select {
+        .appearance-none();
+        white-space: normal;
+        line-height: 1.5em;
+        display: block;
+        width: 100%;
+        border-radius: 0;
+        border: 1px solid #DAE0E3;
+        background-color: #F5F8FA;
+        background-image: url(../img/oauth/selectArrows.png);
+        background-position: 98% 50%;
+        background-repeat: no-repeat;
+        outline: none;
+        font-size: @default-input-font-size;
+        color: @default-input-color;
+        padding: 10px 28px 10px 12px;
+        margin: 0 0 @default-input-margin-bottom 0;
+        position: relative;
+        cursor: pointer;
+        -webkit-transition: all 0.2s ease-in;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0);
+
+        @media(max-width: @screen-tablet) {
+            margin-right: 0;
+        }
+
+        .ie & {
+            background-image: none;
+            padding-left: 8px;
+            padding-right: 8px;
+
+            option, optgroup {
+                padding: 10px 8px;
+                border: 1px solid #DAE0E3;
+                background-color: #F5F8FA;
+            }
+        }
+
+        &:focus {
+            border-color: #03A9F4;
+            background-color: #fff;
+
+            .ie & {
+                option, optgroup {
+                    background-color: #fff;
+                }
+            }
+
+            .ie8 & {
+                width: auto;
+                position: relative;
+            }
+        }
+
+        &.invalid {
+            border-color: #A94442;
+
+            &:focus {
+                border-color: #843534;
+            }
+        }
+
+        // Fix http://stackoverflow.com/questions/5551288/ies-select-boxes-closes-themselves-when-hovering
+        option {
+            font-family: @default-input-font-family;
+        }
+    }
+
+    select[name^=date_of_birth_] {
+        display: inline-block;
+        width: 25%;
+        margin-right: 20px;
+        background-position: 92% 50%;
+
+        @media(max-width: @screen-tablet) {
+            width: 100%;
+            background-position: 98% 50%;
+        }
+    }
+
+    select + .error-wrapper, 
+    input + .error-wrapper,
+    .toggle-password-visibility-container + .error-wrapper {
+        margin-top: -14px;
+    }
+
+    .error-wrapper {
+        color: #c06666;
+        margin-top: 6px;
+        margin-bottom: 14px;
+        font-size: 13.5px;
+        line-height: 20px;
+    }
+
+    .radio-inline + .error-wrapper {
+        margin-top: -18px;
+    }
+
+    .form-sep {
+        border-top: 1px solid #ddd;
+        height: 25px;
+        position: relative;
+        margin: 40px 0 10px 0;
+
+        .form-sep-title-container {
+            position: absolute;
+            top: -14px;
+            left: 0;
+            right: 0;
+            text-align: center;
+
+            h3 {
+                margin: 0;
+                display: inline-block;
+                background-color: white;
+                text-transform: uppercase;
+                border: 1px solid #ddd;
+                padding: 4px 8px;
+                color: rgb(55, 71, 79);
+                font-family: arial, sans-serif;
+                font-size: 11px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .toggle-password-visibility-container {
+        text-align: right;
+        margin-top: -@default-input-margin-bottom;
+        padding: 11px 8px;
+        font-size: 13.5px;
+        line-height: 20px;
+        margin-bottom: @default-input-margin-bottom;
+        border: 1px solid #D3D8DB;
+        border-top: 0;
+        width: 100%;
+    }
+
+    .recover-password-email-value {
+        background-color: #F1F1F1;
+        color: #6F6C6C;
+    }
+
+    .login-form-ajax-loader {
+        display: none;
+        text-align: center;
+        padding: 14px 0 0 0;
+        margin-bottom: -4px;
+    }
+
+    .authorizations-row {
+        .authorizations-list {
+            .authorizations-list();
+        }
+    }
+}

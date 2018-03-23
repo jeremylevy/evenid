@@ -1,0 +1,25 @@
+mixin docLeftMobileMenuList
+    ul
+        li
+            h3 1. Overview
+
+        include ./docLeftMenuOverviewList
+        +docLeftMenuOverviewList()
+
+        li
+            h3 2. API
+
+        include ./docLeftMenuApiList
+        +docLeftMenuApiList()
+
+        li
+            h3 3. SDKs
+
+        include ./docLeftMenuSdkList
+        +docLeftMenuSdkList()
+    
+        li
+            h3 Guides
+            
+        include ./docLeftMenuGuidesList
+        +docLeftMenuGuidesList()

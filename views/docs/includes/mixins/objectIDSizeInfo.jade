@@ -1,0 +1,11 @@
+mixin objectIDSizeInfo(entity)
+    .bs-callout.bs-callout-info
+        h5
+            = entity + ' size'
+        p
+            = entity + ' are created as '
+            a(href="http://en.wikipedia.org/wiki/Hexadecimal"
+              target="http://en.wikipedia.org/wiki/Hexadecimal") hexadecimal numbers
+            | ,  
+            strong 24 
+            |  digits long.

@@ -1,0 +1,67 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+
+block prepend title
+    = __('Personal information')
+
+block appContentHeadTitle
+    include ./includes/headerTitle
+
+block appContentHeadBtn
+    //- include ./includes/headerDeleteForm
+
+block appContent
+    .form
+        include /includes/uploadImgFileForm
+        +uploadImgFileForm()
+        
+        form.file-upload-sibling-form(method="post", action= currentURI)
+            div
+                .form-avatar-push-fields-container
+                    include ./includes/inputs/nickname
+                    +nickname((_isRequired = clientsWantField(authorizations, 'nickname')))
+                    
+                    include ./includes/inputs/firstName
+                    +firstName((_isRequired = clientsWantField(authorizations, 'first_name')))
+
+                    include ./includes/inputs/lastName
+                    +lastName((_isRequired = clientsWantField(authorizations, 'last_name')))
+
+                .clearfix
+
+                +formSep(__('Your birth'), (_noTopMargin=true))
+
+                .clearfix
+                    include ./includes/inputs/dateOfBirth
+                    +dateOfBirth((_isRequired = clientsWantField(authorizations, 'date_of_birth')))
+                    
+                    include ./includes/inputs/placeOfBirth
+                    +placeOfBirth((_isRequired = clientsWantField(authorizations, 'place_of_birth')))
+                    
+                    include ./includes/inputs/gender
+                    +gender((_isRequired = clientsWantField(authorizations, 'gender')), (_displayedOnApp = true))
+
+                +formSep(__('Your nationality'))
+                
+                include ./includes/inputs/nationality
+                +nationality((_isRequired = clientsWantField(authorizations, 'nationality')))
+
+                include ./includes/inputs/timezone
+                +timezone((_isRequired = clientsWantField(authorizations, 'timezone')))
+                
+                .form-fields-section
+                    include /includes/csrf
+                    +csrf(csrfToken)
+                    
+                    input(type="hidden", name="_method", value="PUT")
+                    
+                    button.btn.create.file-upload-sibling-form-submit-btn(type="submit")
+                        = __('Update my information')
+
+block rawJS
+    script.
+        // `false`: Keep image ratio?
+        // `true`: Update File?
+        var fileUpload = new app.FileUpload(false, true);
+        fileUpload.load();

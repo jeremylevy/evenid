@@ -1,0 +1,108 @@
+extend ../layouts/baseDocs
+
+block prepend title
+    | Branding guidelines
+
+block docContent
+    h2 
+        | Branding guidelines
+
+    p
+        | Before redirecting your users to EvenID you 
+        | will need to display one (or more) buttons that 
+        | will act as link between your application and EvenID.
+
+    p
+        | These buttons are required to follow some rules in order to 
+        | provide a predictable and consistent experience among applications.
+
+    p
+        | For websites, we give you the possibility to use predefined 
+        | buttons by including a CSS file straight into your code. Read the 
+        a(href="#websites") corresponding section
+        |  below to learn more.
+
+    h4 1. Official colors
+
+    p
+        | You're required to use the official EvenID 
+        | colors when displaying a customized button.
+    p
+        | The official colors are described as follow:
+
+    ul.official-colors-list
+        li
+            div.color(style="background-color: #ffffff; border: 1px solid #f5f5f5;")
+            strong White 
+            em #ffffff
+
+        li
+            div.color(style="background-color: #fafafa;")     
+            strong Gray98  
+            em #fafafa
+        li
+            div.color(style="background-color: #f5f5f5;")   
+            strong White Smoke
+            em #f5f5f5
+
+        li
+            div.color(style="background-color: #fd6f4a;")
+            strong Orange
+            em #fd6f4a
+
+    h4 2. Logo
+
+    p
+        | You're required to include the EvenID 
+        | logo into your customized button.
+    p
+        | The logo 
+        | is available in three different sizes, to match users' screen resolution:
+
+    ul.official-logos-list
+        li
+            a(href= cloudfrontAssetsURL('/branding/img/logo.png'), target= cloudfrontAssetsURL('/branding/img/logo.png')).logo
+            strong x1
+
+        li
+            a(href= cloudfrontAssetsURL('/branding/img/logo@2x.png'), target= cloudfrontAssetsURL('/branding/img/logo@2x.png')).logo.logox2
+            strong x2
+        li
+            a(href= cloudfrontAssetsURL('/branding/img/logo@3x.png'), target= cloudfrontAssetsURL('/branding/img/logo@3x.png')).logo.logox3
+            strong x3
+
+    h4#websites Websites
+
+    p
+        | For websites, we provide you a 
+        a(href= cloudfrontAssetsURL('/branding/css/btn.css'), target= cloudfrontAssetsURL('/branding/css/btn.css')) CSS file
+        |  that you can use either by including it into your HTML code:
+
+    pre
+        = '<link href="' + cloudfrontAssetsURL('/branding/css/btn.css') + '" rel="stylesheet" type="text/css">'
+
+    p
+        | Or by adding it straight into your CSS file:
+
+    pre
+        = '@import url(' + cloudfrontAssetsURL('/branding/css/btn.css') + ')'
+    
+    p
+        | This CSS file declares two classes ( 
+        code evenid-btn
+        |  and 
+        code evenid-btn-label
+        |  ) that must be used this way:
+
+    pre
+        = '<a href="https://evenid.com/oauth/authorize..." class="evenid-btn">\n    <span class="evenid-btn-label">\n        Register\n    </span>\n</a>'
+    
+    p
+        a(href="javascript:;").evenid-btn
+            span.evenid-btn-label
+                | Register
+
+    p
+        | You are authorized to customize these two classes 
+        | to match your app's style as long as you follow the 
+        | rules described previously.

@@ -1,0 +1,14 @@
+//- During Oauth authorize, upload form is displayed in iframe
+//- because embedding form in form is not allowed in HTML5
+extend /layouts/baseOauthAuthorizeFileUpload
+
+block body
+    include /includes/uploadImgFileForm
+    +uploadImgFileForm()
+
+block rawJS
+    script.
+        //- `false`: Keep image ratio?
+        //- `true`: Update File?
+        var fileUpload = new app.FileUpload(false, true);
+        fileUpload.load();

@@ -1,0 +1,315 @@
+extend ../../layouts/baseDocs
+
+block prepend title
+    | How to handle personal information update
+
+block docContent
+    h2 
+        | How to handle personal information update
+
+    p
+        | Personal information update may arise in only three cases:
+
+    ol
+        li
+            | If you have authorized test accounts 
+            | for your client and user register after testing.
+
+        li
+            | If one (or several) fields that you have asked for have been updated by user.
+
+        li
+            | If you have added values to your redirection URI scope, and, 
+            | as a result, the user was forced to authorize additional fields.
+
+    p 
+        | The way you will be notified of the update will depend on several factors:
+
+    ul
+        li
+            | If you wait for the 
+            code existing_user_after_test
+            |  user status (
+            strong.stronger case 1
+            | ) or the 
+            code existing_user_after_update
+            |  user status (
+            strong.stronger for case 3
+            | ), you will need to wait 
+            | for user to log in once again and call the 
+            a(href="/docs/api/get/user") "GET /users/{user_id}" 
+            |  method to handle the update.
+
+        li
+            p
+                | If you wait for the 
+                code existing_user_after_update
+                |  user status (
+                strong.stronger for case 2
+                | ), it will depend on whether you have 
+                | registered a notification handler:
+
+            ul
+                li
+                    | If you have registered a notification handler for the 
+                    code user_did_update_personal_information
+                    |  event, you will be notified, 
+                    | at the time when personal information are updated.
+
+                li
+                    p
+                        | If you don't have registered a notification handler, 
+                        | it will depend on the login 
+                        | type that you have set up on your application: 
+                    
+                    ul
+                        li
+                            | If you have set up a persistent login, you will need to use the received 
+                            code refresh_token
+                            |  (as described in 
+                            a(href="/docs/guides/how-to-refresh-an-access-token") our guide
+                            | ) 
+                            strong.stronger at key moment
+                            |  (when user open your app or log in using a 
+                            | persistent login cookie, for example) to obtain the updated user status.
+                        
+                        li
+                            | If you don't have set up a persistent login, you will need to wait 
+                            | for user to log in once again to obtain the updated user status.
+
+                    p
+                        br
+                        | At this point, you will have the most recent user status for the current user. If it equals to 
+                        code existing_user_after_update
+                        |  you will need to call the 
+                        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+                        |  method to handle the update.
+
+    h4.subtitle
+        | a) If you need to call the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+        |  method
+
+    p
+        | When calling the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+        |  method, EvenID sends you several additional fields to ease the update process:
+
+    pre
+        | {
+        |   "id":"546e66045b0539cc539bc82f",
+        |   "status":"existing_user_after_update",
+        |   "updated_fields":["nickname", "emails", "phone_numbers", "addresses"],
+        |   "nickname":"newNickname",
+        |   ...
+        |   "emails":[{
+        |      ...
+        |      "status":"updated",
+        |      "updated_fields":["address"]
+        |   }],
+        |   ...
+        |   "phone_numbers":[{
+        |      ...
+        |      "status":"old",
+        |      "updated_fields":[]
+        |   }, {
+        |      ...
+        |      "status":"updated",
+        |      "updated_fields":["number"]
+        |   }],
+        |   "addresses":[{
+        |      ...
+        |      "status":"new",
+        |      "updated_fields":[]
+        |   }, {
+        |      ...
+        |      "status":"updated",
+        |      "updated_fields":["address_line_2", "access_code"]
+        |   }],
+        |   ...
+        | }
+        
+    p
+        | First, EvenID will send you an 
+        code updated_fields
+        |  field 
+        strong.stronger at user level
+        | . This field is an array that will contain 
+        | all the fields that you have asked for and that the user has updated.
+
+
+    .bs-callout.bs-callout-warning
+        h5
+            | Fields with multiple values
+        
+        p
+            | The "user level"  
+            code updated_fields
+            |  field may contain both fields with single value (like 
+            code nickname
+            | ) 
+            strong.stronger and fields with multiple values
+            |  (like 
+            code addresses
+            | ).
+    
+    p
+        | Secondly, EvenID will send you an 
+        code updated_fields
+        |  field along with a 
+        code status
+        |  field 
+        strong.stronger at entity level
+        | . These fields will be appended to each email, each phone number and each address individually.
+
+    p
+        | The "entity level"  
+        code updated_fields
+        |  field will contain all fields which were updated 
+        strong.stronger for this entity
+        |  (like 
+        code number
+        |  for a phone number and 
+        code address_line_2
+        |  for an address).
+
+    p 
+        | The possible values for the 
+        code status
+        |  field may differ depending on the entity:
+
+    //- .bs-callout.bs-callout-info
+    //-     h5
+    //-         | Status field during first registration
+        
+    //-     p
+    //-         | Remember that this section discusses the possible values of the 
+    //-         code status
+    //-         |  field that may accompany a user status equals to 
+    //-         code existing_user_after_test
+    //-         |  or 
+    //-         code existing_user_after_update
+    //-         | . It is obvious that if user status equals to 
+    //-         code new_user
+    //-         | , the 
+    //-         code status
+    //-         |  field will be set to 
+    //-         code new
+    //-         |  for each entity.
+
+    ul
+        li 
+            p
+                | Given that users cannot give you access to more than one email address and 
+                | one phone number per asked phone type, the possible values of the 
+                code status
+                |  field for 
+                code emails
+                |  and 
+                code phone_numbers
+                |  entities are: 
+                code old
+                |  and 
+                code updated
+                | .
+
+            .bs-callout.bs-callout-warning
+                h5 Scope update
+                p
+                    | It is obvious that if you have added 
+                    code emails
+                    |  or 
+                    code phone_numbers
+                    |  to your redirection URI scope afterwards, the 
+                    code status
+                    |  field of these entities will be set to 
+                    code new
+                    |  even for registered users.
+
+        li 
+            | Given that users can give you access to more than one address, 
+            | the possible values of the 
+            code status
+            |  field for 
+            code addresses
+            |  entities are: 
+            code new
+            | , 
+            code old
+            | , 
+            code updated
+            |  and 
+            code deleted
+            | .
+
+    p
+        | Depending on your use case, you may want to insert entity when 
+        code status
+        |  field equals to 
+        code new
+        | , update it when it equals to 
+        code updated
+        |  and delete it when it equals to 
+        code deleted
+        | .
+
+    p
+        | To ease the update process, you may safely use the 
+        code id
+        |  properties, appended to each entity, which are guaranteed to be unique and to remain constant across updates.
+
+    .bs-callout.bs-callout-info
+        h5
+            | When user register after testing
+        
+        p
+            | When user register after testing, it's obvious that:
+        
+        ul
+            li 
+                | The "user level" 
+                code updated_fields
+                |  field will contain all the fields that you have asked for.
+            li
+                | That the "entity level" 
+                code updated_fields
+                |  field will contain all the fields that compose the entity.
+
+            li 
+                | And that the 
+                code status
+                |  field will be set to 
+                code updated
+                |  for each entity.
+
+    h4.subtitle#handle-in-notification-handler
+        | b) If you handle the update in a notification handler
+    
+    p
+        | The sole difference with the fact that a notification handler don't have 
+        | been registered is that you don't have to call the 
+        a(href="/docs/api/get/user") "GET /users/{user_id}" 
+        |  method when user has updated fields that you have asked for (
+        strong.stronger case 2
+        | ). 
+
+    p
+        | It's the API that will send you a notification 
+        | at the time when personal information are updated:
+
+
+    include ../includes/userDidUpdatePersonalInformationNotification
+
+    p
+        | Otherwise, the flow described above, in part a), 
+        strong.stronger stay the same
+        | .
+
+    p
+        | EvenID will send you a subset of the user fields (
+        strong.stronger those which have been updated
+        | ) including the 
+        code updated_fields
+        |  and the 
+        code status
+        |  fields, as described above, in the first part.

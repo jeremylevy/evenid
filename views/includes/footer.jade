@@ -1,0 +1,51 @@
+mixin footer()
+    footer.app-footer
+        .container
+            .row
+                .col-sm-10
+                    .country-selector
+                        a.select(href="javascript:;")
+                            span
+                                if currentLocale === 'en-us'
+                                    img(src= staticURL('/img/footer/flags/us.png'), alt="United States")
+                                    strong United States
+                                
+                                if currentLocale === 'fr-fr'
+                                    img(src= staticURL('/img/footer/flags/fr.png'), alt="France")
+                                    span France
+                        ul.popover
+                            li
+                                a(href= '//en-us.' + host + path
+                                  class= currentLocale === 'en-us' ? 'selected' : '')
+                                    
+                                    img(src= staticURL('/img/footer/flags/us.png'), alt="United States")
+                                    span United States
+                            
+                            li
+                                a(href= '//fr-fr.' + host + path
+                                  class= currentLocale === 'fr-fr' ? 'selected' : '')
+                                    
+                                    img(src= staticURL('/img/footer/flags/fr.png'), alt="France")
+                                    span France
+                    ul
+                        li
+                            a(href="#")= __('Status')
+                        
+                        li
+                            a(href="https://medium.com/@evenid",
+                              target="https://medium.com/@evenid")= __('Blog')
+                        
+                        li
+                            a(href="/about", class=(path === '/about' ? 'selected' : ''))= __('About')
+                        
+                        li
+                            a(href="mailto:contact@evenid.com")= __('Jobs')
+                        
+                        li
+                            a(href="/contact", class=(path === '/contact' ? 'selected' : ''))= __('Contact')
+                        
+                        li
+                            a(href="/privacy", class=(path === '/privacy' ? 'selected' : ''))= __('Privacy & Terms')
+                
+                .col-sm-2.clearfix
+                    p= __('© EvenID')

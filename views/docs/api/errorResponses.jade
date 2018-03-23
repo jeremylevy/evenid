@@ -1,0 +1,154 @@
+extend ../../layouts/baseDocs
+
+block prepend title
+    | API error responses
+
+block docContent
+    h2 API error responses
+
+    p 
+        | This section discusses the JSON response that may accompany a failed API request. 
+
+    p
+        | When an API request fails, EvenID will return an HTTP 4xx or 5xx response code
+        | that generically identifies the failure as well as a JSON response 
+        | that provides more specific information about the error(s) 
+        | that caused the failure.
+    
+    p
+        | For each error, the JSON response includes an 
+        code error
+        |  element which contains a 
+        code type
+        |  and 
+        code messages
+        |  property. 
+    
+    p 
+        | The following subsections explain the possible values for 
+        | these elements and provides a sample error response for each error. 
+    
+    pre
+        | HTTP/1.1 {http_status_code}
+        | Content-Type: application/json; charset=utf-8
+        | Content-Length: 68
+        | Connection: keep-alive
+        | 
+        include ../includes/apiErrorObject
+
+    .bs-callout.bs-callout-info
+        h5
+            | Main message
+        
+        p
+        
+            | The values described below for the 
+            code main_message
+            |  property are 
+            strong.stronger default values
+            | . Depending on the error the API may also
+            | return a more informative message.
+    
+    p
+        code error_type
+        |  may be one of the following values:
+    
+    ul 
+        li
+            code invalid_request
+            | . The request is missing a required parameter, includes an invalid parameter value, 
+            | includes a parameter more than once, or is otherwise malformed.
+            | Verify the URL, its parameters and the data that was sent.
+          
+            ul
+                li
+                    code http_status_code
+                    | . 400 Bad Request.
+                li
+                    code main_message
+                    | . "The request is missing a required parameter, includes an invalid parameter value, 
+                    | includes a parameter more than once, or is otherwise malformed."
+                li
+                    code invalid_param
+                    | . Set for each invalid parameter. 
+                    | Key is the name of the parameter. 
+                    | Value is an explanation of why this parameter is invalid.
+
+        li
+            code invalid_token
+            | . Your access token is invalid.
+          
+            ul
+                li
+                    code http_status_code
+                    | . 400 Bad Request.
+                li
+                    code main_message
+                    | . "Your access token is invalid."
+                li
+                    code invalid_param
+                    | . Not set.
+
+        li
+            code expired_token
+            | . Your access token has expired. 
+            | You may use this error as an indicator that 
+            | you need to use the refresh token sent along with access token.
+          
+            ul
+                li
+                    code http_status_code
+                    | . 400 Bad Request.
+                li
+                    code main_message
+                    | . "Your access token has expired."
+                li
+                    code invalid_param
+                    | . Not set.
+      
+        li
+            code access_denied
+            | . You doesn't have the right authorization to access this ressource.
+            | The server understood the request, but is refusing to fulfill it.
+
+            ul
+                li
+                    code http_status_code
+                    | . 403 Forbidden.
+                li
+                    code main_message
+                    | . "You are not authorized to access this resource."
+                li
+                    code invalid_param
+                    | . Not set.
+
+        li
+            code not_found
+            | . The server could not find what was requested. You may need to verify the URL (and its parameters).
+
+            ul
+                li
+                    code http_status_code
+                    | . 404 Not Found.
+                li
+                    code main_message
+                    | . "The requested resource was not found."
+                li
+                    code invalid_param
+                    | . Not set.
+
+        li
+            code server_error
+            | . The server encountered an unexpected condition which 
+            | prevented it from fulfilling the request. You may retry your request later.
+          
+            ul
+                li
+                    code http_status_code
+                    | . 500 Internal Server Error.
+                li
+                    code main_message
+                    | . "The server encountered an unexpected condition that prevented it from fulfilling the request."
+                li
+                    code invalid_param
+                    | . Not set.

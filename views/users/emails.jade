@@ -1,0 +1,115 @@
+extend ../layouts/baseAuthenticated
+
+include /includes/formSep
+include /includes/csrf
+
+block prepend title
+    = __('Emails')
+
+block appContentHeadTitle
+    include ./includes/headerTitle
+
+block appContentHeadBtn
+    //- include ./includes/headerDeleteForm
+
+mixin emailList (emails, isUpdate)
+    - var email = null
+
+    - for (var i = 0, j = emails.length; i < j; ++i)
+        - email = emails[i];
+        
+        li
+            .label-container
+                if email.is_main_address
+                    span.label.label-default= __('Contact address')
+                
+                if email.is_verified
+                    span.label.label-success= __('Validated')
+                
+                else
+                    span.label.label-danger= __('Not validated')
+            
+            div
+                h3.email= email.email
+                
+                if (authorizations && !isUpdate)
+                    include ./includes/authorizedClientsForField
+
+                    +authorizedClientsForField(authorizations, (field = 'emails'), (fieldID = email.id))
+            
+            if !isUpdate
+                .entity-actions-container
+                    a.btn(href= '/users/' + user.id + '/emails/' + email.id)
+                        = __('Edit')
+
+                    if !email.is_verified
+                        form(method="post", action= '/users/' + user.id + '/emails/' + email.id + '/validate')
+                            p
+                                +csrf(csrfToken)
+                                button.btn(type="submit")= __('Validate')
+                    
+                    form(method="post", action= '/users/' + user.id + '/emails/' + email.id)
+                        p
+                            input(type="hidden", name="_method", value="DELETE")
+                            
+                            +csrf(csrfToken)
+                            
+                            if !email.is_main_address
+                                button.btn.cancel(type="submit"
+                                                  data-sweetalert="true"
+                                                  data-sweetalert-title= __('Confirm the deletion?')
+                                                  data-sweetalert-text= __('Click "OK" if you want to delete this email.')
+                                                  data-sweetalert-type="warning"
+                                                  data-sweetalert-allow-outside-click="true"
+                                                  data-sweetalert-show-cancel-button="true"
+                                                  data-sweetalert-confirm-button-text= __('OK')
+                                                  data-sweetalert-cancel-button-text= __('Cancel'))= __('Delete')
+
+block appContent
+    - var isUpdate = !!email
+
+    if isUpdate
+        .form-breadcrumb
+            ol.breadcrumb
+                li
+                    a(href= '/users/' + user.id + '/emails')= __('Emails')
+                li.active
+                    = email.email
+
+    if emails.length
+        ul.form-entity-list
+            +emailList(emails, isUpdate)
+
+        include /includes/pagination
+        +pagination(nbOfPages, currentPage, previousDisabled, nextDisabled, '/users/' + user.id + '/emails')
+    
+    form.form(method="post", action= '/users/' + user.id + '/emails' + (isUpdate ? '/' + email.id : ''))
+        if emails.length
+            +formSep(isUpdate ? __('Edit this email') : __('Add an email'))
+            
+        div
+            div
+                include ./includes/inputs/email
+                +email((_flow = 'emails'), (_disabled = false))
+
+            .checkbox
+                if email && email.is_main_address
+                    //- Disabled inputs are not sent so add an hidden input field
+                    input(type="hidden", name="is_main_address", value="true")
+                label.auth(class= email && email.is_main_address ? 'disabled' : '')
+                    input(type="checkbox"
+                          name="is_main_address"
+                          value="true"
+                          checked= email && email.is_main_address
+                          disabled= email && email.is_main_address)
+                    
+                    = __('Use as contact address')
+
+            .form-fields-section
+                +csrf(csrfToken)
+                
+                if isUpdate
+                    input(type="hidden", name="_method", value="PUT")
+                
+                button.btn.create(type="submit")
+                    = isUpdate ? __('Edit this email') : __('Add this email')

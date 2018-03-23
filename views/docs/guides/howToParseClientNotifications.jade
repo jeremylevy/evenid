@@ -1,0 +1,78 @@
+extend ../../layouts/baseDocs
+
+block prepend title
+    | How to parse client's notifications
+
+block docContent
+    h2 How to parse client notifications
+
+    p.api-requirements
+        a(href="https://github.com/evenid",
+          target="https://github.com/evenid")
+            span.label.label-default Sdk::getNotificationFromSignedRequest(signedRequest)
+    
+    p
+        | To avoid malicious calls to your notification handler, EvenID will send you an HTTP POST request containing a signed request.
+
+    p
+        | A signed request is a string composed of the notification and a signature which assert that the request has been sent by EvenID.
+
+    h4 How signed requests are made
+
+    p
+        | The notification is constructed as follows:
+
+    pre
+        | notification = 
+        a(href="http://en.wikipedia.org/wiki/Base64") base64_encode
+        | (json_encode(notificationAsObject))
+
+    p 
+        | Then, the signature is constructed by hashing the notification with the client's secret:
+
+    pre
+        | signature = 
+        a(href="http://en.wikipedia.org/wiki/Base64") base64_encode
+        | (hash_hmac('sha256', notification, 
+        code client_secret
+        | ))
+
+    p
+        | Finally, signed requests are made by concatenating the notification and the signature with a dot '.' :
+
+    pre
+        | signed_request = notification + '.' + signature
+
+    p
+        | And sent through an HTTP POST request to your handler:
+
+    pre
+        | POST /notification-handler HTTP/1.1
+        | Host: yourhost.com
+        | Content-Type: application/x-www-form-urlencoded
+        | 
+        | signed_request={signed_request}
+
+    p 
+        | An HTTP POST variable named 
+        code signed_request
+        |  will be created and made available for access by your code.
+
+    h4 Parsing signed requests
+
+    p Once you have captured the signed request, you need to perform four steps:
+
+    ol
+        li
+            | Split the signed request into two parts delineated by a '.' character (eg. 
+            code YTM0NZomIzI2OTsmIzM0NTueYQ==.ZXJlciJwb3BvaSgn==
+            | ).
+        li
+            | Decode the second part - the encoded signature - from base64.
+        li
+            strong Make sure 
+            | that 
+            strong hash_hmac('sha256', first_part, client_secret)
+            |  strictly equals to signature decoded during step two.
+        li 
+            | Decode the first part - the notification - from base64 and then decode the resultant JSON object.      
